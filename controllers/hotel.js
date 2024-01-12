@@ -42,7 +42,7 @@ module.exports.create = async function (req, res) {
         let rooms = []
 
         for (let i = 0; i < req.body.rooms.length; i++) {
-            rooms.add(i)
+            rooms.push(req.body.rooms[i])
         }
 
         const hotel = new Hotel({
