@@ -15,7 +15,10 @@ const hotelSchema = new Schema({
         type: Number,
         require: true
     },
-
+    quantityRooms: {
+        type: Number,
+        require: true,
+    },
     rooms: {
         type: [{
             numberRoom: {
@@ -39,10 +42,6 @@ const hotelSchema = new Schema({
                 type: Schema.Types.ObjectId
             }
         }],
-    },
-    quantityRooms: {
-        type: Number,
-        require: true,
     },
 
 })

@@ -24,11 +24,16 @@
   },
   "homepage": "https://github.com/Krapotur/hotel_management_web#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-session": "github:expressjs/session",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

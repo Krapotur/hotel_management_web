@@ -1,48 +1,67 @@
 const Hotel = require('../models/Hotel')
+const errorHandler = require('../utils/errorHandler')
 
-module.exports.getAll = function (req, res) {
-
+module.exports.getAll = async function (req, res) {
+    try {
+        Hotel.find().then(
+            hotels => {
+                res.status(200).json(hotels)
+            }
+        )
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
 
-module.exports.getById = function (req, res) {
-
+module.exports.getById = async function (req, res) {
+    try {
+        const hotel = await Hotel.findById({_id: req.params.id})
+        res.status(200).json(hotel)
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
 
-module.exports.delete = function (req, res) {
-
+module.exports.delete = async function (req, res) {
+    try {
+        const hotel = await Hotel.findOne({_id: req.params.id})
+        await Hotel.deleteOne({_id: req.params.id})
+        res.status(200).json({message: `Гостиница "${hotel.title} удалена`})
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
 
-module.exports.create = function (req, res) {
-    const hotel = new Hotel({
-        title: req.body.title,
-        imgSrc: req.body.imgSrc,
-        floors: req.body.floors,
-        quantityRooms: req.body.quantityRooms,
-        rooms: [{
-            numberRoom: req.body.rooms[0].numberRoom,
-            status: req.body.rooms[0].status,
-            floor: req.body.rooms[0].floor,
-            comment: req.body.rooms[0].comment,
-        }, {
-            numberRoom: req.body.rooms[1].numberRoom,
-            status: req.body.rooms[1].status,
-            floor: req.body.rooms[1].floor,
-            comment: req.body.rooms[1].comment,
-        }, {
-            numberRoom: req.body.rooms[2].numberRoom,
-            status: req.body.rooms[2].status,
-            floor: req.body.rooms[2].floor,
-            comment: req.body.rooms[2].comment,
-        }, {
-            numberRoom: req.body.rooms[3].numberRoom,
-            status: req.body.rooms[3].status,
-            floor: req.body.rooms[3].floor,
-            comment: req.body.rooms[3].comment,
-        },
-        ]
-    })
+module.exports.create = async function (req, res) {
+    if (await Hotel.findOne({title: req.body.title})) {
+        res.status(409).json({
+            message: `Гостиница ${req.body.title} уже есть`
+        })
+    } else {
 
-    hotel.save().then(() => console.log(hotel))
+        let rooms = []
+
+        for (let i = 0; i < req.body.rooms.length; i++) {
+            rooms.add(i)
+        }
+
+        const hotel = new Hotel({
+            title: req.body.title,
+            imgSrc: req.body.imgSrc,
+            floors: req.body.floors,
+            quantityRooms: req.body.quantityRooms,
+            rooms: rooms
+        })
+
+        try {
+            await hotel.save()
+            res.status(201).json({
+                message: `Гостиница ${hotel.title} успешно добавлена`
+            })
+        } catch (e) {
+            errorHandler(res, e)
+        }
+    }
 }
 
 module.exports.update = function (req, res) {
