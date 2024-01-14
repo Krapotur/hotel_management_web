@@ -45,12 +45,14 @@ module.exports.create = async function (req, res) {
             rooms.push(req.body.rooms[i])
         }
 
+        console.log(req.body)
+
         const hotel = new Hotel({
             title: req.body.title,
-            imgSrc: req.body.imgSrc,
+            imgSrc: req.file ? req.file.path : '',
             floors: req.body.floors,
             quantityRooms: req.body.quantityRooms,
-            rooms: rooms
+            // rooms: rooms
         })
 
         try {
@@ -64,6 +66,23 @@ module.exports.create = async function (req, res) {
     }
 }
 
-module.exports.update = function (req, res) {
+module.exports.update = async function (req, res) {
+    const updated = {
+        title: req.body.title
+    }
 
+    if(req.file){
+        updated.imageSrc = req.file.path
+    }
+
+    try{
+            const hotel = await Hotel.findByIdAndUpdate(
+                {_id: req.params.id},
+                {$set: updated},
+                {new: true}
+            )
+        res.status(200).json(hotel)
+        }catch (e){
+            errorHandler(res, e)
+        }
 }

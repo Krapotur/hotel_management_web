@@ -19,7 +19,8 @@ module.exports.login = async function (req, res) {
                 const userToken = {
                     token: `Bearer ${token}`,
                     group: candidate.group,
-                    user: candidate.lastName + ' ' + candidate.firstName
+                    user: candidate.firstName + ' ' + candidate.lastName
+                    // user: candidate.lastName + ' ' + candidate.firstName
                 }
                 console.log(userToken.group)
                 res.status(200).json(userToken)
