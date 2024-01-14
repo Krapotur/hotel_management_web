@@ -26,7 +26,7 @@ module.exports.delete = async function (req, res) {
     try {
         const hotel = await Hotel.findOne({_id: req.params.id})
         await Hotel.deleteOne({_id: req.params.id})
-        res.status(200).json({message: `Гостиница "${hotel.title} удалена`})
+        res.status(200).json({message: `Гостиница "${hotel.title}" удалена`})
     } catch (e) {
         errorHandler(res, e)
     }
@@ -45,14 +45,12 @@ module.exports.create = async function (req, res) {
             rooms.push(req.body.rooms[i])
         }
 
-        console.log(req.body)
-
         const hotel = new Hotel({
             title: req.body.title,
             imgSrc: req.file ? req.file.path : '',
             floors: req.body.floors,
             quantityRooms: req.body.quantityRooms,
-            // rooms: rooms
+            rooms: rooms
         })
 
         try {
@@ -71,18 +69,18 @@ module.exports.update = async function (req, res) {
         title: req.body.title
     }
 
-    if(req.file){
+    if (req.file) {
         updated.imageSrc = req.file.path
     }
 
-    try{
-            const hotel = await Hotel.findByIdAndUpdate(
-                {_id: req.params.id},
-                {$set: updated},
-                {new: true}
-            )
+    try {
+        const hotel = await Hotel.findByIdAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
         res.status(200).json(hotel)
-        }catch (e){
-            errorHandler(res, e)
-        }
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
