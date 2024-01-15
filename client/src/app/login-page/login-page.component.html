@@ -1,21 +1,20 @@
-  <div class="form_container">
-      <div class="login_form">
-        <div class="logo">
-          <img src="./assets/images/logo.png" alt="logo">
-        </div>
-        <form action="#">
-          <h2>HOTEL MANAGEMENT</h2>
-          <div class="input_box">
-            <input type="text" placeholder="Логин" required/>
-            <!--        <i class="uil uil-envelope-alt email"></i>-->
-          </div>
-          <div class="input_box">
-            <input type="password" placeholder="Пароль" required/>
-            <!--        <i class="uil uil-lock password"></i>-->
-            <!--        <i class="uil uil-eye-slash pw_hide"></i>-->
-          </div>
+<div class="form_container">
+  <div class="login_form">
+    <div class="logo">
+      <img src="./assets/images/logo.png" alt="logo">
+    </div>
+    <form action="#">
+      <h2>HOTEL MANAGEMENT</h2>
+      <mat-form-field class="input_box" >
+        <mat-label >Логин</mat-label>
+        <input matInput>
+      </mat-form-field>
 
-          <button class="button">Войти</button>
-        </form>
-      </div>
+      <mat-form-field class="input_box">
+        <mat-label>Пароль</mat-label>
+        <input matInput>
+      </mat-form-field>
+      <button class="button">Войти</button>
+    </form>
   </div>
+</div>
