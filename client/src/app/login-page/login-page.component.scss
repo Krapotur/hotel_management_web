@@ -1,0 +1,81 @@
+///* Import Google font - Poppins */
+//@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+
+/* From */
+.form_container {
+  position: fixed;
+  max-width: 370px;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.2);
+  z-index: 3;
+  background: #ffffff;
+  padding: 25px;
+}
+
+.login_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 320px;
+  padding: 55px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px -22px #333;
+}
+
+.logo img {
+  padding-left: 57px;
+  width: 214px;
+}
+
+.form_container h2 {
+  font-size: 22px;
+  color: #F57C23;
+  text-align: center;
+  font-family: 'Lora', serif;
+}
+
+.input_box {
+  position: relative;
+  margin-top: 20px;
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+}
+
+.input_box input {
+  height: 100%;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0 30px;
+  color: #333;
+  transition: all 0.2s ease;
+  border-bottom: 1.5px solid #aaaaaa;
+}
+
+.input_box input:focus {
+  border-color: #F57C23;
+}
+
+.form_container .button {
+  background: #F57C23;
+  color: white;
+  margin-top: 30px;
+  width: 100%;
+  padding: 10px 0;
+
+  border-radius: 20px;
+}
+
+.button {
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
