@@ -2,6 +2,7 @@
 //@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+
 body {
   margin: 0;
   padding: 0;
@@ -17,9 +18,10 @@ body {
 
 .login_page_image {
   height: 100vh;
-  width: 55vw;
+  width: 50vw;
   border-right: 15px solid #F57C23;
   object-fit: cover;
+  user-select: none;
 }
 
 .form_container {
@@ -35,6 +37,7 @@ body {
   justify-content: space-between;
   width: 290px;
   padding: 20px 30px 30px 30px;
+  border: 1px solid #F57C23;
   border-radius: 12px;
   box-shadow: 0 0 25px -22px #333;
   background-color: #f5f5f5;
@@ -43,6 +46,7 @@ body {
 .logo img {
   padding-left: 48px;
   width: 185px;
+  user-select: none;
 }
 
 .form_container h2 {
@@ -51,33 +55,33 @@ body {
   text-align: center;
   font-family: 'Lora', serif;
   margin-bottom: 10px;
+  user-select: none;
 }
 
 .input_box {
   width: 100%;
 }
 
-.form_container .button {
-  background: #F57C23;
-  color: white;
+.mat-mdc-form-field {
+  --mdc-filled-text-field-focus-active-indicator-color: #F57C23;
+  --mdc-filled-text-field-focus-label-text-color: #F57C23;
+  --mdc-filled-text-field-label-text-size: 15px;
+}
+
+span {
+  color: red;
+  font-size: 13px;
+  padding-bottom: 5px;
+}
+
+mat-error {
+  font-size: 11px;
+}
+
+.btn {
   margin-top: 30px;
-  width: 100%;
-  padding: 10px 0;
-  border-radius: 20px;
+  background-color: #F57C23;
 }
-
- .mat-mdc-form-field{
-  --mdc-filled-text-field-focus-active-indicator-color:  #F57C23;
-  --mdc-filled-text-field-focus-label-text-color:  #F57C23;
-}
-
- .mat-mdc-fab.mat-warn{
-   --mdc-fab-container-color: #F57C23;
-   margin-bottom: 10px;
- }
-
- .button{
- }
 
 
 
