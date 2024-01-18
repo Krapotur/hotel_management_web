@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const errorHandler = require('../utils/errorHandler')
+const bcrypt = require('bcryptjs')
 
 module.exports.getAll = async function (req, res) {
     try {

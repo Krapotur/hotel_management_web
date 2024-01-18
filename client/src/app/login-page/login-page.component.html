@@ -31,7 +31,7 @@
         <button
           class="input_box btn" extended="" mat-fab
           type="submit"
-          [disabled]="form.invalid"
+          [disabled]="form.invalid || form.disabled"
         >
           Войти
         </button>

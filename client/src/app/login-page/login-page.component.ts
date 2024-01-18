@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -6,6 +6,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
+import {AuthService} from "../shared/services/auth.service";
+import {Subscription} from "rxjs";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-login-page',
@@ -23,18 +26,47 @@ import {MatIconModule} from "@angular/material/icon";
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
 })
-export class LoginPageComponent implements OnInit{
+export class LoginPageComponent implements OnInit, OnDestroy {
   form: FormGroup
+  aSub: Subscription
+
   protected readonly onsubmit = onsubmit;
+
+  constructor(private auth: AuthService,
+              private router: Router,
+              private route: ActivatedRoute
+              ) {
+  }
 
   ngOnInit() {
     this.form = new FormGroup({
       login: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required, Validators.minLength(6)])
     })
+
+  }
+
+  ngOnDestroy() {
+    if (this.aSub) {
+      this.aSub.unsubscribe()
+    }
   }
 
   onSubmit() {
+    this.form.disable()
+    const login = {
+      login: this.form.value.login,
+      password: this.form.value.password
+    }
 
+    this.aSub = this.auth.login(login).subscribe({
+      next: (result) => {
+        this.router.navigate(['/admins'])
+      },
+      error: (error) => {
+        console.warn(error)
+        this.form.enable()
+      }
+    })
   }
 }
