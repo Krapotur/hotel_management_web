@@ -1,29 +1,38 @@
 <div class="container">
   <div class="sidebar" role="banner">
-    <img src="../assets/images/logo.png" alt="">
-    <h1 class="title">
-      Hotel Management
-      <!--      <h3>{{activeUser}}</h3>-->
-      <hr>
-    </h1>
+    <div class="logo-container">
+      <img src="../assets/images/logo.png" alt="">
+      <h1 class="title">
+        Hotel Management
+        <!--      <h3>{{activeUser}}</h3>-->
+        <hr>
+      </h1>
+    </div>
+
     <div class="nav-wrap">
       <nav class="main-nav" role="navigation">
         <ul class="list-hover-slide">
-          <li><a routerLink="/">Dashboard</a></li>
-          <li><a routerLink="/">Гостиницы</a></li>
-          <li><a routerLink="/">Пользователи</a></li>
-          <li><a routerLink="/">Группы</a></li>
-          <li><a>Выйти</a></li>
+          <li><a routerLink="/da">Dashboard</a></li>
+          <li><a routerLink="/admin/hotels" [queryParams]="{page: 'hotels'}">Гостиницы</a></li>
+          <li><a routerLink="/admin/users" [queryParams]="{page: 'users'}" >Пользователи</a></li>
+          <li><a routerLink="/admin/groups" [queryParams]="{page: 'groups'}">Группы</a></li>
+          <li><a routerLink="/">Выйти</a></li>
         </ul>
       </nav>
     </div>
   </div>
-  <!--  <div class="container-right">-->
-  <!--    <div class="header">-->
-  <!--      <h1 class="title">-->
-  <!--        <a href="#">Hotel <span>Management</span></a>-->
-  <!--      </h1>-->
-  <!--    </div>-->
-  <!--  </div>-->
+  <div class="container-right">
+    <div class="container-right-title">
+      <h1>{{title}}</h1>
+    </div>
+    <div *ngIf="title == 'Гостиницы'">
+      <app-hotels-list-page></app-hotels-list-page>
+    </div>
+    <div *ngIf="title == 'Пользователи'">
+      <app-users-page></app-users-page>
+    </div>
+    <div *ngIf="title == 'Группы'">
+      <app-groups-page></app-groups-page>
+    </div>
+  </div>
 </div>
-

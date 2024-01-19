@@ -17,6 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin', component: AdminLayoutComponent,  children: [
+      {path: 'admin', redirectTo: 'admin/users', pathMatch: "full"},
       {path: 'users', component: UsersPageComponent},
       {path: 'groups', component: GroupsPageComponent},
       {path: 'hotels', component: HotelsListPageComponent},

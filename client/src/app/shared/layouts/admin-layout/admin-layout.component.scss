@@ -18,6 +18,12 @@ $white-off: #DFDBD9;
 
 
 // HEADER STYLES
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .header {
   background: $gray;
   height: 105px;
@@ -72,15 +78,17 @@ h3 {
 }
 
 .sidebar {
+  position: fixed;
   background-color: $gray;
   width: 25vh;
   z-index: 1;
   height: 100vh;
-  box-shadow: 5px 0 5px -5px rgba(0, 0, 0, .5);
+
+  box-shadow: 11px 0 15px -12px rgb(68, 68, 68);
 
   img {
-    height: 130px;
-    padding: 10px 0 0 30px;
+    width: 150px;
+    padding-top: 10px
   }
 }
 
@@ -131,8 +139,13 @@ h3 {
 
 .container-right {
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  margin: 30px 50px 0 30vh;
+
+  .container-right-title h1{
+    margin-bottom: 10px;
+    font-family: $lora;
+    color: $gray;
+  }
 }
 
 

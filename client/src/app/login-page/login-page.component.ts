@@ -61,7 +61,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     this.aSub = this.auth.login(login).subscribe({
       next: (result) => {
-        this.router.navigate(['admin']).then(r => console.log(r))
+        this.router.navigate(['/admin']).then(r => console.log(r))
       },
       error: (error) => {
         console.warn(error)

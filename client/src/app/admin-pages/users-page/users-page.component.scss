@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+
+$nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
+$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+
+table {
+  user-select: none;
+  padding: 5px 20px 0 20px;
+
+  th {
+    font-weight: bold;
+    color: black;
+    font-family: $lora;
+  }
+
+  td {
+    font-family: $lora;
+    padding-top: 5px;
+  }
+}
+
+img {
+  width: 50px;
+  border: 1px solid grey;
+  border-radius: 30px;
+}
