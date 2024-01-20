@@ -8,13 +8,16 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   font-family: $lora;
 }
 
-.blur{
+.blur {
   filter: blur(5px);
 }
 
-.mat-elevation-z8{
+.mat-elevation-z8 {
   width: 40vh;
 
+  h1 {
+    padding: 20px 0 10px 30px;
+  }
 }
 
 table {

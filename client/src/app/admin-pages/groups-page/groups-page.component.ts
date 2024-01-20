@@ -28,8 +28,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 export class GroupsPageComponent implements AfterViewInit {
   ELEMENT_DATA: Group[] = [
     {position: 1, post: 'Руководитель'},
-    {position: 2, post: 'Администратор гостиниц'},
-    {position: 3, post: 'Администратор системы'},
+    {position: 2, post: 'Супервайзер'},
+    {position: 3, post: 'Администратор гостиниц'},
     {position: 4, post: 'Горничная'},
   ];
 

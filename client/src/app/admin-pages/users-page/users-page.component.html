@@ -52,9 +52,9 @@
           (click)="toggleBtn()"
           [disabled]="showTemplate"
         >
-          Добавить пользователя
+          Добавить
         </button>
-        <mat-paginator [pageSizeOptions]="[10, 20]"
+        <mat-paginator [pageSizeOptions]="[4, 20]"
                        showFirstLastButtons
                        aria-label="">
         </mat-paginator>
@@ -62,13 +62,13 @@
     </div>
   </div>
   <!--Table-->
-
-  <div class="table-posts">
-    <app-groups-page></app-groups-page>
+  <div [class]="showTemplate? 'blur':'' ">
+    <div class="table-posts">
+      <app-groups-page></app-groups-page>
+    </div>
   </div>
+
 </div>
-
-
 
 <!--Form-->
 
