@@ -8,6 +8,8 @@ export interface User {
   position: number;
   post: string;
   phone: string;
+  hotel?: string;
+  edit: string;
 }
 
 export interface Group {
