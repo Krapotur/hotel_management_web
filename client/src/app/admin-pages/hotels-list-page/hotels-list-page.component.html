@@ -26,13 +26,13 @@
         <!-- Phone Column -->
         <ng-container matColumnDef="rooms">
           <th mat-header-cell *matHeaderCellDef> Всего номеров</th>
-          <td mat-cell *matCellDef="let element"> {{ element.rooms }}</td>
+          <td mat-cell *matCellDef="let element"> {{ element }}</td>
         </ng-container>
 
         <!-- Edit Column -->
         <ng-container matColumnDef="edit">
           <th mat-header-cell *matHeaderCellDef> Действие</th>
-          <td mat-cell *matCellDef="let element"> {{ element.edit }}</td>
+          <td mat-cell *matCellDef="let element"> {{ element }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -79,6 +79,7 @@
         <mat-form-field>
           <mat-label>Кол-во этажей(с номерами)</mat-label>
           <input type="number" matInput formControlName="floors" #inputFloors
+                 min="1" max="4"
                  placeholder="1-4"
                  (keyup)="checkQuantityFloors(Number(inputFloors.value))">
           <mat-hint
@@ -91,26 +92,43 @@
           </mat-hint>
         </mat-form-field>
         <div class="input-floors" *ngFor="let item of floors">
+          <span>{{item}}) </span>
+
           <div>
             <input type="number"
+                   min="1" max="4"
                    (keyup)="setValueInInputFloors()"
-                   formControlName="floor{{item}}"
-            > <span> этаж,</span>
+                   formControlName="floor{{item}}">
           </div>
+          <span>этаж, c </span>
           <div class="input-rooms">
-            <span>c </span> <input type="number"
-                                   formControlName="startRoom{{item}}"
-          >
+            <div [class]="form.get('startRoom' + item).hasError('required')
+                          && form.get('startRoom' + item).touched
+                          ? 'error-input': ''">
+              <input type="number" min="1" max="500"
+                     formControlName="startRoom{{item}}"
+              >
+            </div>
+
           </div>
+          <span> по </span>
           <div class="input-rooms">
-            <span> - </span><input type="number"
-                                    formControlName="endRoom{{item}}"
-          >
+
+            <div [class]="form.get('endRoom' + item).hasError('required') &&
+            form.get('endRoom' + item).touched
+             ? 'error-input': ''">
+              <input type="number" min="1" max="500"
+                     (blur)="checkRooms('startRoom'+ item, 'endRoom' + item)"
+                     formControlName="endRoom{{item}}"
+              >
+            </div>
+
           </div>
         </div>
-      <h2   (click)="getValuesOfRooms()">Номерной фонд: {{quantityRooms}}</h2>
-
       </div>
+      <h2 (click)="getValuesOfRooms()"
+      >Номерной фонд: {{quantityRooms}}</h2>
+      <!--      <div class="container-input"></div>-->
       <div class="btn-group">
         <button
           class="btn-cancel" extended="" mat-fab>

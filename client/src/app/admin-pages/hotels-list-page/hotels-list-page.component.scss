@@ -3,6 +3,8 @@
 
 $nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+$greyWithOpacity_01: rgba(128, 128, 128, 0.1);
+$greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 
 * {
   font-family: $lora;
@@ -74,7 +76,7 @@ button {
   flex-direction: column;
   top: 8%;
   left: 35%;
-  width: 60vh;
+  width: 55vh;
   border: 1px solid seagreen;
   background-color: white;
   padding: 45px 0 30px 0;
@@ -101,30 +103,57 @@ mat-hint {
   color: red;
 }
 
-.input-floors{
-  border: 1px dashed grey;
+.input-floors {
+  border-radius: 5px;
+  background-color: $greyWithOpacity_01;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   padding: 10px 10px;
-  margin: 0 0 15px 25px;
-  width: 270px;
+  margin: 0 0 15px 30px;
+  width: 280px;
+
+  span {
+   color: rgba(0, 0, 0, 0.85);
+    padding-right: 2px;
+  }
 }
 
-.input-floors input{
-  width: 40px;
+.input-floors input {
+  width: 35px;
   height: 30px;
   outline: none;
   padding-left: 8px;
   font-size: 15px;
+  border: 1px inset $greyWithOpacity_04;
+  border-radius: 3px;
 }
 
-.input-rooms input{
-  width: 60px;
+.input-floors input:focus {
+  border:1px solid royalblue;
+}
+.input-floors input::-webkit-outer-spin-button,
+.input-floors input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+
+.input-rooms input {
+  width: 50px;
   height: 30px;
   outline: none;
-  padding-left: 8px;
+  padding: 0 5px;
   font-size: 15px;
+  border: 1px inset $greyWithOpacity_04;
+}
+
+.error-input input{
+  border: 1px solid red;
+}
+
+.error-span{
+  font-size: 12px;
+  color: red;
 }
 
 .btn-group {

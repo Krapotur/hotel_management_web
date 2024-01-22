@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, DoCheck, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {Group} from "../../shared/interfaces";
+import {Floor, Group} from "../../shared/interfaces";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatOptionModule} from "@angular/material/core";
@@ -10,7 +10,6 @@ import {NgForOf, NgIf} from "@angular/common";
 import {PostsPageComponent} from "../posts-page/posts-page.component";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {StateService} from "../../shared/services/state.service";
-
 @Component({
   selector: 'app-hotels-list-page',
   standalone: true,
@@ -34,8 +33,8 @@ export class HotelsListPageComponent implements OnInit, DoCheck, AfterViewInit {
   showTemplate = false
   quantityFloors = 0
   floors = []
-  quantityRooms;
-  rooms=[]
+  quantityRooms: number = 0;
+  errorInput = false
 
   constructor(private stateService: StateService) {
   }
@@ -72,20 +71,17 @@ export class HotelsListPageComponent implements OnInit, DoCheck, AfterViewInit {
     this.form = new FormGroup({
       title: new FormControl(null, [Validators.required]),
       floors: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      floor0: new FormControl(null, [Validators.required]),
       floor1: new FormControl(null, [Validators.required]),
       floor2: new FormControl(null, [Validators.required]),
       floor3: new FormControl(null, [Validators.required]),
       floor4: new FormControl(null, [Validators.required]),
-      startRoom0: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      endRoom0: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       startRoom1: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      endRoom1: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       startRoom2: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      endRoom2: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       startRoom3: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      endRoom3: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       startRoom4: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
+      endRoom1: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
+      endRoom2: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
+      endRoom3: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom4: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
     })
   }
@@ -95,7 +91,7 @@ export class HotelsListPageComponent implements OnInit, DoCheck, AfterViewInit {
     if (this.form.get('floors').value > 4) {
       setTimeout(() => {
         this.form.get('floors').reset()
-      }, 3000)
+      }, 5000)
     }
 
     if (this.floors.length < 1) {
@@ -108,13 +104,13 @@ export class HotelsListPageComponent implements OnInit, DoCheck, AfterViewInit {
   setValueInInputFloors() {
     let startFloor = this.form.get('floor1').value
 
-    if (this.form.get('floor1').value > 0) {
+    if (startFloor > 0) {
 
       for (let i = 1; i <= this.floors.length; i++) {
         this.form.controls['floor' + i].setValue(startFloor++)
       }
 
-      for (let i = 0; i <= this.floors.length; i++) {
+      for (let i = 1; i <= this.floors.length; i++) {
         this.form.controls['floor' + i].disable()
       }
       this.stateService.quantityFloors = this.quantityFloors
@@ -124,7 +120,7 @@ export class HotelsListPageComponent implements OnInit, DoCheck, AfterViewInit {
   checkQuantityFloors(numberFloors: number) {
     this.quantityFloors = numberFloors
     if (this.quantityFloors != this.stateService.quantityFloors) {
-      for (let i = 0; i <= this.floors.length; i++) {
+      for (let i = 1; i <= this.floors.length; i++) {
         this.form.controls['floor' + i].reset()
         this.form.controls['floor' + i].enable()
       }
@@ -134,21 +130,38 @@ export class HotelsListPageComponent implements OnInit, DoCheck, AfterViewInit {
   protected readonly Number = Number;
 
   getValuesOfRooms() {
-    let countArr = []
+    let floors: Floor [] = []
 
-    for (let i = 0; i < this.floors.length; i++) {
-
-      for (let j = (this.form.controls['startRoom' + (i+1)].value -1 ); j <= this.form.controls['endRoom' + i].value; j++) {
-
-        this.rooms.push(j)
-        console.log(this.form.controls['startRoom' +1].value +  this.form.controls['endRoom' + 1].value)
-        console.log(this.form.controls['startRoom2'].value +  this.form.controls['endRoom' + 2].value)
+    for (let i = 1; i <= this.floors.length; i++) {
+      let floor: Floor = {
+        numberFloor: 0,
+        rooms: []
       }
-      this.quantityRooms = this.rooms.length
 
+      floor.numberFloor = this.form.get('floor' + i).value
+      let rooms: number [] = []
 
+      for (let j = this.form.controls['startRoom' + i].value; j <= this.form.controls['endRoom' + i].value; j++) {
+        rooms.push(j)
+      }
+
+      floor.rooms = rooms
+      floors.push(floor)
+
+      this.quantityRooms += floor.rooms.length
     }
-    console.log(this.rooms)
+    console.log(floors)
+  }
 
+  checkRooms(start: string, end: string) {
+    this.errorInput = false
+    console.log('start', start, 'end', end)
+    if (this.form.get(start).value > this.form.get(end).value) {
+      setTimeout(() => {
+        this.form.get(start).reset()
+        this.form.get(end).reset()
+        this.errorInput = true
+      }, 5000)
+    }
   }
 }

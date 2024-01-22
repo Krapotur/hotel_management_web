@@ -9,9 +9,13 @@ export interface User {
   post: string;
   phone: string;
   hotel?: string;
-  edit: string;
+  edit: String
 }
 
 export interface Group {
 
+}
+export interface Floor {
+  numberFloor: number,
+  rooms: number []
 }
