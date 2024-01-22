@@ -1,0 +1,66 @@
+<div [class]="showTemplate ? 'blur': ''">
+  <div class="mat-elevation-z8">
+    <h1>Должности</h1>
+    <hr>
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="#">
+        <th mat-header-cell *matHeaderCellDef> #</th>
+        <td mat-cell *matCellDef="let element">{{ element.position }}</td>
+      </ng-container>
+
+      <!-- Post Column -->
+      <ng-container matColumnDef="post">
+        <th mat-header-cell *matHeaderCellDef> Название</th>
+        <td mat-cell *matCellDef="let element"> {{ element.post }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <hr>
+    <div class="table-bottom">
+      <button
+        class="btn" extended="" mat-fab
+        (click)="openTemplate('newPost')"
+        [disabled]="showTemplate.length > 1"
+      >
+        Добавить
+      </button>
+      <!--    <mat-paginator [pageSizeOptions]="[10, 20]"-->
+      <!--                   showFirstLastButtons-->
+      <!--                   aria-label="">-->
+      <!--    </mat-paginator>-->
+    </div>
+  </div>
+
+</div>
+<!--Form-->
+<div class="container" *ngIf="showTemplate == 'newPost'">
+  <h2>Новая должность</h2>
+  <form [formGroup]="form">
+    <mat-form-field class="input-single">
+      <mat-label>Название</mat-label>
+      <input type="text" matInput formControlName="post">
+                  <mat-hint
+                  *ngIf="form.get('post').hasError('required') && form.get('post').touched"
+                  >Введите название должности</mat-hint>
+
+    </mat-form-field>
+    <div class="btn-group">
+      <button
+        class="btn-cancel" extended="" mat-fab
+        (click)="openTemplate('')"
+      >
+        Отмена
+      </button>
+      <button
+        type="submit"
+        class="btn-save" extended="" mat-fab
+      >
+        Сохранить
+      </button>
+    </div>
+  </form>
+</div>

@@ -4,7 +4,7 @@ import {UsersPageComponent} from "../../../admin-pages/users-page/users-page.com
 import {Subscription} from "rxjs";
 import {CommonModule, NgIf} from "@angular/common";
 import {HotelsListPageComponent} from "../../../admin-pages/hotels-list-page/hotels-list-page.component";
-import {GroupsPageComponent} from "../../../admin-pages/groups-page/groups-page.component";
+import {PostsPageComponent} from "../../../admin-pages/posts-page/posts-page.component";
 
 @Component({
   selector: 'app-admin-layout',
@@ -16,7 +16,7 @@ import {GroupsPageComponent} from "../../../admin-pages/groups-page/groups-page.
     CommonModule,
     HotelsListPageComponent,
     UsersPageComponent,
-    GroupsPageComponent
+    PostsPageComponent
   ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss'

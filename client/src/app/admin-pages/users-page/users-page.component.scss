@@ -9,13 +9,16 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 }
 
 .main{
+  user-select: none;
   display: flex;
-  justify-content: space-evenly;
-  align-items: flex-end
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .mat-elevation-z8 {
+  margin-top: 23px;
   h1{
+    font-size:20px;
     padding: 20px 0 10px 30px;
   }
 }
@@ -25,7 +28,6 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 }
 
 table {
-  user-select: none;
   padding: 5px 20px 0 20px;
 
   th {
@@ -37,6 +39,8 @@ table {
   td {
     font-family: $lora;
     padding-top: 5px;
+    min-width: 100%;
+    width: 130px;
   }
 }
 
@@ -56,12 +60,11 @@ hr {
 .table-bottom {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0 30px 20px;
+  padding: 10px 0 25px 20px;
 }
 
 button {
-  background-color: seagreen;
-  //color: #35302D;
+  background-color: #F87839;
   border-radius: 1px;
   height: 45px;
 }
@@ -74,10 +77,10 @@ button {
   display: flex;
   align-items: center;
   flex-direction: column;
-  top: 10%;
-  left: 40%;
-  width: 60vh;
-  height: 50vh;
+  top: 8%;
+  left: 30%;
+  width: 75vh;
+  height: 55vh;
   border: 1px solid seagreen;
   background-color: white;
   padding: 45px 0 0 0;
@@ -93,6 +96,14 @@ h2 {
   padding-top: 40px;
   width: 470px;
 }
+mat-form-field{
+  padding-bottom: 5px;
+}
+
+mat-hint{
+  font-size: 11px;
+  color: red;
+}
 
 .left-block {
   margin-right: 40px;
@@ -106,6 +117,7 @@ h2 {
   width: 210px;
   display: flex;
   justify-content: space-between;
+  padding-bottom: 20px;
 }
 
 .btn-group button {

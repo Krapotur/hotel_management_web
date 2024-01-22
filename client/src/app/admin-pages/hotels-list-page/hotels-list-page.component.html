@@ -1,36 +1,133 @@
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+<!--Table-->
+<div class="main" *ngIf="showTemplate">
+  <div [class]="showTemplate? 'blur' : ''">
+    <div class="mat-elevation-z8">
+      <h1>Гостиницы</h1>
+      <hr>
+      <table mat-table [dataSource]="dataSource">
+        <!-- Position Column -->
+        <ng-container matColumnDef="#">
+          <th mat-header-cell *matHeaderCellDef> #</th>
+          <td mat-cell *matCellDef="let element">{{ element.position }}</td>
+        </ng-container>
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="#">
-      <th mat-header-cell *matHeaderCellDef> # </th>
-      <td mat-cell *matCellDef="let element"><img src="./assets/images/director.jpg" alt=""> </td>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Название</th>
+          <td mat-cell *matCellDef="let element"> {{ element.name }}</td>
+        </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Имя пользователя </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
+        <!-- Post Column -->
+        <ng-container matColumnDef="floors">
+          <th mat-header-cell *matHeaderCellDef> Кол-во этажей(с номерами)</th>
+          <td mat-cell *matCellDef="let element"> {{ element.post }}</td>
+        </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="post">
-      <th mat-header-cell *matHeaderCellDef> Должность </th>
-      <td mat-cell *matCellDef="let element"> {{element.post}} </td>
-    </ng-container>
+        <!-- Phone Column -->
+        <ng-container matColumnDef="rooms">
+          <th mat-header-cell *matHeaderCellDef> Всего номеров</th>
+          <td mat-cell *matCellDef="let element"> {{ element.rooms }}</td>
+        </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="phone">
-      <th mat-header-cell *matHeaderCellDef> Телефон </th>
-      <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
-    </ng-container>
+        <!-- Edit Column -->
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Действие</th>
+          <td mat-cell *matCellDef="let element"> {{ element.edit }}</td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="ываываываыва">
-  </mat-paginator>
+      <hr>
+      <div class="table-bottom">
+        <button class="btn" extended="" mat-fab>
+          <!--          (click)="openTemplate('newUser')"-->
+          <!--          [disabled]="showTemplate.length > 1"-->
+          <!--        >-->
+          Добавить
+        </button>
+        <mat-paginator [pageSizeOptions]="[10, 20]"
+                       showFirstLastButtons
+                       aria-label="">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+  <!--Table-->
+
 </div>
+
+<!--Form-->
+
+<div class="main" *ngIf="!showTemplate">
+  <div class="container">
+    <h2>Новая гостиница</h2>
+    <hr>
+    <form [formGroup]="form">
+      <div class="container-form">
+
+        <mat-form-field>
+          <mat-label>Название</mat-label>
+          <input type="text" matInput formControlName="title">
+          <mat-hint
+            *ngIf="form.get('title').hasError('required') && form.get('title').touched"
+          >Введите название гостиницы
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Кол-во этажей(с номерами)</mat-label>
+          <input type="number" matInput formControlName="floors" #inputFloors
+                 placeholder="1-4"
+                 (keyup)="checkQuantityFloors(Number(inputFloors.value))">
+          <mat-hint
+            *ngIf="form.get('floors').hasError('required') && form.get('floors').touched"
+          >Введите количество этажей с наличием номеров
+          </mat-hint>
+          <mat-hint
+            *ngIf="form.get('floors').hasError('min') || form.get('floors').hasError('max')"
+          >Укажите количество этажей(с наличием номеров) в диапазоне от 1 - 4
+          </mat-hint>
+        </mat-form-field>
+        <div class="input-floors" *ngFor="let item of floors">
+          <div>
+            <input type="number"
+                   (keyup)="setValueInInputFloors()"
+                   formControlName="floor{{item}}"
+            > <span> этаж,</span>
+          </div>
+          <div class="input-rooms">
+            <span>c </span> <input type="number"
+                                   formControlName="startRoom{{item}}"
+          >
+          </div>
+          <div class="input-rooms">
+            <span> - </span><input type="number"
+                                    formControlName="endRoom{{item}}"
+          >
+          </div>
+        </div>
+      <h2   (click)="getValuesOfRooms()">Номерной фонд: {{quantityRooms}}</h2>
+
+      </div>
+      <div class="btn-group">
+        <button
+          class="btn-cancel" extended="" mat-fab>
+          <!--          (click)="openTemplate('')"-->
+          <!--        >-->
+          Отмена
+        </button>
+        <button
+          type="submit"
+          class="btn-save" extended="" mat-fab
+        >
+          Сохранить
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<!--Form-->

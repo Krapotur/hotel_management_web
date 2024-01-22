@@ -14,7 +14,7 @@
         <ul class="list-hover-slide">
           <li><a routerLink="/da">Dashboard</a></li>
           <li><a routerLink="/admin/hotels" [queryParams]="{page: 'hotels'}">Гостиницы</a></li>
-          <li><a routerLink="/admin/users" [queryParams]="{page: 'users'}" >Пользователи</a></li>
+          <li><a routerLink="/admin/users" [queryParams]="{page: 'users'}" >Сотрудники</a></li>
 <!--          <li><a routerLink="/admin/groups" [queryParams]="{page: 'groups'}">Группы</a></li>-->
           <li><a routerLink="/">Выйти</a></li>
         </ul>
@@ -31,7 +31,7 @@
       <app-users-page></app-users-page>
     </div>
     <div *ngIf="title == 'Группы'">
-      <app-groups-page></app-groups-page>
+      <app-posts-page></app-posts-page>
     </div>
   </div>
 </div>

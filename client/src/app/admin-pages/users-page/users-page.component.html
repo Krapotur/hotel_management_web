@@ -2,43 +2,43 @@
 <div class="main">
   <div [class]="showTemplate? 'blur' : ''">
     <div class="mat-elevation-z8">
-      <h1>Пользователи</h1>
-
+      <h1>Сотрудники</h1>
+      <hr>
       <table mat-table [dataSource]="dataSource">
         <!-- Position Column -->
         <ng-container matColumnDef="#">
           <th mat-header-cell *matHeaderCellDef> #</th>
-          <td mat-cell *matCellDef="let element">{{element.position}}</td>
+          <td mat-cell *matCellDef="let element">{{ element.position }}</td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Имя пользователя</th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          <th mat-header-cell *matHeaderCellDef> Сотрудник</th>
+          <td mat-cell *matCellDef="let element"> {{ element.name }}</td>
         </ng-container>
 
         <!-- Post Column -->
         <ng-container matColumnDef="post">
           <th mat-header-cell *matHeaderCellDef> Должность</th>
-          <td mat-cell *matCellDef="let element"> {{element.post}} </td>
+          <td mat-cell *matCellDef="let element"> {{ element.post }}</td>
         </ng-container>
 
         <!-- Phone Column -->
         <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef> Телефон</th>
-          <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+          <td mat-cell *matCellDef="let element"> {{ element.phone }}</td>
         </ng-container>
 
         <!-- Hotel Column -->
         <ng-container matColumnDef="hotel">
           <th mat-header-cell *matHeaderCellDef> Гостиница</th>
-          <td mat-cell *matCellDef="let element"> {{element.hotel}} </td>
+          <td mat-cell *matCellDef="let element"> {{ element.hotel }}</td>
         </ng-container>
 
         <!-- Edit Column -->
         <ng-container matColumnDef="edit">
           <th mat-header-cell *matHeaderCellDef> Действие</th>
-          <td mat-cell *matCellDef="let element"> {{element.edit}} </td>
+          <td mat-cell *matCellDef="let element"> {{ element.edit }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -49,8 +49,8 @@
       <div class="table-bottom">
         <button
           class="btn" extended="" mat-fab
-          (click)="toggleBtn()"
-          [disabled]="showTemplate"
+          (click)="openTemplate('newUser')"
+          [disabled]="showTemplate.length > 1"
         >
           Добавить
         </button>
@@ -62,58 +62,44 @@
     </div>
   </div>
   <!--Table-->
-  <div [class]="showTemplate? 'blur':'' ">
-    <div class="table-posts">
-      <app-groups-page></app-groups-page>
-    </div>
+  <div class="table-posts">
+    <app-posts-page></app-posts-page>
   </div>
 
 </div>
 
 <!--Form-->
 
-<div class="main" *ngIf="showTemplate">
+<div class="main" *ngIf="showTemplate == 'newUser'">
   <div class="container">
-    <h2>Новый пользователь</h2>
+    <h2>Новый сотрудник</h2>
     <hr>
-    <form action="form">
+    <form [formGroup]="form">
       <div class="container-form">
         <div class="left-block">
 
           <mat-form-field class="input-single">
             <mat-label>Фамилия</mat-label>
-            <input type="text" matInput>
-            <!--            <mat-hint>Errors appear instantly!</mat-hint>-->
-            <!--            @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {-->
-            <!--            <mat-error>Please enter a valid email address</mat-error>-->
-            <!--            }-->
-            <!--            @if (emailFormControl.hasError('required')) {-->
-            <!--            <mat-error>Email is <strong>required</strong></mat-error>-->
-            <!--            }-->
+            <input type="text" matInput formControlName="lastName">
+            <mat-hint
+              *ngIf="form.get('lastName').hasError('required') && form.get('lastName').touched"
+            >Введите фамилию
+            </mat-hint>
           </mat-form-field>
 
           <mat-form-field class="input-single">
             <mat-label>Имя</mat-label>
-            <input type="text" matInput>
-            <!--            <mat-hint>Errors appear instantly!</mat-hint>-->
-            <!--            @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {-->
-            <!--            <mat-error>Please enter a valid email address</mat-error>-->
-            <!--            }-->
-            <!--            @if (emailFormControl.hasError('required')) {-->
-            <!--            <mat-error>Email is <strong>required</strong></mat-error>-->
-            <!--            }-->
+            <input type="text" matInput formControlName="firstName">
+            <mat-hint
+              *ngIf="form.get('firstName').hasError('required') && form.get('firstName').touched"
+            >Введите имя
+            </mat-hint>
           </mat-form-field>
 
           <mat-form-field class="input-single">
             <mat-label>Телефон</mat-label>
-            <input type="number" matInput>
-            <!--            <mat-hint>Errors appear instantly!</mat-hint>-->
-            <!--            @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {-->
-            <!--            <mat-error>Please enter a valid email address</mat-error>-->
-            <!--            }-->
-            <!--            @if (emailFormControl.hasError('required')) {-->
-            <!--            <mat-error>Email is <strong>required</strong></mat-error>-->
-            <!--            }-->
+            <span matTextPrefix>+7 &nbsp;</span>
+            <input type="tel" matInput placeholder="9ХХ-ХХХ-ХХХХ" formControlName="phone">
           </mat-form-field>
 
         </div>
@@ -122,38 +108,38 @@
 
           <mat-form-field>
             <mat-label>Должность</mat-label>
-            <mat-select>
-              <mat-option [value]="post" *ngFor="let post of posts">{{post}}</mat-option>
+            <mat-select formControlName="post">
+              <mat-option [value]="post" *ngFor="let post of posts">{{ post }}</mat-option>
             </mat-select>
+            <mat-hint
+              *ngIf="form.get('post').hasError('required') && form.get('post').touched"
+            >Выберите должность
+            </mat-hint>
           </mat-form-field>
 
           <mat-form-field>
             <mat-label>Гостиницы</mat-label>
-            <mat-select [formControl]="hotels" multiple>
+            <mat-select formControlName="hotels" multiple >
               <mat-select-trigger>
-                {{hotels.value?.[0] || ''}}
-                <span class="example-additional-selection" *ngIf="((hotels.value?.length || 0) > 1)">
-                   (еще {{(hotels.value?.length || 0) - 1}} )
+                {{ form.get('hotels').value?.[0] || '' }}
+                <span class="example-additional-selection" *ngIf="((form.get('hotels').value?.length || 0) > 1)">
+                   (еще {{ (form.get('hotels').value?.length || 0) - 1 }} )
                    </span>
               </mat-select-trigger>
-              <mat-option *ngFor="let hotel of hotelsList" [value]="hotel">{{hotel}}</mat-option>
-
+              <mat-option *ngFor="let hotel of hotelsList" [value]="hotel"
+              >{{ hotel }}</mat-option>
             </mat-select>
+            <mat-hint
+              *ngIf=" form.get('hotels').hasError('required') && form.get('hotels').touched"
+            >Выберите гостиницы
+            </mat-hint>
           </mat-form-field>
-
-          <!--            <mat-form-field>-->
-          <!--              <mat-label>Группа</mat-label>-->
-          <!--              <mat-select>-->
-          <!--                <mat-option value="administrator">Администратор</mat-option>-->
-          <!--                <mat-option value="default">Обычный пользователь</mat-option>-->
-          <!--              </mat-select>-->
-          <!--            </mat-form-field>-->
         </div>
       </div>
       <div class="btn-group">
         <button
           class="btn-cancel" extended="" mat-fab
-          (click)="toggleBtn()"
+          (click)="openTemplate('')"
         >
           Отмена
         </button>

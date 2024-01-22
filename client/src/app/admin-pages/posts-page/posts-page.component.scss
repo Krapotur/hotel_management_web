@@ -16,13 +16,14 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   width: 40vh;
 
   h1 {
+    font-size: 20px;
     padding: 20px 0 10px 30px;
   }
 }
 
 table {
   user-select: none;
-  padding: 5px 20px 10px 20px;
+  padding: 5px 20px 3px 20px;
 
   th {
     font-weight: bold;
@@ -33,7 +34,6 @@ table {
 
   td {
     font-family: $lora;
-    padding-top: 5px;
   }
 }
 
@@ -47,11 +47,11 @@ hr {
 .table-bottom {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0 30px 20px;
+  padding: 10px 0 35px 20px;
 }
 
 button {
-  background-color: seagreen;
+  background-color: #F87839;
   border-radius: 1px;
   height: 45px;
 }
@@ -66,30 +66,24 @@ button {
   flex-direction: column;
   top: 10%;
   left: 40%;
-  width: 60vh;
-  height: 50vh;
+  width: 50vh;
+  height: 35vh;
   border: 1px solid seagreen;
   background-color: white;
   padding: 45px 0 0 0;
-  //box-shadow: 0 0 14px -5px #333;
 }
 
 h2 {
   color: #3C3735;
 }
 
-.container-form {
-  display: flex;
-  padding-top: 40px;
-  width: 470px;
+.input-single{
+  margin-top: 25px;
 }
 
-.left-block {
-  margin-right: 40px;
-}
-
-.right-block mat-form-field {
-  width: 240px;
+mat-hint{
+  font-size: 11px;
+  color: red;
 }
 
 .btn-group {
