@@ -3,6 +3,10 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 $greyWithOpacity_01: rgba(128, 128, 128, 0.1);
 $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 
+* {
+  font-family: $lora
+}
+
 .container {
   position: fixed;
   display: flex;
@@ -64,8 +68,9 @@ mat-hint {
 }
 
 .input-floors input:focus {
-  border:1px solid royalblue;
+  border: 1px solid royalblue;
 }
+
 .input-floors input::-webkit-outer-spin-button,
 .input-floors input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -81,13 +86,38 @@ mat-hint {
   border: 1px inset $greyWithOpacity_04;
 }
 
-.error-input input{
+.error-input input {
   border: 1px solid red;
 }
 
-.error-span{
+.error-span {
   font-size: 12px;
   color: red;
+}
+
+.img-block {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  padding: 5px 5px 10px 5px;
+}
+
+.img-group {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.dn {
+  display: none;
+}
+
+.btn-img {
+  background-color: #F87839;
+  margin-top: 20px;
+  height: 35px;
+  padding: 0 10px;
+  width: 35%;
 }
 
 .btn-group {

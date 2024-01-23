@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, DoCheck, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {User} from "../../shared/interfaces";
+import {User,UserUser} from "../../shared/interfaces";
 import {MatButtonModule} from "@angular/material/button";
 import {NgForOf, NgIf} from "@angular/common";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -9,6 +9,9 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {PostsPageComponent} from "../posts-page/posts-page.component";
 import {StateService} from "../../shared/services/state.service";
+import {UsersService} from "../../shared/services/users.service";
+
+
 
 @Component({
   selector: 'app-users-page',
@@ -33,7 +36,8 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
 
   showTemplate = ''
 
-  constructor(private stateService: StateService) {
+  constructor(private stateService: StateService,
+              private userService: UsersService) {
   }
 
   posts: string [] = ['Руководитель', 'Супервайзер', 'Администратор', 'Горничная']
@@ -46,7 +50,9 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
       post: 'Руководитель',
       phone: '79895423544',
       hotel: '',
-      edit: 'Изменить/удалить'
+      edit: 'Изменить/удалить',
+      login: '',
+      password: ''
     },
     {
       position: 2,
@@ -54,7 +60,9 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
       post: 'Администратор',
       phone: '79895423544',
       hotel: '',
-      edit: 'Изменить/удалить'
+      edit: 'Изменить/удалить',
+      login: '',
+      password: ''
     },
     {
       position: 3,
@@ -62,7 +70,9 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
       post: 'Горничная',
       phone: '79895423544',
       hotel: 'Восточная Азия',
-      edit: 'Изменить/удалить'
+      edit: 'Изменить/удалить',
+      login: '',
+      password: ''
     },
     {
       position: 4,
@@ -70,7 +80,9 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
       post: 'Горничная',
       phone: '79895423544',
       hotel: 'Центральная Азия,',
-      edit: 'Изменить/удалить'
+      edit: 'Изменить/удалить',
+      login: '',
+      password: ''
     },
     {
       position: 5,
@@ -78,7 +90,9 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
       post: 'Горничная',
       phone: '79895423544',
       hotel: 'Центральная Азия, "Шри-Ланка',
-      edit: 'Изменить/удалить'
+      edit: 'Изменить/удалить',
+      login: '',
+      password: ''
     },
     {
       position: 6,
@@ -86,7 +100,9 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
       post: 'Горничная',
       phone: '79895423544',
       hotel: 'Гималайский дом',
-      edit: 'Изменить/удалить'
+      edit: 'Изменить/удалить',
+      login: '',
+      password: ''
     },
   ];
 
@@ -115,6 +131,8 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
       phone: new FormControl(null, [Validators.required]),
       post: new FormControl(null, [Validators.required]),
       hotels: new FormControl(null, [Validators.required]),
+      login: new FormControl(null, [Validators.required]),
+      password: new FormControl(null, [Validators.required]),
     })
   }
 
@@ -126,5 +144,23 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
 
   checkStatusShowTemplate() {
     this.showTemplate = this.stateService.showTemplate
+  }
+
+  onSubmit() {
+    const newUser: UserUser = {
+      lastName: this.form.get('lastName').value,
+      firstName: this.form.get('firstName').value,
+      phone: this.form.get('phone').value,
+      post: this.form.get('post').value,
+      hotels: this.form.get('hotels').value,
+      login: this.form.get('login').value,
+      password: this.form.get('password').value,
+    }
+
+
+
+    this.userService.create(newUser).subscribe(message=> {
+      console.log(message)
+    }, error => console.log(error.error.message))
   }
 }

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {Group} from "../../shared/interfaces";
@@ -52,7 +52,6 @@ export class HotelsListPageComponent implements AfterViewInit {
   dataSource = new MatTableDataSource<Group>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

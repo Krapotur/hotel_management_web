@@ -72,6 +72,9 @@ $nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 $greyWithOpacity_01: rgba(128, 128, 128, 0.1);
 $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
+*{
+  font-family: $lora
+}
 
 .container {
   position: fixed;

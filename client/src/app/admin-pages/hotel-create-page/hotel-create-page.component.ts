@@ -1,10 +1,10 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, DoCheck, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {NgForOf, NgIf} from "@angular/common";
-import {Floor} from "../../shared/interfaces";
+import {Floor, Hotel} from "../../shared/interfaces";
 import {StateService} from "../../shared/services/state.service";
 
 @Component({
@@ -28,9 +28,14 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
   floors = []
   quantityRooms: number = 0;
   errorRequired = false
+  image: File
+
+  hotel: Hotel
 
   constructor(private stateService: StateService) {
   }
+
+  @ViewChild('inputImg') inputImgRef: ElementRef
 
   ngOnInit() {
     this.generateForm()
@@ -56,6 +61,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
       endRoom2: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom3: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom4: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
+      image: new FormControl(null, [Validators.required])
     })
   }
 
@@ -126,6 +132,9 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
 
         this.quantityRooms += floor.rooms.length
       }
+      this.hotel.quantityFloors = this.quantityFloors
+      this.hotel.quantityRooms = this.quantityRooms
+      this.hotel.floors = floors
     }
   }
 
@@ -147,5 +156,17 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
     this.errorRequired = floorRequired && floorTouched;
     this.errorRequired = startRoomRequired && startRoomTouched;
     this.errorRequired = endRoomRequired && endRoomTouched;
+  }
+
+  uploadImg($event: any) {
+    this.image = $event.target.files[0]
+  }
+
+  triggerClick() {
+    this.inputImgRef.nativeElement.click()
+  }
+
+  onSubmit() {
+
   }
 }

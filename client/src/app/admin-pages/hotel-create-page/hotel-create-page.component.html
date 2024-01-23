@@ -1,5 +1,5 @@
 <div class="container">
-  <h3>Новая гостиница</h3>
+  <h2>Новая гостиница</h2>
   <hr>
   <form [formGroup]="form">
     <div class="container-form">
@@ -65,9 +65,32 @@
 
         </div>
       </div>
+      <span *ngIf="errorRequired" class="error-span">Заполните обязательные поля с номерами*</span>
     </div>
 
-    <span *ngIf="errorRequired" class="error-span">Заполните обязательные поля с номерами*</span>
+    <hr>
+
+    <div class="img-block">
+      <label [for]="inputImgRef">Изображение гостиницы</label>
+      <div class="img-group">
+        <span></span>
+        <input type="file" class="dn"
+               #inputImg
+               (change)="uploadImg($event)"
+               formControlName="image">
+        <button class="btn-img" extended="" mat-fab
+                (click)="triggerClick()"
+                [disabled]="form.disabled"
+        >
+          Загрузить
+        </button>
+      </div>
+    <span class="error-span" *ngIf="this.form.get('image').hasError('required') &&
+          this.form.get('image').touched"
+    >Выберите изображение*</span>
+    </div>
+
+    <hr>
 
     <div class="btn-group">
       <button

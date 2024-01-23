@@ -79,12 +79,10 @@ button {
   flex-direction: column;
   top: 8%;
   left: 30%;
-  width: 75vh;
-  height: 55vh;
+  width: 70vh;
   border: 1px solid seagreen;
   background-color: white;
-  padding: 45px 0 0 0;
-  //box-shadow: 0 0 14px -5px #333;
+  padding: 45px 0 40px 0;
 }
 
 h2 {
@@ -111,6 +109,11 @@ mat-hint{
 
 .right-block mat-form-field {
   width: 240px;
+}
+
+.login-block{
+  display: flex;
+  justify-content: space-between;
 }
 
 .btn-group {

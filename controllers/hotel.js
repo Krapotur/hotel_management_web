@@ -38,12 +38,11 @@ module.exports.create = async function (req, res) {
             message: `Гостиница ${req.body.title} уже есть`
         })
     } else {
-
-        let rooms = []
-
-        for (let i = 0; i < req.body.rooms.length; i++) {
-            rooms.push(req.body.rooms[i])
-        }
+        // let rooms = []
+        //
+        // for (let i = 0; i < req.body.rooms.length; i++) {
+        //     rooms.push(req.body.rooms[i])
+        // }
 
         const hotel = new Hotel({
             title: req.body.title,
