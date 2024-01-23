@@ -14,7 +14,7 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
   flex-direction: column;
   top: 8%;
   left: 35%;
-  width: 55vh;
+  width: 50vh;
   border: 1px solid seagreen;
   background-color: white;
   padding: 45px 0 30px 0;
@@ -32,7 +32,6 @@ h2 {
 }
 
 mat-form-field {
-  padding-bottom: 5px;
   margin-bottom: 11px;
 }
 
@@ -93,6 +92,11 @@ mat-hint {
 .error-span {
   font-size: 12px;
   color: red;
+}
+
+hr{
+  outline: none;
+  border: 0.5px solid $greyWithOpacity_04;
 }
 
 .img-block {

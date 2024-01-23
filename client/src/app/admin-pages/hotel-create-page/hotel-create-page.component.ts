@@ -61,7 +61,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
       endRoom2: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom3: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom4: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      image: new FormControl(null, [Validators.required])
+      image: new FormControl(null, )
     })
   }
 
