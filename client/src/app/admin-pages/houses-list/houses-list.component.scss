@@ -3,27 +3,27 @@
 
 $nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+$greyWithOpacity_01: rgba(128, 128, 128, 0.1);
+$greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 
 * {
   font-family: $lora;
 }
 
-.main{
+.main {
   user-select: none;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: flex-start;
 }
 
 .mat-elevation-z8 {
   margin-top: 23px;
-  h1{
-    font-size:20px;
+
+  h1 {
+    font-size: 20px;
     padding: 20px 0 10px 30px;
   }
 }
 
-.blur{
+.blur {
   filter: blur(5px);
 }
 
@@ -39,8 +39,6 @@ table {
   td {
     font-family: $lora;
     padding-top: 5px;
-    min-width: 100%;
-    width: 130px;
   }
 }
 
@@ -70,21 +68,22 @@ button {
 }
 
 /////////////////////////Form//////////////////////
+$nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
+$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+$greyWithOpacity_01: rgba(128, 128, 128, 0.1);
+$greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 
 .container {
-  user-select: none;
   position: fixed;
   display: flex;
   align-items: center;
   flex-direction: column;
   top: 8%;
-  left: 30%;
-  width: 75vh;
-  height: 55vh;
+  left: 35%;
+  width: 55vh;
   border: 1px solid seagreen;
   background-color: white;
-  padding: 45px 0 0 0;
-  //box-shadow: 0 0 14px -5px #333;
+  padding: 45px 0 30px 0;
 }
 
 h2 {
@@ -93,24 +92,44 @@ h2 {
 
 .container-form {
   display: flex;
+  flex-direction: column;
   padding-top: 40px;
-  width: 470px;
-}
-mat-form-field{
-  padding-bottom: 5px;
+  width: 350px;
 }
 
-mat-hint{
+mat-form-field {
+  padding-bottom: 5px;
+  margin-bottom: 11px;
+}
+
+mat-hint {
   font-size: 11px;
   color: red;
 }
 
-.left-block {
-  margin-right: 40px;
+.input-floors {
+  border-radius: 5px;
+  background-color: $greyWithOpacity_01;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px;
+  margin: 0 0 15px 30px;
+  width: 280px;
+
+  span {
+    color: rgba(0, 0, 0, 0.85);
+    padding-right: 2px;
+  }
 }
 
-.right-block mat-form-field {
-  width: 240px;
+.error-input input{
+  border: 1px solid red;
+}
+
+.error-span{
+  font-size: 12px;
+  color: red;
 }
 
 .btn-group {
@@ -135,9 +154,4 @@ mat-hint{
 .btn-save {
   background-color: seagreen;
   width: 100px;
-}
-
-
-.table-posts{
-  margin-top: 20px;
 }

@@ -1,41 +1,33 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatButtonModule} from "@angular/material/button";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {Group} from "../../shared/interfaces";
-import {MatButtonModule} from "@angular/material/button";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {MatOptionModule} from "@angular/material/core";
-import {MatSelectModule} from "@angular/material/select";
 import {NgForOf, NgIf} from "@angular/common";
-import {PostsPageComponent} from "../posts-page/posts-page.component";
-import {ReactiveFormsModule} from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-hotels-list-page',
+  selector: 'app-houses-list',
   standalone: true,
   imports: [
+    MatButtonModule,
     MatPaginatorModule,
     MatTableModule,
-    MatButtonModule,
-    MatOptionModule,
-    MatSelectModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     NgForOf,
     NgIf,
-    ReactiveFormsModule,
-    PostsPageComponent,
-    MatInputModule,
-    RouterLink
+    ReactiveFormsModule
   ],
-  templateUrl: './hotels-list-page.component.html',
-  styleUrl: './hotels-list-page.component.scss'
+  templateUrl: './houses-list.component.html',
+  styleUrl: './houses-list.component.scss'
 })
-export class HotelsListPageComponent implements AfterViewInit {
+export class HousesListComponent implements OnInit{
   showTemplate = false
-
-  constructor(private router: Router) {
-
-  }
+  form: FormGroup
 
   ELEMENT_DATA: Group[] = [
     {position: 1, name: 'Заливина Анна', post: 'Руководитель', phone: '79895423544'},
@@ -48,20 +40,28 @@ export class HotelsListPageComponent implements AfterViewInit {
   ];
 
 
+
   displayedColumns: string[] = ['#', 'name', 'floors', 'rooms', 'edit'];
   dataSource = new MatTableDataSource<Group>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  ngOnInit() {
+    this.generateForm()
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  openCreateHotelPage() {
-    this.router.navigate(['admin/hotel-create'], {
-      queryParams:
-        {page: "newHotel"}
+  generateForm() {
+    this.form = new FormGroup({
+      title: new FormControl(null, [Validators.required]),
+      floors: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
     })
+  }
+
+  openTemplate(){
+    this.showTemplate = !this.showTemplate
   }
 }
