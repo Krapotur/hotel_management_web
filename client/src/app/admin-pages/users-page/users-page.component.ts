@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, DoCheck, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {User,UserUser} from "../../shared/interfaces";
+import {User, UserUser} from "../../shared/interfaces";
 import {MatButtonModule} from "@angular/material/button";
 import {NgForOf, NgIf} from "@angular/common";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -10,7 +10,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {PostsPageComponent} from "../posts-page/posts-page.component";
 import {StateService} from "../../shared/services/state.service";
 import {UsersService} from "../../shared/services/users.service";
-
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -37,7 +37,8 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
   showTemplate = ''
 
   constructor(private stateService: StateService,
-              private userService: UsersService) {
+              private userService: UsersService,
+              private router: Router) {
   }
 
   posts: string [] = ['Руководитель', 'Супервайзер', 'Администратор', 'Горничная']
@@ -156,11 +157,27 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit {
       login: this.form.get('login').value,
       password: this.form.get('password').value,
     }
+    const fd = new FormData()
 
+    fd.append('lastName', this.form.get('lastName').value)
+    fd.append('firstName', this.form.get('firstName').value)
+    fd.append('phone', this.form.get('phone').value)
+    fd.append('post', this.form.get('post').value)
+    fd.append('login', this.form.get('login').value)
+    fd.append('password', this.form.get('password').value)
 
+    for (let i = 0; i < this.form.get('hotels').value.length; i++) {
+      fd.append('hotels', this.form.get('hotels').value[i])
+    }
 
-    this.userService.create(newUser).subscribe(message=> {
-      console.log(message)
-    }, error => console.log(error.error.message))
+    this.userService.create(fd).subscribe({
+      next: (message: { message: string })=> {
+        if(message.message == 'Успех') {
+          this.stateService.showTemplate = ''
+        }
+      },
+      error: (error) => console.log(error.error.message),
+      complete: () => {}
+    })
   }
 }

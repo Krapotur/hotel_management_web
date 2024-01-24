@@ -10,21 +10,22 @@ const userSchema = new Schema({
         type: String,
         require: true,
     },
-    login: {
-        type: String,
-        require: true,
-        unique: true
-    },
+
     phone: {
         type: String
+    },
+    hotels: {
+        type: [] ,
+        require: true,
     },
     password: {
         type: String,
         require: true,
     },
-    group: {
-        ref: 'groups',
-        type: Schema.Types.ObjectId,
+    login: {
+        type: String,
+        require: true,
+        unique: true
     }
 })
 

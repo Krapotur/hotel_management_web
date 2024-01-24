@@ -10,7 +10,7 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  create(user: User):Observable<{message: string}>{
-   return  this.http.post<{message: string}>('/api/users',user)
+  create(fd: FormData):Observable<{message: string}>{
+   return  this.http.post<{message: string}>('/api/users',fd)
   }
 }
