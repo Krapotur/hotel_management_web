@@ -42,9 +42,9 @@
   <form [formGroup]="form">
     <mat-form-field class="input-single">
       <mat-label>Название</mat-label>
-      <input type="text" matInput formControlName="post">
+      <input type="text" matInput formControlName="title">
                   <mat-hint
-                  *ngIf="form.get('post').hasError('required') && form.get('post').touched"
+                  *ngIf="form.get('title').hasError('required') && form.get('title').touched"
                   >Введите название должности</mat-hint>
 
     </mat-form-field>
@@ -58,6 +58,7 @@
       <button
         type="submit"
         class="btn-save" extended="" mat-fab
+        (click)="onSubmit()"
       >
         Сохранить
       </button>

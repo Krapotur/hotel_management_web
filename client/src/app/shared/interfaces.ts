@@ -40,3 +40,7 @@ export interface Hotel {
   floors: Floor[],
   image: File
 }
+
+export interface Post{
+  title:string
+}

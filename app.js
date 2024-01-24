@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth')
 const groupRoutes = require('./routes/group')
 const hotelRoutes = require('./routes/hotel')
 const userRoutes = require('./routes/user')
+const postRoutes = require('./routes/post')
 const keys = require('./config/keys')
 const app = express()
 
@@ -28,6 +29,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/groups', groupRoutes)
 app.use('/api/hotels', hotelRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/posts', postRoutes)
 
 
 module.exports = app
