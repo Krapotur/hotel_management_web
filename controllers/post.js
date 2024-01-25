@@ -1,10 +1,11 @@
 const Post = require('../models/Post')
 const errorHandler = require('../utils/errorHandler')
 
+
 module.exports.getAll = async function (req, res) {
     try {
         Post.find().then(
-            groups => {
+            posts => {
                 res.status(200).json(posts)
             }
         )
@@ -23,11 +24,10 @@ module.exports.getById = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-    console.log(req.body)
     try {
         if (await Post.findOne({title: req.body.title})) {
             res.status(409).json({
-                message: `"${ req.body.title}" уже существует`
+                message: `"${req.body.title}" уже существует`
             })
         } else {
             const post = new Post({
@@ -45,10 +45,30 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.delete = async function (req, res) {
+    console.log(req.params.id)
     try {
-        const post = await Post.findOne({_id: req.params.id})
-        await Post.deleteOne({_id: req.params.id})
+        const post = await Post.findById({_id: req.params.id})
+        await Post.deleteOne({_id: post._id})
         res.status(200).json({message: `Должность "${post.title}" удалена`})
+    } catch (e) {
+        errorHandler(res, e)
+    }
+}
+
+
+module.exports.update = async function (req, res) {
+
+    const updated = {
+        title: req.body.title
+    }
+
+    try {
+        const post = await Post.findByIdAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
+        res.status(200).json(post)
     } catch (e) {
         errorHandler(res, e)
     }

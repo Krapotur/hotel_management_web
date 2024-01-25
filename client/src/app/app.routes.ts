@@ -9,6 +9,7 @@ import {HotelsListPageComponent} from "./admin-pages/hotels-list-page/hotels-lis
 import {HotelPageComponent} from "./admin-pages/hotel-page/hotel-page.component";
 import {HotelCreatePageComponent} from "./admin-pages/hotel-create-page/hotel-create-page.component";
 import {HousesListComponent} from "./admin-pages/houses-list/houses-list.component";
+import {UserCreatePageComponent} from "./admin-pages/user-create-page/user-create-page.component";
 export const routes: Routes = [
   {
     path: '', component: AuthLayoutComponent, children: [
@@ -17,8 +18,10 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'admin', component: AdminLayoutComponent,  children: [
+    path: 'admin-panel', component: AdminLayoutComponent,  children: [
+      {path: '', redirectTo: '/admin-panel/users', pathMatch: "full"},
       {path: 'users', component: UsersPageComponent},
+      {path: 'user-create', component: UserCreatePageComponent},
       {path: 'groups', component: PostsPageComponent},
       {path: 'hotels', component: HotelsListPageComponent},
       {path: 'hotel', component: HotelPageComponent},

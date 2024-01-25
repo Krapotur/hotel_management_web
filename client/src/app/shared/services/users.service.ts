@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {User} from "../interfaces";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
@@ -8,9 +8,25 @@ import {Observable} from "rxjs";
 })
 export class UsersService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  create(fd: FormData):Observable<{message: string}>{
-   return  this.http.post<{message: string}>('/api/users',fd)
+  create(fd: FormData): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>('/api/users', fd)
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>('/api/users')
+  }
+
+  update(user: User): Observable<User> {
+    return this.http.patch<User>(`/api/users/${user._id}`, user)
+  }
+  getUserById(userID: string): Observable<User> {
+    return this.http.get<User>(`/api/users/${userID}`)
+  }
+
+  delete(user: User): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`/api/users/${user._id}`)
   }
 }

@@ -1,0 +1,122 @@
+
+<div class="main" *ngIf="isShowTemplate">
+  <div class="container">
+    <h2>Новый сотрудник</h2>
+    <hr>
+    <form [formGroup]="form">
+      <div class="container-form">
+        <div class="left-block">
+
+          <mat-form-field class="input-single">
+            <mat-label>Фамилия</mat-label>
+            <input type="text" matInput formControlName="lastName">
+            <mat-hint
+              *ngIf="form.get('lastName').hasError('required') && form.get('lastName').touched"
+            >Введите фамилию*
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="input-single">
+            <mat-label>Имя</mat-label>
+            <input type="text" matInput formControlName="firstName">
+            <mat-hint
+              *ngIf="form.get('firstName').hasError('required') && form.get('firstName').touched"
+            >Введите имя*
+            </mat-hint>
+          </mat-form-field>
+
+          <div class="phone-input">
+            <mat-form-field class="input-single">
+              <mat-label>Телефон</mat-label>
+              <span matTextPrefix>+7 &nbsp;</span>
+              <input type="tel" matInput placeholder="9ХХ-ХХХ-ХХХХ" formControlName="phone">
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="right-block">
+          <mat-form-field>
+            <mat-label>Должность</mat-label>
+            <mat-select formControlName="post">
+              <mat-option [value]="post.title" *ngFor="let post of posts">{{ post.title }}</mat-option>
+            </mat-select>
+            <mat-hint
+              *ngIf="form.get('post').hasError('required') && form.get('post').touched"
+            >Выберите должность*
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Гостиницы</mat-label>
+            <mat-select formControlName="hotels" multiple>
+              <mat-select-trigger>
+                {{ form.get('hotels').value?.[0] || '' }}
+                <span class="example-additional-selection" *ngIf="((form.get('hotels').value?.length || 0) > 1)">
+                   (еще {{ (form.get('hotels').value?.length || 0) - 1 }} )
+                   </span>
+              </mat-select-trigger>
+              <mat-option *ngFor="let hotel of hotelsList" [value]="hotel"
+              >{{ hotel }}</mat-option>
+            </mat-select>
+            <mat-hint
+              *ngIf=" form.get('hotels').hasError('required') && form.get('hotels').touched"
+            >Выберите гостиницы*
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="login-block">
+        <div>
+          <mat-form-field class="input-single">
+            <mat-label>Логин</mat-label>
+            <input type="text" matInput formControlName="login">
+            <mat-hint
+              *ngIf="form.get('login').hasError('required') && form.get('login').touched"
+            >Введите логин*
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field class="input-single">
+            <mat-label>Пароль</mat-label>
+            <input type="text" matInput formControlName="password">
+            <mat-hint
+              *ngIf="form.get('password').hasError('required') && form.get('password').touched"
+            >Введите пароль*
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="btn-group">
+        <button
+          class="btn-cancel" extended="" mat-fab
+          (click)="openUsersPage()"
+        >
+          Отмена
+        </button>
+        <button
+          type="submit"
+          class="btn-save" extended="" mat-fab
+          (click)="onSubmit()"
+        >
+          Сохранить
+        </button>
+        <div class="btn-delete"
+              *ngIf="isEdit">
+          <button
+            type="submit"
+            extended="" mat-fab
+          >
+            Удалить
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+</div>

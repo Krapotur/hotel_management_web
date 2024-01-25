@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+
+$nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
+$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+
+* {
+  font-family: $lora;
+}
+
+.container {
+  user-select: none;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 8%;
+  left: 30%;
+  width: 70vh;
+  border: 1px solid seagreen;
+  background-color: white;
+  padding: 45px 0 40px 0;
+}
+
+h2 {
+  color: #3C3735;
+}
+
+.container-form {
+  display: flex;
+  padding-top: 40px;
+  width: 470px;
+}
+
+mat-form-field {
+  padding-bottom: 5px;
+}
+
+mat-hint {
+  font-size: 11px;
+  color: red;
+}
+
+.left-block {
+  margin-right: 40px;
+}
+
+.right-block mat-form-field {
+  width: 240px;
+}
+
+.login-block {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  //width: 210px;
+}
+
+.btn-group button {
+  margin-top: 20px;
+  height: 35px;
+  padding: 0 10px;
+  border-radius: 1px;
+}
+
+.btn-cancel {
+  background-color: #F87839;
+  width: 100px;
+}
+
+.btn-save {
+  background-color: seagreen;
+  width: 100px;
+}
+
+.btn-delete {
+  padding-left: 140px;
+
+  button {
+    width: 100px;
+    background-color: brown;
+  }
+}
+
+.table-posts {
+  margin-top: 20px;
+}

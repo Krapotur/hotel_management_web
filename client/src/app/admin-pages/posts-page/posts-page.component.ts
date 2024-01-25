@@ -1,16 +1,15 @@
-import {AfterViewInit, Component, DoCheck, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {Group, Post} from "../../shared/interfaces";
 import {MatButtonModule} from "@angular/material/button";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, UpperCasePipe} from "@angular/common";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {StateService} from "../../shared/services/state.service";
+import {Post} from "../../shared/interfaces";
 import {PostsService} from "../../shared/services/posts.service";
-import {Router} from "@angular/router";
-
+import {Subscription} from "rxjs";
+import {StateService} from "../../shared/services/state.service";
 @Component({
   selector: 'app-posts-page',
   standalone: true,
@@ -23,43 +22,48 @@ import {Router} from "@angular/router";
     NgForOf,
     MatInputModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UpperCasePipe
   ],
   templateUrl: './posts-page.component.html',
   styleUrl: './posts-page.component.scss'
 })
-export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit {
+export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy {
   form: FormGroup
-  showTemplate = ''
+  titleForm = ''
+  titlePost = ''
+  post: Post
+  isShowTemplate = false
+  isEmptyPosts = true
+  isEdit = false
+  isDelete = false
+  dataSource: MatTableDataSource<Post>
+  pSub: Subscription
 
-  constructor(private stateService: StateService,
-              private postsService: PostsService,
-              private router: Router) {
+  constructor(private postsService: PostsService,
+              private stateService: StateService) {
   }
 
-  ELEMENT_DATA: Group[] = [
-    {position: 1, post: 'Руководитель'},
-    {position: 2, post: 'Супервайзер'},
-    {position: 3, post: 'Администратор гостиниц'},
-    {position: 4, post: 'Горничная'},
-  ];
-
-
-  displayedColumns: string[] = ['#', 'post'];
-  dataSource = new MatTableDataSource<Group>(this.ELEMENT_DATA);
+  displayedColumns: string[] = ['#', 'post', 'action'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
+    this.getPosts()
     this.generateForm()
   }
 
   ngDoCheck() {
-    this.checkStatusShowTemplate();
+
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnDestroy() {
+    if (this.pSub) {
+      this.pSub.unsubscribe()
+    }
   }
 
   generateForm() {
@@ -68,27 +72,95 @@ export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit {
     })
   }
 
-  openTemplate(newPost: string) {
-    this.stateService.changeTemplate(newPost);
-    this.showTemplate = this.stateService.showTemplate
-  }
-
-  checkStatusShowTemplate() {
-    this.showTemplate = this.stateService.showTemplate
+  changeTemplate(method?: string, post?: Post) {
+    switch (method) {
+      case 'add': {
+        this.isDelete = false
+        this.isShowTemplate = true
+        this.stateService.showTemplate = true
+        this.titleForm = `Новая должность`
+        this.isEdit = false
+        this.form.get('title').reset()
+      }
+        break;
+      case 'delete': {
+        this.titleForm = `Удалить должность?`
+        this.titlePost = `"${this.post.title}"`
+        this.isDelete = true
+      }
+        break;
+      case 'edit': {
+        this.isShowTemplate = true
+        this.stateService.showTemplate = true
+        this.isEdit = true
+        this.isDelete = false
+        this.post = post
+        this.titleForm = "Изменение должности"
+        this.titlePost = `"${this.post.title}"`
+        this.form.get('title').setValue(post.title)
+      }
+        break;
+      default: {
+        this.stateService.showTemplate = false
+        this.isShowTemplate = false
+      }
+    }
   }
 
   onSubmit() {
-    const post: Post = {
-      title: this.form.get('title').value
-    }
-    this.form.get('title').reset()
-    this.postsService.create(post).subscribe({
-        next: (message: { message: string }) => {
-          console.log(message)
-          this.stateService.showTemplate = ''
-        },
-        error: error => console.log(error.error.message)
+
+    if (this.isDelete) {
+      this.update(this.post)
+    } else {
+
+      const post: Post = {
+        title: this.form.get('title').value
       }
-    )
+
+      this.pSub = this.postsService.create(post).subscribe({
+          next: (message: { message: string }) => {
+            console.log(message)
+          },
+          error: error => console.log(error.error.message)
+        }
+      )
+    }
+    this.isShowTemplate = false
+    this.stateService.showTemplate = false
   }
+
+  getPosts() {
+    let position = 1
+    this.pSub = this.postsService.getAll().subscribe({
+      next: posts => {
+        if (posts.length > 0) {
+          this.isEmptyPosts = false
+
+          posts.map(post => post.position = position++)
+
+          this.dataSource = new MatTableDataSource<Post>(posts);
+          this.dataSource.paginator = this.paginator;
+        }
+      },
+      error: error => console.log(error.error.message),
+    })
+  }
+
+
+  delete() {
+    this.pSub = this.postsService.delete(this.post).subscribe({
+      next: message => console.log(message)
+      , error: error => console.log(error.error.message)
+    })
+    this.isShowTemplate = !this.isShowTemplate
+    this.stateService.showTemplate = false
+  }
+
+  update(post: Post) {
+    this.pSub = this.postsService.update(post).subscribe({
+      next: post => console.log(post)
+      , error: error => console.log(error.error.message)
+    })
+  }
+
 }

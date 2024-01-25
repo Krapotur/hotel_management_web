@@ -58,9 +58,6 @@ export class HotelsListPageComponent implements AfterViewInit {
   }
 
   openCreateHotelPage() {
-    this.router.navigate(['admin/hotel-create'], {
-      queryParams:
-        {page: "newHotel"}
-    })
+    this.router.navigate(['admin-panel/hotel-create'])
   }
 }

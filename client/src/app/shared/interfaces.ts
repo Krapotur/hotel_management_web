@@ -4,11 +4,13 @@ export interface Login {
 }
 
 export interface User {
-  name?: string;
+  _id?: string
+  lastName: string;
+  firstName: number;
   position?: number;
   post: string;
   phone: string;
-  hotel?: string;
+  hotels?: string;
   edit?: string,
   login: string,
   password: string
@@ -41,6 +43,8 @@ export interface Hotel {
   image: File
 }
 
-export interface Post{
-  title:string
+export interface Post {
+  _id?: string,
+  position?: number,
+  title: string
 }

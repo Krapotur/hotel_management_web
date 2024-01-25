@@ -3,6 +3,7 @@
 
 $nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+$greyWithOpacity_09: rgba(128, 128, 128, 0.9);
 
 * {
   font-family: $lora;
@@ -13,7 +14,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 }
 
 .mat-elevation-z8 {
-  width: 40vh;
+  width: 41h;
 
   h1 {
     font-size: 20px;
@@ -28,12 +29,10 @@ table {
   th {
     font-weight: bold;
     color: black;
-    font-family: $lora;
-    padding-right: 50px;
   }
 
-  td {
-    font-family: $lora;
+  img {
+    cursor: pointer;
   }
 }
 
@@ -67,23 +66,47 @@ button {
   top: 10%;
   left: 40%;
   width: 50vh;
-  height: 35vh;
   border: 1px solid seagreen;
   background-color: white;
-  padding: 45px 0 0 0;
+  padding: 45px 0 40px 0;
 }
 
 h2 {
   color: #3C3735;
 }
 
-.input-single{
+h3 {
+  color: #F87839;
+}
+
+.input-block {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  img {
+    padding-left: 10px;
+    width: 40px;
+  }
+}
+
+.input-single {
   margin-top: 25px;
 }
 
-mat-hint{
+mat-hint {
   font-size: 11px;
   color: red;
+}
+
+.empty-block {
+  padding: 30px 0;
+  font-size: 15px;
+
+  p {
+    text-align: center;
+    color: $greyWithOpacity_09;
+  }
 }
 
 .btn-group {
@@ -109,3 +132,6 @@ mat-hint{
   width: 100px;
 }
 
+.alert{
+  background-color: palevioletred;
+}

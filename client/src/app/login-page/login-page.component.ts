@@ -9,6 +9,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {AuthService} from "../shared/services/auth.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
+import {PostsService} from "../shared/services/posts.service";
+import {Post} from "../shared/interfaces";
 
 @Component({
   selector: 'app-login-page',
@@ -29,10 +31,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class LoginPageComponent implements OnInit, OnDestroy {
   form: FormGroup
   aSub: Subscription
-
+  pSub: Subscription
+  posts: Post[]
   protected readonly onsubmit = onsubmit;
 
   constructor(private auth: AuthService,
+              private postsService: PostsService,
               private router: Router,
               private route: ActivatedRoute
               ) {
@@ -50,6 +54,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     if (this.aSub) {
       this.aSub.unsubscribe()
     }
+    if (this.pSub){
+      this.pSub.unsubscribe()
+    }
   }
 
   onSubmit() {
@@ -61,12 +68,25 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     this.aSub = this.auth.login(login).subscribe({
       next: (result) => {
-        this.router.navigate(['/admin']).then(r => console.log(r))
+        this.router.navigate(['/admin-panel']).then(r => console.log(r))
       },
       error: (error) => {
         console.warn(error)
         this.form.enable()
       }
     })
+
+    this.getPosts()
+  }
+
+  getPosts(){
+    this.pSub = this.postsService.getAll().subscribe({
+        next: posts => {
+          this.posts = posts;
+          console.log('1',posts)
+        },
+        error: error => console.log(error.error.message)
+      })
+    console.log(this.postsService.posts)
   }
 }

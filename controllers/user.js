@@ -44,10 +44,10 @@ module.exports.create = async function (req, res) {
         candidate.firstName = fields['firstName'][0];
         candidate.lastName = fields['lastName'][0];
         candidate.phone = fields['phone'][0];
+        candidate.post = fields['post'][0]
         candidate.hotels = fields['hotels'];
         candidate.login = fields['login'][0];
         candidate.password = fields['password'][0];
-
 
         if (await User.findOne({login: candidate.login})) {
 
@@ -62,6 +62,7 @@ module.exports.create = async function (req, res) {
                 lastName: candidate.lastName,
                 firstName: candidate.firstName,
                 phone: candidate.phone,
+                post: candidate.post,
                 hotels: candidate.hotels,
                 login: candidate.login,
                 password: bcrypt.hashSync(password, salt)

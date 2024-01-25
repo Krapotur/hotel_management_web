@@ -4,25 +4,10 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class StateService {
-  showTemplate = ''
+  showTemplate = false
   quantityFloors = 0
 
   constructor() {
   }
 
-  changeTemplate(name: string) {
-    switch (name) {
-      case 'newUser': {
-        this.showTemplate = 'newUser'
-      }
-        break;
-      case 'newPost': {
-        this.showTemplate = 'newPost'
-      }
-        break;
-      default: {
-        this.showTemplate = ''
-      }
-    }
-  }
 }

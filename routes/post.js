@@ -4,7 +4,8 @@ const controller = require('../controllers/post')
 
 router.get('/', controller.getAll)
 router.get('/posts/:id', controller.getById)
-router.delete('/posts/:id', controller.delete)
+router.delete('/:id', controller.delete)
+router.patch('/:id', controller.update)
 router.post('/', controller.create)
 
 module.exports = router
