@@ -17,8 +17,7 @@ const userSchema = new Schema({
         type: String
     },
     hotels: {
-        type: [] ,
-        require: true,
+        type: []
     },
     password: {
         type: String,

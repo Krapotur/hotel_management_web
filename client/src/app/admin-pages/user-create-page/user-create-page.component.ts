@@ -83,7 +83,7 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
       firstName: new FormControl(null, [Validators.required]),
       phone: new FormControl(null, [Validators.required]),
       post: new FormControl(null, [Validators.required]),
-      hotels: new FormControl(null, [Validators.required]),
+      hotels: new FormControl(null),
       login: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required]),
     })
@@ -97,17 +97,19 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
   }
 
   getUserById() {
-    this.uSub = this.userService.getUserById(this.params).subscribe({
-      next: user => {
-        this.form.get('lastName').setValue(user.lastName)
-        this.form.get('firstName').setValue(user.firstName)
-        this.form.get('phone').setValue(user.phone)
-        this.form.get('post').setValue(user.post)
-        this.form.get('hotels').setValue(user.hotels)
-        this.form.get('login').setValue(user.login)
-        this.form.get('password').setValue(user.password)
-      }
-    })
+    if(this.params) {
+      this.uSub = this.userService.getUserById(this.params).subscribe({
+        next: user => {
+          this.form.get('lastName').setValue(user.lastName)
+          this.form.get('firstName').setValue(user.firstName)
+          this.form.get('phone').setValue(user.phone)
+          this.form.get('post').setValue(user.post)
+          this.form.get('hotels').setValue(user.hotels)
+          this.form.get('login').setValue(user.login)
+          this.form.get('password').setValue(user.password)
+        }
+      })
+    }
   }
 
   getPosts(){
