@@ -1,11 +1,13 @@
-import {Component, DoCheck, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {NgForOf, NgIf} from "@angular/common";
-import {Floor, Hotel} from "../../shared/interfaces";
+import {Hotel} from "../../shared/interfaces";
 import {StateService} from "../../shared/services/state.service";
+import {HotelsService} from "../../shared/services/hotels.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-hotel-create-page',
@@ -22,17 +24,16 @@ import {StateService} from "../../shared/services/state.service";
   templateUrl: './hotel-create-page.component.html',
   styleUrl: './hotel-create-page.component.scss'
 })
-export class HotelCreatePageComponent implements OnInit, DoCheck {
+export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   form: FormGroup
   quantityFloors = 0
   floors = []
-  quantityRooms: number = 0;
-  errorRequired = false
+  isErrorRequired = false
   image: File
+  hSub: Subscription
 
-  hotel: Hotel
-
-  constructor(private stateService: StateService) {
+  constructor(private stateService: StateService,
+              private hotelService: HotelsService) {
   }
 
   @ViewChild('inputImg') inputImgRef: ElementRef
@@ -43,6 +44,12 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
 
   ngDoCheck() {
     this.createArrForFloors()
+  }
+
+  ngOnDestroy() {
+    if (this.hSub) {
+      this.hSub.unsubscribe()
+    }
   }
 
   generateForm() {
@@ -60,8 +67,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
       endRoom1: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom2: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom3: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      endRoom4: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      image: new FormControl(null, )
+      endRoom4: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)])
     })
   }
 
@@ -97,7 +103,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
 
   checkQuantityFloors(numberFloors: number) {
     this.quantityFloors = numberFloors
-    this.errorRequired = false
+    this.isErrorRequired = false
     if (this.quantityFloors != this.stateService.quantityFloors) {
       for (let i = 1; i <= this.floors.length; i++) {
         this.form.controls['floor' + i].reset()
@@ -110,33 +116,6 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
   }
 
   protected readonly Number = Number;
-
-  getValuesOfRooms() {
-    let floors: Floor [] = []
-    if (this.form.get('startRoom1').value) {
-      for (let i = 1; i <= this.floors.length; i++) {
-        let floor: Floor = {
-          numberFloor: 0,
-          rooms: []
-        }
-
-        floor.numberFloor = this.form.get('floor' + i).value
-        let rooms: number [] = []
-
-        for (let j = this.form.controls['startRoom' + i].value; j <= this.form.controls['endRoom' + i].value; j++) {
-          rooms.push(j)
-        }
-
-        floor.rooms = rooms
-        floors.push(floor)
-
-        this.quantityRooms += floor.rooms.length
-      }
-      this.hotel.quantityFloors = this.quantityFloors
-      this.hotel.quantityRooms = this.quantityRooms
-      this.hotel.floors = floors
-    }
-  }
 
   checkRooms(start: string, end: string, floor: string) {
     let floorRequired = this.form.get(floor).hasError('required')
@@ -153,9 +132,9 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
         this.form.get(end).reset()
       }, 5000)
     }
-    this.errorRequired = floorRequired && floorTouched;
-    this.errorRequired = startRoomRequired && startRoomTouched;
-    this.errorRequired = endRoomRequired && endRoomTouched;
+    this.isErrorRequired = floorRequired && floorTouched;
+    this.isErrorRequired = startRoomRequired && startRoomTouched;
+    this.isErrorRequired = endRoomRequired && endRoomTouched;
   }
 
   uploadImg($event: any) {
@@ -167,6 +146,22 @@ export class HotelCreatePageComponent implements OnInit, DoCheck {
   }
 
   onSubmit() {
+    if (this.form.get('startRoom1').value) {
+      let hotel: Hotel = {
+        title: this.form.get('title').value,
+        floors: this.quantityFloors,
+        rooms: []
+      }
 
+      for (let i = 1; i <= this.floors.length; i++) {
+        hotel.rooms.push(i + '-' + this.form.get('startRoom' + i).value + '-' + this.form.get('endRoom' + i).value)
+      }
+
+      hotel.floors = this.quantityFloors
+      this.hSub = this.hotelService.create(hotel, this.image).subscribe({
+        next: message => console.log(message.message),
+        error: error => console.log(error.error.error)
+      })
+    }
   }
 }

@@ -101,9 +101,11 @@
       <button
         type="submit"
         class="btn-save" extended="" mat-fab
+        (click)="save()"
       >
         Сохранить
       </button>
     </div>
+    <h1 *ngIf="isTrue">{{answer}}</h1>
   </form>
 </div>

@@ -9,39 +9,38 @@ const hotelSchema = new Schema({
     },
     imgSrc: {
         type: String,
-        require: true,
+        default: ''
+        // require: true,
     },
     floors: {
         type: Number,
         require: true
     },
-    quantityRooms: {
-        type: Number,
-        require: true,
-    },
     rooms: {
-        type: [{
-            numberRoom: {
-                type: Number,
-                require: true,
-            },
-            status: {
-                type: String,
-                require: true,
-            },
-            floor: {
-                type: Number,
-                require: true,
-            },
-            comment: {
-                type: String,
-                default: '',
-            },
-            user: {
-                ref: 'users',
-                type: Schema.Types.ObjectId
-            }
-        }],
+        type: [],
+        // type: [{
+        //     numberRoom: {
+        //         type: Number,
+        //         require: true,
+        //     },
+        //     status: {
+        //         type: String,
+        //         require: true,
+        //     },
+        //     floor: {
+        //         type: Number,
+        //         require: true,
+        //     },
+        //     comment: {
+        //         type: String,
+        //         default: '',
+        //     },
+        //     user: {
+        //         ref: 'users',
+        //         type: Schema.Types.ObjectId
+        //     }
+        // }],
+        default: []
     },
 
 })

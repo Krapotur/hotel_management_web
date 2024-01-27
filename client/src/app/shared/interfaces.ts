@@ -37,14 +37,20 @@ export interface Floor {
 
 export interface Hotel {
   title: string,
-  quantityFloors: number,
-  quantityRooms: number,
-  floors: Floor[],
-  image: File
+  floors: number,
+  rooms: string[]
 }
 
 export interface Post {
   _id?: string,
   position?: number,
   title: string
+}
+
+export interface Room{
+  numberRoom: number,
+  floor: number,
+  status?: string,
+  comments?: string[],
+  hotel: string
 }

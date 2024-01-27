@@ -25,7 +25,7 @@ import {NgForOf, NgIf} from "@angular/common";
   templateUrl: './houses-list.component.html',
   styleUrl: './houses-list.component.scss'
 })
-export class HousesListComponent implements OnInit{
+export class HousesListComponent implements OnInit {
   showTemplate = false
   form: FormGroup
 
@@ -39,7 +39,8 @@ export class HousesListComponent implements OnInit{
     {position: 7, name: 'Гафарова Хабиба', post: 'Горничная', phone: '79895423544'},
   ];
 
-
+  isTrue = false
+answer = 'Отлично!!!'
 
   displayedColumns: string[] = ['#', 'name', 'floors', 'rooms', 'edit'];
   dataSource = new MatTableDataSource<Group>(this.ELEMENT_DATA);
@@ -61,7 +62,12 @@ export class HousesListComponent implements OnInit{
     })
   }
 
-  openTemplate(){
+  openTemplate() {
     this.showTemplate = !this.showTemplate
+  }
+
+  save(){
+    this.isTrue = !this.isTrue
+
   }
 }

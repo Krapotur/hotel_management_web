@@ -75,18 +75,16 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         this.form.enable()
       }
     })
-
-    this.getPosts()
   }
 
-  getPosts(){
-    this.pSub = this.postsService.getAll().subscribe({
-        next: posts => {
-          this.posts = posts;
-          console.log('1',posts)
-        },
-        error: error => console.log(error.error.message)
-      })
-    console.log(this.postsService.posts)
-  }
+  // getPosts(){
+  //   this.pSub = this.postsService.getAll().subscribe({
+  //       next: posts => {
+  //         this.posts = posts;
+  //         console.log('1',posts)
+  //       },
+  //       error: error => console.log(error.error.message)
+  //     })
+  //   console.log(this.postsService.posts)
+  // }
 }

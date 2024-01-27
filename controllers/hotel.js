@@ -1,3 +1,4 @@
+const multiparty = require('multiparty')
 const Hotel = require('../models/Hotel')
 const errorHandler = require('../utils/errorHandler')
 
@@ -33,25 +34,19 @@ module.exports.delete = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
+
     if (await Hotel.findOne({title: req.body.title})) {
         res.status(409).json({
             message: `Гостиница ${req.body.title} уже есть`
         })
     } else {
-        // let rooms = []
-        //
-        // for (let i = 0; i < req.body.rooms.length; i++) {
-        //     rooms.push(req.body.rooms[i])
-        // }
-
         const hotel = new Hotel({
             title: req.body.title,
             imgSrc: req.file ? req.file.path : '',
-            floors: req.body.floors,
-            quantityRooms: req.body.quantityRooms,
-            rooms: rooms
+            floors: Number(req.body.floors),
+            rooms: req.body.rooms
         })
-
+        console.log(hotel)
         try {
             await hotel.save()
             res.status(201).json({
@@ -62,6 +57,7 @@ module.exports.create = async function (req, res) {
         }
     }
 }
+
 
 module.exports.update = async function (req, res) {
     const updated = {

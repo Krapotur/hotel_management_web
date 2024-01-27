@@ -65,7 +65,7 @@
 
         </div>
       </div>
-      <span *ngIf="errorRequired" class="error-span">Заполните обязательные поля с номерами*</span>
+      <span *ngIf="isErrorRequired" class="error-span">Заполните обязательные поля с номерами*</span>
     </div>
 
     <hr>
@@ -76,8 +76,7 @@
         <span></span>
         <input type="file" class="dn"
                #inputImg
-               (change)="uploadImg($event)"
-               formControlName="image">
+               (change)="uploadImg($event)">
         <button class="btn-img" extended="" mat-fab
                 (click)="triggerClick()"
                 [disabled]="form.disabled"
@@ -85,9 +84,9 @@
           Загрузить
         </button>
       </div>
-    <span class="error-span" *ngIf="this.form.get('image').hasError('required') &&
-          this.form.get('image').touched"
-    >Выберите изображение*</span>
+<!--    <span class="error-span" *ngIf="this.form.get('image').hasError('required') &&-->
+<!--          this.form.get('image').touched"-->
+<!--    >Выберите изображение*</span>-->
     </div>
 
     <hr>
@@ -102,6 +101,7 @@
       <button
         type="submit"
         class="btn-save" extended="" mat-fab
+        (click)="onSubmit()"
       >
         Сохранить
       </button>
