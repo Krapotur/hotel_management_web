@@ -34,19 +34,33 @@ module.exports.delete = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-
     if (await Hotel.findOne({title: req.body.title})) {
         res.status(409).json({
             message: `Гостиница ${req.body.title} уже есть`
         })
     } else {
-        const hotel = new Hotel({
+        let rooms = []
+        for (let i = 0; i < Number(req.body.floors); i++) {
+            let arr = req.body.rooms[i].split('-')
+
+            for (let j = arr[1]; j <= arr[2]; j++) {
+                let room = {
+                    numberRoom: j,
+                    floor: arr[0],
+                    status: 'Готов',
+                    comments: [],
+                    hotel: req.body.title
+                }
+                rooms.push(room)
+            }
+        }
+        let hotel = new Hotel({
             title: req.body.title,
             imgSrc: req.file ? req.file.path : '',
             floors: Number(req.body.floors),
-            rooms: req.body.rooms
+            rooms: rooms
         })
-        console.log(hotel)
+
         try {
             await hotel.save()
             res.status(201).json({

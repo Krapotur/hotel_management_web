@@ -17,29 +17,24 @@ const hotelSchema = new Schema({
         require: true
     },
     rooms: {
-        type: [],
-        // type: [{
-        //     numberRoom: {
-        //         type: Number,
-        //         require: true,
-        //     },
-        //     status: {
-        //         type: String,
-        //         require: true,
-        //     },
-        //     floor: {
-        //         type: Number,
-        //         require: true,
-        //     },
-        //     comment: {
-        //         type: String,
-        //         default: '',
-        //     },
-        //     user: {
-        //         ref: 'users',
-        //         type: Schema.Types.ObjectId
-        //     }
-        // }],
+        type: [{
+            numberRoom: {
+                type: Number,
+                require: true,
+            },
+            status: {
+                type: String,
+                require: true,
+            },
+            floor: {
+                type: Number,
+                require: true,
+            },
+            comment: {
+                type: String,
+                default: '',
+            },
+        }],
         default: []
     },
 
