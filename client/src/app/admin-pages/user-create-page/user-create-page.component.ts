@@ -172,16 +172,21 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
       fd.append('hotels', this.form.get('hotels').value[i])
     }
 
-    this.userService.create(fd).subscribe({
-      next: (message: { message: string }) => {
-        if (message.message == 'Успех') {
-          this.router.navigate(['/admin-panel/users'])
+    if (!this.isEdit) {
+      this.userService.create(fd).subscribe({
+        next: (message: { message: string }) => {
+          if (message.message == 'Успех') {
+            this.router.navigate(['/admin-panel/users'])
+          }
+        },
+        error: (error) => console.log(error.error.message),
+        complete: () => {
         }
-      },
-      error: (error) => console.log(error.error.message),
-      complete: () => {
-      }
-    })
+      })
+    } else {
+
+    }
+
   }
 
   openUsersPage() {

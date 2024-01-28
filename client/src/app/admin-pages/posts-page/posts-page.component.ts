@@ -101,6 +101,7 @@ export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
       }
         break;
       default: {
+        this.titlePost = ''
         this.stateService.showTemplate = false
         this.isShowTemplate = false
       }

@@ -94,7 +94,7 @@ mat-hint {
   color: red;
 }
 
-hr{
+hr {
   outline: none;
   border: 0.5px solid $greyWithOpacity_04;
 }
@@ -106,10 +106,20 @@ hr{
   padding: 5px 5px 10px 5px;
 }
 
+.span-title {
+
+}
+
 .img-group {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+
+  span {
+    color: green;
+    font-size: 13px;
+    font-weight: bold;
+  }
 }
 
 .dn {

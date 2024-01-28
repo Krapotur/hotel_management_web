@@ -8,6 +8,7 @@ import {Hotel} from "../../shared/interfaces";
 import {StateService} from "../../shared/services/state.service";
 import {HotelsService} from "../../shared/services/hotels.service";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-hotel-create-page',
@@ -26,13 +27,15 @@ import {Subscription} from "rxjs";
 })
 export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   form: FormGroup
+  title = ''
   quantityFloors = 0
   floors = []
   isErrorRequired = false
   image: File
   hSub: Subscription
 
-  constructor(private stateService: StateService,
+  constructor(private router: Router,
+              private stateService: StateService,
               private hotelService: HotelsService) {
   }
 
@@ -98,6 +101,8 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
       for (let i = 1; i <= this.floors.length; i++) {
         this.form.controls['floor' + i].disable()
       }
+
+      this.title = this.form.get('title').value
     }
   }
 
@@ -147,6 +152,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
 
   onSubmit() {
     if (this.form.get('startRoom1').value) {
+      this.form.disable()
       let hotel: Hotel = {
         title: this.form.get('title').value,
         floors: this.quantityFloors,
@@ -162,6 +168,13 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
         next: message => console.log(message.message),
         error: error => console.log(error.error.error)
       })
+      this.image = null
     }
+    this.form.enable()
+    this.openHotelsPage()
+  }
+
+  openHotelsPage() {
+    this.router.navigate(['admin-panel/hotels'])
   }
 }

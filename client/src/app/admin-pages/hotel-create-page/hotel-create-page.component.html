@@ -71,9 +71,9 @@
     <hr>
 
     <div class="img-block">
-      <label [for]="inputImgRef">Изображение гостиницы</label>
+      <label [for]="inputImgRef">Выберите изображение <span class="span-title" *ngIf="title">для "{{title}}"</span></label>
       <div class="img-group">
-        <span></span>
+        <span *ngIf="image">Изображение загружено!</span>
         <input type="file" class="dn"
                #inputImg
                (change)="uploadImg($event)">
@@ -90,15 +90,16 @@
 
     <div class="btn-group">
       <button
-        class="btn-cancel" extended="" mat-fab>
-        <!--          (click)="openTemplate('')"-->
-        <!--        >-->
+        class="btn-cancel" extended="" mat-fab
+                  (click)="openHotelsPage()"
+                >
         Отмена
       </button>
       <button
         type="submit"
         class="btn-save" extended="" mat-fab
         (click)="onSubmit()"
+        [disabled]="form.disabled"
       >
         Сохранить
       </button>
