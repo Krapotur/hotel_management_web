@@ -4,24 +4,14 @@ export interface Login {
 }
 
 export interface User {
+  position?: number;
   _id?: string
   lastName: string;
   firstName: number;
-  position?: number;
   post: string;
   phone: string;
   hotels?: string;
   edit?: string,
-  login: string,
-  password: string
-}
-
-export interface UserUser {
-  lastName: string;
-  firstName: number;
-  post: string;
-  phone: string;
-  hotels?: string[];
   login: string,
   password: string
 }
@@ -36,9 +26,13 @@ export interface Floor {
 }
 
 export interface Hotel {
+  _id?:string,
   title: string,
   floors: number,
-  rooms: string[]
+  rooms: string[],
+  quantityRooms?: number,
+  position?:number
+  personal?: string[]
 }
 
 export interface Post {

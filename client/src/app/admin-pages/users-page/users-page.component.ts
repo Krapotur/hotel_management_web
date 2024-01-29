@@ -36,7 +36,6 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
   form: FormGroup
   post = new FormControl('');
   uSub: Subscription
-  // post: Post
   isShowTemplate = false
 
   dataSource: MatTableDataSource<User>
@@ -75,7 +74,8 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
 
         this.dataSource = new MatTableDataSource<User>(usersList)
         this.dataSource.paginator = this.paginator;
-      }
+      },
+     error: error => console.log(error.error.message)
     })
   }
 

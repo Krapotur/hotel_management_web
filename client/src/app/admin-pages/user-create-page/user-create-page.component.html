@@ -1,7 +1,6 @@
-
-<div class="main" *ngIf="isShowTemplate">
+<div class="main" [class]="isDelete ? 'blur': ''">
   <div class="container">
-    <h2>Новый сотрудник</h2>
+    <h2>{{ titleForm }}</h2>
     <hr>
     <form [formGroup]="form">
       <div class="container-form">
@@ -24,15 +23,6 @@
             >Введите имя*
             </mat-hint>
           </mat-form-field>
-
-          <div class="phone-input">
-            <mat-form-field class="input-single">
-              <mat-label>Телефон</mat-label>
-              <span matTextPrefix>+7 &nbsp;</span>
-              <input type="tel" matInput placeholder="9ХХ-ХХХ-ХХХХ" formControlName="phone">
-            </mat-form-field>
-          </div>
-
         </div>
 
         <div class="right-block">
@@ -47,23 +37,14 @@
             </mat-hint>
           </mat-form-field>
 
-          <mat-form-field>
-            <mat-label>Гостиницы</mat-label>
-            <mat-select formControlName="hotels" multiple>
-              <mat-select-trigger>
-                {{ form.get('hotels').value?.[0] || '' }}
-                <span class="example-additional-selection" *ngIf="((form.get('hotels').value?.length || 0) > 1)">
-                   (еще {{ (form.get('hotels').value?.length || 0) - 1 }} )
-                   </span>
-              </mat-select-trigger>
-              <mat-option *ngFor="let hotel of hotelsList" [value]="hotel"
-              >{{ hotel }}</mat-option>
-            </mat-select>
-            <mat-hint
-              *ngIf=" form.get('hotels').hasError('required') && form.get('hotels').touched"
-            >Выберите гостиницы*
-            </mat-hint>
-          </mat-form-field>
+          <div class="phone-input">
+            <mat-form-field class="input-single">
+              <mat-label>Телефон</mat-label>
+              <span matTextPrefix>+7 &nbsp;</span>
+              <input type="tel" matInput placeholder="9ХХ-ХХХ-ХХХХ" formControlName="phone">
+            </mat-form-field>
+          </div>
+
         </div>
       </div>
 
@@ -79,7 +60,7 @@
           </mat-form-field>
         </div>
 
-        <div>
+        <div *ngIf="!isResetPassword">
           <mat-form-field class="input-single">
             <mat-label>Пароль</mat-label>
             <input type="text" matInput formControlName="password">
@@ -90,11 +71,22 @@
           </mat-form-field>
         </div>
 
+        <div *ngIf="isResetPassword" class="btn-reset-password">
+          <button
+            extended="" mat-fab
+            (click)="isResetPassword = false"
+            [disabled]="form.disabled"
+          >
+            Сменить пароль
+          </button>
+        </div>
+
       </div>
       <div class="btn-group">
         <button
           class="btn-cancel" extended="" mat-fab
           (click)="openUsersPage()"
+          [disabled]="form.disabled"
         >
           Отмена
         </button>
@@ -102,14 +94,15 @@
           type="submit"
           class="btn-save" extended="" mat-fab
           (click)="onSubmit()"
+          [disabled]="form.disabled"
         >
           Сохранить
         </button>
-        <div class="btn-delete"
-              *ngIf="isEdit">
+        <div class="btn-delete" *ngIf="isEdit">
           <button
-            type="submit"
             extended="" mat-fab
+            (click)="isDelete = true"
+            [disabled]="form.disabled"
           >
             Удалить
           </button>
@@ -117,6 +110,28 @@
       </div>
 
     </form>
+  </div>
+</div>
 
+<div class="container-del" *ngIf="isDelete">
+  <h2>Удалить сотрудника?</h2>
+  <h3>"{{ user.lastName + ' ' + user.firstName }}"</h3>
+  <div class="input-block">
+
+    <div class="btn-group-del">
+      <button
+        class="btn-cancel" extended="" mat-fab
+        (click)="isDelete = false"
+      >
+        Нет
+      </button>
+      <button
+        type="submit"
+        class="btn-save" extended="" mat-fab
+        (click)="delete()"
+      >
+        Да
+      </button>
+    </div>
   </div>
 </div>

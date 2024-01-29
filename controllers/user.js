@@ -1,5 +1,5 @@
-const multiparty = require('multiparty')
 const User = require('../models/User')
+// const Hotel = require('../models/Hotel')
 const errorHandler = require('../utils/errorHandler')
 const bcrypt = require('bcryptjs')
 
@@ -36,52 +36,57 @@ module.exports.delete = async function (req, res) {
 
 module.exports.create = async function (req, res) {
 
-    let form = new multiparty.Form();
+    if (await User.findOne({login: req.body.login})) {
 
-    await form.parse(req, async function (err, fields) {
-        let candidate = {}
+        res.status(409).json({
+            message: `Логин ${req.body.login} уже занят`
+        })
+    } else {
+        const salt = bcrypt.genSaltSync(10)
+        const password = req.body.password
 
-        candidate.firstName = fields['firstName'][0];
-        candidate.lastName = fields['lastName'][0];
-        candidate.phone = fields['phone'][0];
-        candidate.post = fields['post'][0];
-        candidate.hotels = fields['hotels'];
-        candidate.login = fields['login'][0];
-        candidate.password = fields['password'][0];
+        const user = new User({
+            lastName: req.body.lastName,
+            firstName: req.body.firstName,
+            phone: req.body.phone,
+            post: req.body.post,
+            // hotels: req.body.hotels,
+            login: req.body.login,
+            password: bcrypt.hashSync(password, salt)
+        })
 
-        if (await User.findOne({login: candidate.login})) {
-
-            res.status(409).json({
-                message: `Логин ${candidate.login} уже занят`
+        try {
+            await user.save()
+            res.status(201).json({
+                message: 'Успех'
+                // message: `Пользователь ${user.lastName + ' ' + user.firstName} успешно создан`
             })
-        } else {
-            const salt = bcrypt.genSaltSync(10)
-            const password = candidate.password
-
-            const user = new User({
-                lastName: candidate.lastName,
-                firstName: candidate.firstName,
-                phone: candidate.phone,
-                post: candidate.post,
-                hotels: candidate.hotels,
-                login: candidate.login,
-                password: bcrypt.hashSync(password, salt)
-            })
-            console.log(user)
-            try {
-               await user.save()
-                res.status(201).json({
-                    message: 'Успех'
-                    // message: `Пользователь ${user.lastName + ' ' + user.firstName} успешно создан`
-                })
-            } catch (e) {
-                errorHandler(res, e)
-            }
+        } catch (e) {
+            errorHandler(res, e)
         }
-    })
+
+
+    }
 
 }
 
-module.exports.update = function (req, res) {
+module.exports.update = async function (req, res) {
+    const updated = req.body
+    const salt = bcrypt.genSaltSync(10)
+    const password = req.body.password
 
+    updated.password = bcrypt.hashSync(password, salt)
+
+    try {
+        await User.findByIdAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
+        res.status(200).json({
+            message: `Пользователь "${updated.lastName + ' ' + updated.firstName}" удален`
+        })
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }

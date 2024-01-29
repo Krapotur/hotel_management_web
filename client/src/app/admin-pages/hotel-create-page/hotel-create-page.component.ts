@@ -4,11 +4,14 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {NgForOf, NgIf} from "@angular/common";
-import {Hotel} from "../../shared/interfaces";
+import {Hotel, User} from "../../shared/interfaces";
 import {StateService} from "../../shared/services/state.service";
 import {HotelsService} from "../../shared/services/hotels.service";
 import {Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+import {UsersService} from "../../shared/services/users.service";
 
 @Component({
   selector: 'app-hotel-create-page',
@@ -20,7 +23,9 @@ import {Router} from "@angular/router";
     MatInputModule,
     NgForOf,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatOptionModule,
+    MatSelectModule
   ],
   templateUrl: './hotel-create-page.component.html',
   styleUrl: './hotel-create-page.component.scss'
@@ -28,30 +33,45 @@ import {Router} from "@angular/router";
 export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   form: FormGroup
   title = ''
+  titleForm = ''
   quantityFloors = 0
   floors = []
   isErrorRequired = false
+  isEdit = false
+  isDelete = false
   image: File
+  hotel: Hotel
+  users: User[] = []
+  params: string
   hSub: Subscription
+  uSub: Subscription
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private stateService: StateService,
-              private hotelService: HotelsService) {
+              private hotelService: HotelsService,
+              private usersService: UsersService) {
   }
 
   @ViewChild('inputImg') inputImgRef: ElementRef
 
   ngOnInit() {
+    this.getUsers()
+    this.getParams()
     this.generateForm()
   }
 
   ngDoCheck() {
     this.createArrForFloors()
+    this.isDelete ? this.form.disable() : this.form.enable()
   }
 
   ngOnDestroy() {
     if (this.hSub) {
       this.hSub.unsubscribe()
+    }
+    if (this.uSub) {
+      this.uSub.unsubscribe()
     }
   }
 
@@ -70,10 +90,36 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
       endRoom1: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom2: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       endRoom3: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-      endRoom4: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)])
+      endRoom4: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
+      users: new FormControl('')
     })
   }
 
+  getParams() {
+    this.uSub = this.route.queryParams.subscribe(params => {
+      this.params = params['hotelID']
+      this.getHotelById(params['hotelID'])
+    })
+    this.params ? this.isEdit = true : this.isEdit = false
+  }
+
+  getHotelById(id: string) {
+    if (id) {
+      this.uSub = this.hotelService.getHotelById(id).subscribe({
+        next: hotel => {
+          this.form.get('title').setValue(hotel.title)
+          this.form.get('floors').setValue(hotel.floors)
+          this.form.get('users').setValue(hotel.personal)
+
+          this.titleForm = hotel.title
+          this.hotel = hotel
+        },
+        error: error => console.log(error.error.message),
+      })
+    } else {
+      this.titleForm = 'Новая гостиница'
+    }
+  }
   createArrForFloors() {
     this.floors = []
     if (this.form.get('floors').value > 4) {
@@ -150,27 +196,43 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
     this.inputImgRef.nativeElement.click()
   }
 
+  getUsers() {
+    this.uSub = this.usersService.getUsers().subscribe({
+      next: users => {
+        this.users = users.filter(user => user.post == 'Горничная')
+
+      },
+      error: error => console.log(error.error.message)
+    })
+  }
+
   onSubmit() {
     if (this.form.get('startRoom1').value) {
-      this.form.disable()
       let hotel: Hotel = {
         title: this.form.get('title').value,
         floors: this.quantityFloors,
-        rooms: []
+        rooms: [],
+        personal: this.form.get('users').value
       }
 
       for (let i = 1; i <= this.floors.length; i++) {
         hotel.rooms.push(i + '-' + this.form.get('startRoom' + i).value + '-' + this.form.get('endRoom' + i).value)
       }
 
-      // hotel.floors = this.quantityFloors
       this.hSub = this.hotelService.create(hotel, this.image).subscribe({
         next: message => console.log(message.message),
         error: error => console.log(error.error.error)
       })
       this.image = null
     }
-    this.form.enable()
+    this.openHotelsPage()
+  }
+
+  delete() {
+    this.hSub = this.hotelService.delete(this.hotel).subscribe({
+      next: message => console.log(message.message),
+      error: error => console.log(error.error.message)
+    })
     this.openHotelsPage()
   }
 

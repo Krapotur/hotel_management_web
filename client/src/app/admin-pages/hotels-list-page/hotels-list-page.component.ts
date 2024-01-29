@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {Group} from "../../shared/interfaces";
+import {Hotel, User} from "../../shared/interfaces";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatOptionModule} from "@angular/material/core";
@@ -10,6 +10,10 @@ import {NgForOf, NgIf} from "@angular/common";
 import {PostsPageComponent} from "../posts-page/posts-page.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
+import {Subscription} from "rxjs";
+import {HotelsService} from "../../shared/services/hotels.service";
+import {UsersService} from "../../shared/services/users.service";
+import {FilterUsersPipe} from "../../shared/pipes/filter-users.pipe";
 
 @Component({
   selector: 'app-hotels-list-page',
@@ -25,39 +29,73 @@ import {Router, RouterLink} from "@angular/router";
     ReactiveFormsModule,
     PostsPageComponent,
     MatInputModule,
-    RouterLink
+    RouterLink,
+    FilterUsersPipe
   ],
   templateUrl: './hotels-list-page.component.html',
   styleUrl: './hotels-list-page.component.scss'
 })
-export class HotelsListPageComponent implements AfterViewInit {
+export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy {
   showTemplate = false
+  dataSource: MatTableDataSource<Hotel>
+  hSub: Subscription
+  uSub: Subscription
+  hotels: Hotel[] =[]
+  users: User[] = []
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private hotelService: HotelsService,
+              private userService: UsersService) {
 
   }
 
-  ELEMENT_DATA: Group[] = [
-    {position: 1, name: 'Заливина Анна', post: 'Руководитель', phone: '79895423544'},
-    {position: 2, name: 'Администратор гостиниц', post: 'Администратор гостиниц', phone: '79895423544'},
-    {position: 3, name: 'Администратор системы', post: 'Администратор системы', phone: '79895423544'},
-    {position: 4, name: 'Рахмонова Оля', post: 'Горничная', phone: '79895423544'},
-    {position: 5, name: 'Аметова Замира', post: 'Горничная', phone: '79895423544'},
-    {position: 6, name: 'Толибова Феруза', post: 'Горничная', phone: '79895423544'},
-    {position: 7, name: 'Гафарова Хабиба', post: 'Горничная', phone: '79895423544'},
-  ];
-
-
-  displayedColumns: string[] = ['#', 'name', 'floors', 'rooms', 'edit'];
-  dataSource = new MatTableDataSource<Group>(this.ELEMENT_DATA);
+  displayedColumns: string[] = ['#', 'title', 'floors', 'rooms', 'personal', 'edit'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  ngOnInit() {
+    this.getAll()
+    this.getUsers()
   }
 
-  openCreateHotelPage() {
-    this.router.navigate(['admin-panel/hotel-create'])
+  ngAfterViewInit() {
+  }
+
+  ngOnDestroy() {
+    if (this.hSub) {
+      this.hSub.unsubscribe()
+    }
+    if (this.uSub) {
+      this.uSub.unsubscribe()
+    }
+  }
+
+  getAll() {
+    this.hSub = this.hotelService.getAll().subscribe({
+      next: hotels => {
+        let position = 1
+        this.hotels = hotels
+        this.hotels.map(hotel => hotel.position = position++)
+        this.dataSource = new MatTableDataSource<Hotel>(this.hotels)
+        this.dataSource.paginator = this.paginator
+      }
+    })
+  }
+
+  getUsers() {
+    this.uSub = this.userService.getUsers().subscribe({
+      next: users => this.users = users,
+      error: error => console.log(error.error.message)
+    })
+  }
+
+  openCreateHotelPage(hotel?: Hotel){
+    if(hotel){
+      this.router.navigate(["admin-panel/hotel-create"], {queryParams:{
+          hotelID: hotel._id
+        }})
+    } else {
+      this.router.navigate(['admin-panel/hotel-create'])
+    }
   }
 }

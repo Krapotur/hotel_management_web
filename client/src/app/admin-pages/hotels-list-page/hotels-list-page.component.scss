@@ -5,6 +5,7 @@ $nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 $greyWithOpacity_01: rgba(128, 128, 128, 0.1);
 $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
+$greyWithOpacity_09: rgba(128, 128, 128, 0.9);
 
 * {
   font-family: $lora;
@@ -18,7 +19,7 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
   margin-top: 23px;
 
   h1 {
-    font-size: 20px;
+    font-size: 40px;
     padding: 20px 0 10px 30px;
   }
 }
@@ -34,18 +35,29 @@ table {
     font-weight: bold;
     color: black;
     font-family: $lora;
+    text-align: center;
   }
 
   td {
     font-family: $lora;
     padding-top: 5px;
+    text-align: center;
   }
 }
 
 img {
   width: 50px;
-  border: 1px solid grey;
-  border-radius: 30px;
+  cursor: pointer;
+}
+
+.empty-block {
+  padding: 30px 0;
+  font-size: 20px;
+
+  p {
+    text-align: center;
+    color: $greyWithOpacity_09;
+  }
 }
 
 hr {

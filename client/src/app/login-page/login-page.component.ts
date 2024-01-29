@@ -36,9 +36,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   protected readonly onsubmit = onsubmit;
 
   constructor(private auth: AuthService,
-              private postsService: PostsService,
-              private router: Router,
-              private route: ActivatedRoute
+              private router: Router
               ) {
   }
 
@@ -70,21 +68,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       next: (result) => {
         this.router.navigate(['/admin-panel']).then(r => console.log(r))
       },
-      error: (error) => {
+      error: error => {
         console.warn(error)
         this.form.enable()
       }
     })
   }
-
-  // getPosts(){
-  //   this.pSub = this.postsService.getAll().subscribe({
-  //       next: posts => {
-  //         this.posts = posts;
-  //         console.log('1',posts)
-  //       },
-  //       error: error => console.log(error.error.message)
-  //     })
-  //   console.log(this.postsService.posts)
-  // }
 }

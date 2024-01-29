@@ -39,6 +39,7 @@ export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
   isDelete = false
   dataSource: MatTableDataSource<Post>
   pSub: Subscription
+  posts : Post[]
 
   constructor(private postsService: PostsService,
               private stateService: StateService) {
@@ -109,15 +110,14 @@ export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
   }
 
   onSubmit() {
+    const post: Post = {
+      title: this.form.get('title').value
+    }
 
-    if (this.isDelete) {
+    if (this.isEdit) {
+      this.post.title = post.title
       this.update(this.post)
     } else {
-
-      const post: Post = {
-        title: this.form.get('title').value
-      }
-
       this.pSub = this.postsService.create(post).subscribe({
           next: (message: { message: string }) => {
             console.log(message)
@@ -138,8 +138,8 @@ export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
           this.isEmptyPosts = false
 
           posts.map(post => post.position = position++)
-
-          this.dataSource = new MatTableDataSource<Post>(posts);
+          this.posts = posts
+          this.dataSource = new MatTableDataSource<Post>(this.posts);
           this.dataSource.paginator = this.paginator;
         }
       },

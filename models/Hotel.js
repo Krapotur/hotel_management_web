@@ -37,6 +37,14 @@ const hotelSchema = new Schema({
         }],
         default: []
     },
+    quantityRooms: {
+        type: Number
+    },
+    personal: {
+        type:[{
+            type: String
+        }]
+    }
 
 })
 
