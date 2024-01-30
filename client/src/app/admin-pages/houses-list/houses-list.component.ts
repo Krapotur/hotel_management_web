@@ -43,7 +43,7 @@ export class HousesListComponent implements OnInit {
   isTrue = false
 answer = 'Отлично!!!'
 
-  displayedColumns: string[] = ['#', 'name', 'floors', 'rooms', 'edit'];
+  displayedColumns: string[] = ['#', 'name', 'floors', 'personal', 'edit'];
   dataSource = new MatTableDataSource<Hotel>(this.houses);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
