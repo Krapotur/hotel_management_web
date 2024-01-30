@@ -69,7 +69,7 @@
         <span *ngIf="isErrorRequired" class="error-span">Заполните обязательные поля с номерами*</span>
 
         <mat-form-field>
-          <mat-label>Горничная</mat-label>
+          <mat-label>Горничная <span *ngIf="!users.length">(список пуст)</span></mat-label>
           <mat-select formControlName="users" multiple>
             <mat-select-trigger>
               {{ form.get('users').value?.[0] || '' }}
@@ -77,7 +77,7 @@
                    (еще {{ (form.get('users').value?.length || 0) - 1 }} )
                    </span>
             </mat-select-trigger>
-            <mat-option *ngFor="let user of users" [value]="user.lastName + ' ' + user.firstName"
+            <mat-option *ngFor="let user of users" [value]="user.lastName + ' ' + user.firstName "
             >{{ user.lastName + ' ' + user.firstName }}
             </mat-option>
           </mat-select>

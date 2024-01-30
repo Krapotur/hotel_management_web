@@ -13,7 +13,7 @@ export interface User {
   hotels?: string;
   edit?: string,
   login: string,
-  password: string
+  password?: string
 }
 
 export interface Group {

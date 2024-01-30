@@ -135,3 +135,22 @@ h3 {
     border-radius: 1px;
   }
 }
+/////////////container-reset-password
+
+.container-reset-password{
+  user-select: none;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 10%;
+  left: 43%;
+  width: 35vh;
+  border: 1px solid seagreen;
+  background-color: white;
+  padding: 45px 0 40px 0;
+
+  h2{
+    padding-bottom: 30px;
+  }
+}

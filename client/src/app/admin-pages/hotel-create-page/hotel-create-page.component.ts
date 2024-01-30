@@ -200,7 +200,6 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
     this.uSub = this.usersService.getUsers().subscribe({
       next: users => {
         this.users = users.filter(user => user.post == 'Горничная')
-
       },
       error: error => console.log(error.error.message)
     })
@@ -228,6 +227,14 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
     this.openHotelsPage()
   }
 
+  updateUser(){
+
+    // this.users.filter(user => {
+    //   if(user.lastName + ' ' + user.firstName ==   )
+    // })
+    //
+    // this.uSub = this.usersService.getUserById()
+  }
   delete() {
     this.hSub = this.hotelService.delete(this.hotel).subscribe({
       next: message => console.log(message.message),
