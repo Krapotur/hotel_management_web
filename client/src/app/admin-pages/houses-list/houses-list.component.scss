@@ -5,6 +5,8 @@ $nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 $greyWithOpacity_01: rgba(128, 128, 128, 0.1);
 $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
+$greyWithOpacity_09: rgba(128, 128, 128, 0.9);
+
 
 * {
   font-family: $lora;
@@ -42,6 +44,14 @@ table {
   }
 }
 
+p {
+  padding: 30px 0;
+  font-size: 20px;
+  text-align: center;
+  color: $greyWithOpacity_09;
+}
+
+
 img {
   width: 50px;
   border: 1px solid grey;
@@ -72,7 +82,7 @@ $nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 $greyWithOpacity_01: rgba(128, 128, 128, 0.1);
 $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
-*{
+* {
   font-family: $lora
 }
 
@@ -87,11 +97,13 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
   border: 1px solid seagreen;
   background-color: white;
   padding: 45px 0 30px 0;
+
+  h3 {
+    color: #3C3735;
+    font-size: 25px;
+  }
 }
 
-h2 {
-  color: #3C3735;
-}
 
 .container-form {
   display: flex;
@@ -126,11 +138,11 @@ mat-hint {
   }
 }
 
-.error-input input{
+.error-input input {
   border: 1px solid red;
 }
 
-.error-span{
+.error-span {
   font-size: 12px;
   color: red;
 }

@@ -1,4 +1,4 @@
-<div class="main" [class]="isDelete ? 'blur': ''">
+<div class="main" [class]="isDelete || isResetPassword? 'blur': ''">
   <div class="container">
     <h2>{{ titleForm }}</h2>
     <hr>
@@ -60,7 +60,7 @@
           </mat-form-field>
         </div>
 
-        <div *ngIf="!isResetPassword">
+        <div *ngIf="!params">
           <mat-form-field class="input-single">
             <mat-label>Пароль</mat-label>
             <input type="text" matInput formControlName="password">
@@ -71,10 +71,10 @@
           </mat-form-field>
         </div>
 
-        <div *ngIf="isResetPassword" class="btn-reset-password">
+        <div *ngIf="params" class="btn-reset-password">
           <button
             extended="" mat-fab
-            (click)="isResetPassword = false"
+            (click)="generateFormPassword()"
             [disabled]="form.disabled"
           >
             Сменить пароль
@@ -134,4 +134,50 @@
       </button>
     </div>
   </div>
+</div>
+
+<div class="container-reset-password" *ngIf="isResetPassword">
+  <h2>Смена пароля</h2>
+  <form [formGroup]="formPassword">
+    <div class="input-block">
+      <div>
+        <mat-form-field class="input-single">
+          <mat-label>Новый пароль</mat-label>
+          <input type="text" matInput formControlName="password">
+          <mat-hint
+            *ngIf="form.get('password').hasError('required') && form.get('password').touched"
+          >Введите пароль*
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field class="input-single">
+          <mat-label>Подтверждение пароля</mat-label>
+          <input type="text" matInput formControlName="checkPassword">
+          <mat-hint
+            *ngIf="form.get('password').hasError('required') && form.get('password').touched"
+          >Введите пароль*
+          </mat-hint>
+        </mat-form-field>
+      </div>
+
+
+      <div class="btn-group-del">
+        <button
+          class="btn-cancel" extended="" mat-fab
+          (click)="isResetPassword = false"
+        >
+          Отмена
+        </button>
+        <button
+          type="submit"
+          class="btn-save" extended="" mat-fab
+          (click)="resetPassword()"
+        >
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </form>
 </div>

@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatButtonModule} from "@angular/material/button";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {Group} from "../../shared/interfaces";
+import {Group, Hotel} from "../../shared/interfaces";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -28,6 +28,7 @@ import {NgForOf, NgIf} from "@angular/common";
 export class HousesListComponent implements OnInit {
   showTemplate = false
   form: FormGroup
+  houses:Hotel [] = []
 
   ELEMENT_DATA: Group[] = [
     {position: 1, name: 'Заливина Анна', post: 'Руководитель', phone: '79895423544'},
@@ -43,7 +44,7 @@ export class HousesListComponent implements OnInit {
 answer = 'Отлично!!!'
 
   displayedColumns: string[] = ['#', 'name', 'floors', 'rooms', 'edit'];
-  dataSource = new MatTableDataSource<Group>(this.ELEMENT_DATA);
+  dataSource = new MatTableDataSource<Hotel>(this.houses);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

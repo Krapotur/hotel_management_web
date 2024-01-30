@@ -44,7 +44,7 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
               private router: Router) {
   }
 
-  displayedColumns: string[] = ['#', 'name', 'post', 'phone', 'hotel', 'edit'];
+  displayedColumns: string[] = ['#', 'name', 'post', 'phone', 'hotel', 'login', 'edit'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

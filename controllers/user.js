@@ -71,22 +71,46 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.update = async function (req, res) {
-    const updated = req.body
-    const salt = bcrypt.genSaltSync(10)
-    const password = req.body.password
 
-    updated.password = bcrypt.hashSync(password, salt)
+    const updated = {
+        lastName: req.body.lastName,
+        firstName: req.body.firstName,
+        phone: req.body.phone,
+        post: req.body.post,
+        // hotels: req.body.hotels,
+        login: req.body.login,
+    }
 
-    try {
-        await User.findByIdAndUpdate(
-            {_id: req.params.id},
-            {$set: updated},
-            {new: true}
-        )
-        res.status(200).json({
-            message: `Пользователь "${updated.lastName + ' ' + updated.firstName}" удален`
-        })
-    } catch (e) {
-        errorHandler(res, e)
+    if (req.body.password) {
+        const salt = bcrypt.genSaltSync(10)
+        const password = req.body.password
+
+        updated.password = bcrypt.hashSync(password, salt)
+
+        try {
+            await User.findByIdAndUpdate(
+                {_id: req.params.id},
+                {$set: updated},
+                {new: true}
+            )
+            res.status(200).json({
+                message: `Изменения внесены" `
+            })
+        } catch (e) {
+            errorHandler(res, e)
+        }
+    } else {
+        try {
+            await User.findByIdAndUpdate(
+                {_id: req.params.id},
+                {$set: updated},
+                {new: true}
+            )
+            res.status(200).json({
+                message: `Изменения внесены" `
+            })
+        } catch (e) {
+            errorHandler(res, e)
+        }
     }
 }

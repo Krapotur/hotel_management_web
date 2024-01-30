@@ -26,7 +26,7 @@
         <!-- Phone Column -->
         <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef> Телефон</th>
-          <td mat-cell *matCellDef="let user"> {{ user.phone }}</td>
+          <td mat-cell *matCellDef="let user"> + 7{{ user.phone }}</td>
         </ng-container>
 
         <!-- Hotel Column -->
@@ -34,6 +34,13 @@
           <th mat-header-cell *matHeaderCellDef> Гостиница</th>
           <td mat-cell *matCellDef="let user">
             {{ user.hotels.length > 1 ? user.hotels[0] + ' ( еще '+ (user.hotels.length - 1) + ')': user.hotels}}</td>
+        </ng-container>
+
+        <!-- Login Column -->
+        <ng-container matColumnDef="login">
+          <th mat-header-cell *matHeaderCellDef> Логин</th>
+          <td mat-cell *matCellDef="let user">
+            {{user.login}}</td>
         </ng-container>
 
         <!-- Edit Column -->

@@ -37,12 +37,18 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
 
+
+      </table>
+      <div *ngIf="houses.length == 0"
+           class="empty-block">
+        <p>Добавьте первый дом...</p>
+      </div>
       <hr>
       <div class="table-bottom">
         <button class="btn" extended="" mat-fab
                 (click)="openTemplate()"
+
         >
           Добавить
         </button>
@@ -54,12 +60,13 @@
     </div>
   </div>
   <!--Table-->
+
 </div>
 
 <!--Form-->
 
 <div class="container" *ngIf="showTemplate">
-  <h3>Новая гостиница</h3>
+  <h3>Новый дом</h3>
   <hr>
   <form [formGroup]="form">
     <div class="container-form">
@@ -101,8 +108,10 @@
       <button
         type="submit"
         class="btn-save" extended="" mat-fab
-        (click)="save()"
+      [disabled]="houses.length == 0"
       >
+<!--        (click)="save()"-->
+
         Сохранить
       </button>
     </div>

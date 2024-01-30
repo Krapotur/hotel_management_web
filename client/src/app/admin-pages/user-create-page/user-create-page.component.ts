@@ -33,6 +33,7 @@ import {PostsService} from "../../shared/services/posts.service";
 })
 export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy {
   form: FormGroup
+  formPassword: FormGroup
   post = new FormControl('');
   user: User
   params: string
@@ -60,7 +61,7 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
   }
 
   ngDoCheck() {
-    this.isDelete ? this.form.disable() : this.form.enable()
+    this.isDelete || this.isResetPassword ? this.form.disable() : this.form.enable()
   }
 
   ngAfterViewInit() {
@@ -92,18 +93,19 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
       this.getUserById(params['userID'])
     })
     this.params ? this.isEdit = true : this.isEdit = false
-    this.params ? this.isResetPassword = true : this.isResetPassword = false
   }
 
   getUserById(id: string) {
     if (id) {
       this.uSub = this.userService.getUserById(id).subscribe({
         next: user => {
-          this.form.get('lastName').setValue(user.lastName)
-          this.form.get('firstName').setValue(user.firstName)
-          this.form.get('phone').setValue(user.phone)
-          this.form.get('post').setValue(user.post)
-          this.form.get('login').setValue(user.login)
+          this.form.patchValue({
+            lastName: user.lastName,
+            firstName: user.firstName,
+            phone: user.phone,
+            post: user.post,
+            login: user.login
+          })
 
           this.titleForm = user.lastName + ' ' + user.firstName
 
@@ -146,8 +148,14 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
         }
       })
     } else {
-      user._id = this.params
-      this.userService.update(user).subscribe({
+      this.isResetPassword ? this.resetPassword() : this.userService.update({
+        _id: this.user._id,
+        lastName: this.form.get('lastName').value,
+        firstName: this.form.get('firstName').value,
+        phone: this.form.get('phone').value,
+        post: this.form.get('post').value,
+        login: this.form.get('login').value,
+      }).subscribe({
         next: (message: { message: string }) => {
           if (message.message == 'Успех') {
             this.router.navigate(['/admin-panel/users'])
@@ -158,8 +166,9 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
         }
       })
     }
-
+    this.openUsersPage()
   }
+
 
   delete() {
     this.uSub = this.userService.delete(this.user).subscribe({
@@ -173,6 +182,33 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
     this.router.navigate(['admin-panel/users'])
   }
 
-  protected readonly blur = blur;
+  generateFormPassword() {
+    this.form.disable()
+    this.isResetPassword = !this.isResetPassword
+    this.formPassword = new FormGroup({
+      password: new FormControl(null, [Validators.required]),
+      checkPassword: new FormControl(null, [Validators.required]),
+    })
+  }
+
+  resetPassword() {
+    this.userService.update({
+      ...this.user,
+      password: this.formPassword.get('password').value
+    }).subscribe({
+      next: (message: { message: string }) => {
+        if (message.message == 'Успех') {
+          this.router.navigate(['/admin-panel/users'])
+        }
+      },
+      error: (error) => console.log(error.error.message),
+      complete: () => {
+      }
+    })
+    this.openUsersPage()
+  }
+
+  protected readonly
+  blur = blur;
 
 }
