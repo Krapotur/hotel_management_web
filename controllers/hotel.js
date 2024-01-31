@@ -41,10 +41,8 @@ module.exports.create = async function (req, res) {
         let rooms = []
         let quantityRooms = 0
         if(Number(req.body.floors) > 1) {
-            console.log('Phase 1')
             for (let i = 0; i < Number(req.body.floors); i++) {
                 let arr = req.body.rooms[i].split('-')
-                console.log(arr)
                 let countRooms = 0
                 for (let j = arr[1]; j <= arr[2]; j++) {
                     let room = {

@@ -1,5 +1,4 @@
 const User = require('../models/User')
-// const Hotel = require('../models/Hotel')
 const errorHandler = require('../utils/errorHandler')
 const bcrypt = require('bcryptjs')
 
@@ -50,7 +49,7 @@ module.exports.create = async function (req, res) {
             firstName: req.body.firstName,
             phone: req.body.phone,
             post: req.body.post,
-            // hotels: req.body.hotels,
+            hotels: [],
             login: req.body.login,
             password: bcrypt.hashSync(password, salt)
         })
@@ -72,13 +71,25 @@ module.exports.create = async function (req, res) {
 
 module.exports.update = async function (req, res) {
 
+    console.log(req.body.hotel)
+    const candidate = await User.findOne({_id: req.params.id})
     const updated = {
         lastName: req.body.lastName,
         firstName: req.body.firstName,
         phone: req.body.phone,
         post: req.body.post,
-        // hotels: req.body.hotels,
         login: req.body.login,
+    }
+
+    if (req.body.hotel) {
+        let arr = candidate.hotels
+        if (!arr.includes(req.body.hotel)) {
+            arr.push(req.body.hotel)
+        } else {
+            let idxHotel = arr.indexOf(req.body.hotel)
+            arr.splice(idxHotel)
+        }
+        updated.hotels = arr
     }
 
     if (req.body.password) {

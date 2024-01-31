@@ -1,6 +1,13 @@
 <div class="main" [class]="isDelete || isResetPassword? 'blur': ''">
   <div class="container">
-    <h2>{{ titleForm }}</h2>
+    <div class="header">
+      <img [class]="user ? 'dn': ''"
+           src="../assets/icons/add-user.png" alt="add-user">
+      <img [class]="!isEdit ? 'dn': ''"
+           src="../assets/icons/edit-user.png" alt="edit-user">
+      <h2>{{ titleForm }}</h2>
+    </div>
+
     <hr>
     <form [formGroup]="form">
       <div class="container-form">

@@ -22,9 +22,25 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   padding: 45px 0 40px 0;
 }
 
-h2 {
-  color: #3C3735;
+.dn{
+  display: none;
 }
+
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  h2 {
+    color: #3C3735;
+  }
+
+  img{
+    padding-right: 15px;
+    width: 70px;
+  }
+
+}
+
 
 .container-form {
   display: flex;

@@ -67,17 +67,17 @@
           </div>
         </div>
         <span *ngIf="isErrorRequired" class="error-span">Заполните обязательные поля с номерами*</span>
-
         <mat-form-field>
           <mat-label>Горничная <span *ngIf="!users.length">(список пуст)</span></mat-label>
           <mat-select formControlName="users" multiple>
             <mat-select-trigger>
-              {{ form.get('users').value?.[0] || '' }}
-              <span class="example-additional-selection" *ngIf="((form.get('users').value?.length || 0) > 1)">
-                   (еще {{ (form.get('users').value?.length || 0) - 1 }} )
+              {{ personalList.length ? personalList[0].lastName + ' ' + personalList[0].firstName : '' }}
+              <span class="example-additional-selection" *ngIf="personalList.length > 1">
+                   (еще {{ personalList.length }})
                    </span>
             </mat-select-trigger>
-            <mat-option *ngFor="let user of users" [value]="user.lastName + ' ' + user.firstName "
+            <mat-option *ngFor="let user of users"
+                        [value]=" user.lastName + ' ' + user.firstName"
             >{{ user.lastName + ' ' + user.firstName }}
             </mat-option>
           </mat-select>

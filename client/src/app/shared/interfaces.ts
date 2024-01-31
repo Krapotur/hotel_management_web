@@ -10,7 +10,8 @@ export interface User {
   firstName: number;
   post: string;
   phone: string;
-  hotels?: string;
+  hotels?: string[];
+  hotel?: string;
   edit?: string,
   login: string,
   password?: string
@@ -29,7 +30,7 @@ export interface Hotel {
   _id?:string,
   title: string,
   floors: number,
-  rooms: string[],
+  rooms?: string[],
   quantityRooms?: number,
   position?:number
   personal?: string[]

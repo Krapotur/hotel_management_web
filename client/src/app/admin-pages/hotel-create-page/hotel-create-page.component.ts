@@ -3,7 +3,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {NgForOf, NgIf} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {Hotel, User} from "../../shared/interfaces";
 import {StateService} from "../../shared/services/state.service";
 import {HotelsService} from "../../shared/services/hotels.service";
@@ -25,7 +25,8 @@ import {UsersService} from "../../shared/services/users.service";
     NgIf,
     ReactiveFormsModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    JsonPipe
   ],
   templateUrl: './hotel-create-page.component.html',
   styleUrl: './hotel-create-page.component.scss'
@@ -41,7 +42,10 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   isDelete = false
   image: File
   hotel: Hotel
+  user: User
+  personal: User
   users: User[] = []
+  personalList: User[] = []
   params: string
   hSub: Subscription
   uSub: Subscription
@@ -54,11 +58,12 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   @ViewChild('inputImg') inputImgRef: ElementRef
+  @ViewChild('matOption') matOption: MatOptionModule
 
   ngOnInit() {
-    this.getUsers()
     this.getParams()
     this.generateForm()
+    this.getUsers()
   }
 
   ngDoCheck() {
@@ -96,7 +101,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   getParams() {
-    this.uSub = this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       this.params = params['hotelID']
       this.getHotelById(params['hotelID'])
     })
@@ -120,6 +125,26 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
       this.titleForm = 'Новая гостиница'
     }
   }
+
+  getUsers() {
+    this.uSub = this.usersService.getUsers().subscribe({
+      next: users => {
+        this.users = users.filter(user => user.post == "Горничная")
+
+        for (let i = 0; i < this.users.length; i++) {
+          for (let j = 0; j < users[i].hotels.length; j++) {
+            if(users[i].hotels[j] == this.form.get('title').value){
+              this.personalList.push(users[i])
+            }
+          }
+        }
+        console.log('this.personalList.length: ', this.personalList.length)
+        console.log('this.personalList.length: ', this.personalList)
+      },
+      error: error => console.log(error.error.message)
+    })
+  }
+
   createArrForFloors() {
     this.floors = []
     if (this.form.get('floors').value > 4) {
@@ -196,45 +221,58 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
     this.inputImgRef.nativeElement.click()
   }
 
-  getUsers() {
-    this.uSub = this.usersService.getUsers().subscribe({
-      next: users => {
-        this.users = users.filter(user => user.post == 'Горничная')
-      },
-      error: error => console.log(error.error.message)
-    })
-  }
-
   onSubmit() {
-    if (this.form.get('startRoom1').value) {
-      let hotel: Hotel = {
-        title: this.form.get('title').value,
-        floors: this.quantityFloors,
-        rooms: [],
-        personal: this.form.get('users').value
-      }
+    if (!this.isEdit) {
+      if (this.form.get('startRoom1').value) {
+        let hotel: Hotel = {
+          title: this.form.get('title').value,
+          floors: this.quantityFloors,
+          rooms: [],
+          personal: this.form.get('users').value
+        }
 
-      for (let i = 1; i <= this.floors.length; i++) {
-        hotel.rooms.push(i + '-' + this.form.get('startRoom' + i).value + '-' + this.form.get('endRoom' + i).value)
-      }
+        for (let i = 1; i <= this.floors.length; i++) {
+          hotel.rooms.push(i + '-' + this.form.get('startRoom' + i).value + '-' + this.form.get('endRoom' + i).value)
+        }
 
-      this.hSub = this.hotelService.create(hotel, this.image).subscribe({
-        next: message => console.log(message.message),
-        error: error => console.log(error.error.error)
-      })
-      this.image = null
+        this.hSub = this.hotelService.create(hotel, this.image).subscribe({
+          next: message => console.log(message.message),
+          error: error => console.log(error.error.error)
+        })
+        this.image = null
+      }
+      this.openHotelsPage()
+    } else this.updateUser(this.form.get('users').value)
+  }
+
+  updateUser(users: string[]) {
+
+    // if (!this.personalList.includes()) {
+    //   this.personalList.push()
+    // }
+
+    if (this.personalList.length != 0) {
+      for (let i = 0; i < this.personalList.length; i++) {
+
+        let user = {
+          _id: this.personalList[i]._id,
+          lastName: this.personalList[i].lastName,
+          firstName: this.personalList[i].firstName,
+          post: this.personalList[i].post,
+          hotel: this.form.get('title').value,
+          phone: this.personalList[i].phone,
+          login: this.personalList[i].login
+        }
+
+        this.uSub = this.usersService.update(user).subscribe({
+          next: message => console.log(message),
+          error: error => console.log(error.error.message)
+        })
+      }
     }
-    this.openHotelsPage()
+    console.log(this.personalList)
   }
 
-  updateUser(){
-
-    // this.users.filter(user => {
-    //   if(user.lastName + ' ' + user.firstName ==   )
-    // })
-    //
-    // this.uSub = this.usersService.getUserById()
-  }
   delete() {
     this.hSub = this.hotelService.delete(this.hotel).subscribe({
       next: message => console.log(message.message),
