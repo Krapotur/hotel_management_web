@@ -1,0 +1,50 @@
+<div class="container">
+
+  <div class="left-block">
+    <div class="img-block">
+      <img [ngSrc]="hotel.imgSrc" alt="image" width="507" height="350">
+      <div>
+        <h2>Гостиница <span>"{{ hotel.title }}"</span></h2>
+      </div>
+      <div>
+        <h3>Номерной фонд:  <span>{{ hotel.quantityRooms }}</span></h3>
+      </div>
+    </div>
+
+    <div class="personal-block">
+      <h3>Горничная</h3>
+      <hr>
+      <div class="personal" *ngFor="let personal of personalList">
+
+       <p> {{ personal }}</p>
+      </div>
+    </div>
+    <div class="toggle-left">
+      <mat-slide-toggle color="warn">Изменить</mat-slide-toggle>
+    </div>
+
+  </div>
+
+  <div>
+    <div class="right-block">
+      <div class="floor-container" *ngFor="let floor of floors">
+        <h3>{{ floor.numberFloor }} этаж</h3>
+        <div class="rooms">
+          <div class="room" *ngFor="let room of floor.rooms">
+            <button
+              type="submit"
+              class="btn-room" extended="" mat-fab
+            >
+              {{ room.numberRoom }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toggle-right">
+      <mat-slide-toggle color="warn">Изменить</mat-slide-toggle>
+    </div>
+  </div>
+
+</div>
+

@@ -10,12 +10,12 @@ const hotelSchema = new Schema({
     imgSrc: {
         type: String,
         default: ''
-        // require: true,
     },
     floors: {
         type: Number,
         require: true
     },
+    roomsStr:[],
     rooms: {
         type: [{
             numberRoom: {

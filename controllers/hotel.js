@@ -33,6 +33,7 @@ module.exports.delete = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
+    console.log(req.body.roomsStr)
     if (await Hotel.findOne({title: req.body.title})) {
         res.status(409).json({
             message: `Гостиница ${req.body.title} уже есть`
@@ -42,7 +43,7 @@ module.exports.create = async function (req, res) {
         let quantityRooms = 0
         if(Number(req.body.floors) > 1) {
             for (let i = 0; i < Number(req.body.floors); i++) {
-                let arr = req.body.rooms[i].split('-')
+                let arr = req.body.roomsStr[i].split('-')
                 let countRooms = 0
                 for (let j = arr[1]; j <= arr[2]; j++) {
                     let room = {
@@ -59,7 +60,7 @@ module.exports.create = async function (req, res) {
             }
         } else {
             for (let i = 0; i < Number(req.body.floors); i++) {
-                let arr = req.body.rooms.split('-')
+                let arr = req.body.roomsStr.split('-')
                 let countRooms = 0
                 for (let j = arr[1]; j <= arr[2]; j++) {
                     let room = {
@@ -79,6 +80,7 @@ module.exports.create = async function (req, res) {
             title: req.body.title,
             imgSrc: req.file ? req.file.path : '',
             floors: Number(req.body.floors),
+            roomsStr: req.body.roomsStr,
             rooms: rooms,
             quantityRooms: quantityRooms,
             personal: req.body.personal

@@ -22,15 +22,17 @@ export interface Group {
 }
 
 export interface Floor {
-  numberFloor: number,
-  rooms: number []
+  numberFloor: string,
+  rooms: Room[]
 }
 
 export interface Hotel {
   _id?:string,
   title: string,
   floors: number,
-  rooms?: string[],
+  rooms: Room[]
+  roomsStr?: string[],
+  imgSrc?: string,
   quantityRooms?: number,
   position?:number
   personal?: string[]

@@ -16,8 +16,8 @@ export class HotelsService {
     fd.append('title', hotel.title)
     fd.append('floors', hotel.floors.toString())
 
-    for (let i = 0; i < hotel.rooms.length; i++) {
-      fd.append('rooms', hotel.rooms[i])
+    for (let i = 0; i < hotel.roomsStr.length; i++) {
+      fd.append('roomsStr', hotel.roomsStr[i])
     }
 
     for (let i = 0; i < hotel.personal.length; i++) {
