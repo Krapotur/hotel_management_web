@@ -248,7 +248,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
         for (let i = 1; i <= this.floors.length; i++) {
           hotel.roomsStr.push(this.form.get('floor' + i).value + '-' + this.form.get('startRoom' + i).value + '-' + this.form.get('endRoom' + i).value)
         }
-
+        console.log(hotel.roomsStr)
         this.hSub = this.hotelService.create(hotel, this.image).subscribe({
           next: message => console.log(message.message),
           error: error => console.log(error.error.error)

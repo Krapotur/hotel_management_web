@@ -1,27 +1,27 @@
 <div class="container">
-
   <div class="left-block">
     <div class="img-block">
-      <img [ngSrc]="hotel.imgSrc" alt="image" width="507" height="350">
+      <img [ngSrc]="hotel.imgSrc" alt="image" fill="">
+    </div>
+    <div class="title-block">
       <div>
         <h2>Гостиница <span>"{{ hotel.title }}"</span></h2>
       </div>
       <div>
-        <h3>Номерной фонд:  <span>{{ hotel.quantityRooms }}</span></h3>
+        <h3>Номерной фонд: <span>{{ hotel.quantityRooms }}</span></h3>
       </div>
     </div>
 
     <div class="personal-block">
-      <h3>Горничная</h3>
+      <h3>Персонал</h3>
       <hr>
       <div class="personal" *ngFor="let personal of personalList">
-
-       <p> {{ personal }}</p>
+        <p> {{ personal }}</p>
       </div>
     </div>
-    <div class="toggle-left">
-      <mat-slide-toggle color="warn">Изменить</mat-slide-toggle>
-    </div>
+<!--    <div class="toggle-left">-->
+<!--      <mat-slide-toggle color="warn">Изменить</mat-slide-toggle>-->
+<!--    </div>-->
 
   </div>
 
@@ -41,10 +41,11 @@
         </div>
       </div>
     </div>
-    <div class="toggle-right">
-      <mat-slide-toggle color="warn">Изменить</mat-slide-toggle>
-    </div>
+<!--    <div class="toggle-right">-->
+<!--      <mat-slide-toggle color="warn">Изменить</mat-slide-toggle>-->
+<!--    </div>-->
   </div>
 
 </div>
+
 

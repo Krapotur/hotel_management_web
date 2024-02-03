@@ -52,9 +52,8 @@ export class HotelEditPageComponent implements OnInit {
   }
 
   getHotelById(id: string) {
-    this.hSub = this.hotelService.getHotelById(this.params).subscribe({
+    this.hSub = this.hotelService.getHotelById(id).subscribe({
       next: hotel => {
-
         for (let k = 0; k < hotel.personal.length; k++) {
           let position = ++k + '. ' + hotel.personal[--k]
           this.personalList.push(position)
@@ -75,7 +74,6 @@ export class HotelEditPageComponent implements OnInit {
           }
           this.floors.push(floor)
         }
-        console.log(this.floors)
         this.hotel = hotel
       },
       error: error => console.log(error.error.message)
