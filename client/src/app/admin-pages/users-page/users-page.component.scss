@@ -19,7 +19,9 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   margin-top: 23px;
 
   h1 {
-    font-size: 20px;
+    margin: 0;
+    font-weight: bold;
+    font-size: 25px;
     padding: 20px 0 10px 30px;
   }
 }
@@ -29,15 +31,19 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 }
 
 table {
-  padding: 5px 20px 0 20px;
+  padding: 5px 40px 0 40px;
 
   th {
+    text-align: center;
+    padding: 5px 3vh;
     font-weight: bold;
     color: black;
   }
 
   td {
-    padding-top: 5px;
+    text-align: center;
+    padding: 5px 3vh;
+
     img {
       cursor: pointer;
     }
@@ -63,6 +69,7 @@ button {
   height: 45px;
 }
 
-.table-posts{
+.table-posts {
+  margin-left: 10vh;
   padding-top: 23px;
 }
