@@ -38,53 +38,11 @@ module.exports.create = async function (req, res) {
             message: `Гостиница ${req.body.title} уже есть`
         })
     } else {
-        console.log('Phase1')
-        let rooms = []
-        let quantityRooms = 0
-        if (Number(req.body.floors) < 2) {
-            for (let i = 0; i < req.body.floors; i++) {
-                let arr = req.body.roomsStr.split('-')
-                let countRooms = 0
-                for (let j = arr[1]; j <= arr[2]; j++) {
-                    let room = {
-                        numberRoom: j,
-                        floor: arr[0],
-                        status: 'Готов',
-                        comments: [],
-                        hotel: req.body.title
-                    }
-                    rooms.push(room)
-                    countRooms++
-                }
-                quantityRooms += countRooms
-            }
-        } else if (Number(req.body.floors) > 1) {
-            for (let i = 0; i < req.body.floors; i++) {
-                console.log(req.body.roomsStr)
-                let arr = req.body.roomsStr[i].split('-')
-                let countRooms = 0
-                for (let j = arr[1]; j <= arr[2]; j++) {
-                    let room = {
-                        numberRoom: j,
-                        floor: arr[0],
-                        status: 'Готов',
-                        comments: [],
-                        hotel: req.body.title
-                    }
-                    rooms.push(room)
-                    countRooms++
-                }
-                quantityRooms += countRooms
-            }
-        }
 
         let hotel = new Hotel({
             title: req.body.title,
             imgSrc: req.file ? req.file.path : '',
             floors: Number(req.body.floors),
-            roomsStr: req.body.roomsStr,
-            rooms: rooms,
-            quantityRooms: quantityRooms,
             personal: req.body.personal
         })
 

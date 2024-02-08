@@ -21,7 +21,6 @@ export class PostsService {
   }
 
   update(post: Post): Observable<Post> {
-    // console.log(post)
     return this.http.patch<Post>(`/api/posts/${post._id}`, post)
   }
 

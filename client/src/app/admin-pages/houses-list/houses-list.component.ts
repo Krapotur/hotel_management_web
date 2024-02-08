@@ -30,18 +30,8 @@ export class HousesListComponent implements OnInit {
   form: FormGroup
   houses:Hotel [] = []
 
-  ELEMENT_DATA: Group[] = [
-    {position: 1, name: 'Заливина Анна', post: 'Руководитель', phone: '79895423544'},
-    {position: 2, name: 'Администратор гостиниц', post: 'Администратор гостиниц', phone: '79895423544'},
-    {position: 3, name: 'Администратор системы', post: 'Администратор системы', phone: '79895423544'},
-    {position: 4, name: 'Рахмонова Оля', post: 'Горничная', phone: '79895423544'},
-    {position: 5, name: 'Аметова Замира', post: 'Горничная', phone: '79895423544'},
-    {position: 6, name: 'Толибова Феруза', post: 'Горничная', phone: '79895423544'},
-    {position: 7, name: 'Гафарова Хабиба', post: 'Горничная', phone: '79895423544'},
-  ];
 
   isTrue = false
-answer = 'Отлично!!!'
 
   displayedColumns: string[] = ['#', 'name', 'floors', 'personal', 'edit'];
   dataSource = new MatTableDataSource<Hotel>(this.houses);
@@ -50,10 +40,6 @@ answer = 'Отлично!!!'
 
   ngOnInit() {
     this.generateForm()
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   generateForm() {

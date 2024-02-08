@@ -5,7 +5,6 @@ const roomSchema = new Schema({
     numberRoom: {
         type: Number,
         require: true,
-        unique: true
     },
     floor: {
         type: Number,

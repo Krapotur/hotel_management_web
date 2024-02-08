@@ -1,0 +1,13 @@
+<div class="floor-container" *ngFor="let floor of floors">
+    <h3>{{ floor.numberFloor }} этаж</h3>
+    <div class="rooms">
+        <div class="room" *ngFor="let room of floor.rooms">
+            <button
+                    class="btn-room" extended="" mat-fab
+                    (click)="deleteRoom(room)"
+            >
+                {{ room.numberRoom }}
+            </button>
+        </div>
+    </div>
+</div>

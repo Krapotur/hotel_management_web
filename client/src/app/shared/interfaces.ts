@@ -22,19 +22,19 @@ export interface Group {
 }
 
 export interface Floor {
-  numberFloor: string,
+  numberFloor: number,
   rooms: Room[]
 }
 
 export interface Hotel {
-  _id?:string,
+  _id?: string,
   title: string,
   floors: number,
-  rooms: Room[]
+  rooms?: Room[]
   roomsStr?: string[],
   imgSrc?: string,
   quantityRooms?: number,
-  position?:number
+  position?: number
   personal?: string[]
 }
 
@@ -44,10 +44,13 @@ export interface Post {
   title: string
 }
 
-export interface Room{
-  numberRoom: number,
-  floor: number,
+export interface Room {
+  _id?: string,
+  numberRoom?: number,
+  floor?: number,
   status?: string,
   comments?: string[],
-  hotel: string
+  roomsStr?: string[],
+  hotelTitle?: string,
+  hotel?: string
 }

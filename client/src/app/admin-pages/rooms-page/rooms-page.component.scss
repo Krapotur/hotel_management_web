@@ -1,0 +1,38 @@
+.floor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    font-size: 30px;
+    padding-bottom: 10px;
+    color: #F87839
+  }
+}
+
+.rooms {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 50vh;
+  padding-bottom: 30px;
+
+  .room {
+    padding: 5px;
+  }
+}
+
+.btn-room {
+  background-color: seagreen;
+  width: 60px;
+}
+
+.room button {
+  border-radius: 2px;
+  height: 30px;
+}
+
+
+.toggle-right {
+  padding: 20px 0 0 50px;
+}
