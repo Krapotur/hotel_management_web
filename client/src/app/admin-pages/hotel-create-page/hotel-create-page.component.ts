@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -222,9 +222,12 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
 
             this.hSub = this.hotelService.create(hotel, this.image).subscribe({
                 next: message => {
+                    if (message) {
+                        this.createRooms(hotel)
+                    }
                     MaterialService.toast(message.message)
                 },
-                error: error =>  MaterialService.toast(error.error.error)
+                error: error => MaterialService.toast(error.error.message),
             })
             this.image = null
             this.openHotelsPage()
@@ -251,8 +254,8 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
                 login: arr[i].login
             }
             this.uSub = this.usersService.update(user).subscribe({
-                next: message =>  MaterialService.toast(message.message),
-                error: error =>  MaterialService.toast(error.error.message)
+                next: message => MaterialService.toast(message.message),
+                error: error => MaterialService.toast(error.error.message)
             })
         }
 
