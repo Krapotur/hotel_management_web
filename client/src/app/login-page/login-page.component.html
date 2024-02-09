@@ -1,40 +1,46 @@
 <div class="login_page">
-  <img src="./assets/images/login_page_bg.jpg" alt="image" class="login_page_image">
-  <div class="form_container">
-    <div class="login_form">
-      <div class="logo">
-        <img src="./assets/images/logo2.png" alt="logo">
-      </div>
+    <img src="./assets/images/login_page_bg.jpg" alt="image" class="login_page_image">
+    <div class="form_container">
+        <div class="login_form">
+            <div class="logo">
+                <img src="./assets/images/logo2.png" alt="logo">
+            </div>
 
-      <form
-        [formGroup]="form"
-        (ngSubmit)="onSubmit()"
-      >
-        <h2>HOTEL MANAGEMENT</h2>
+            <form
+                    [formGroup]="form"
+                    (ngSubmit)="onSubmit()"
+            >
+                <h2>HOTEL MANAGEMENT</h2>
 
-        <mat-form-field class="input_box">
-          <mat-label class="label">Логин</mat-label>
-          <input formControlName="login" matInput>
-          <mat-error>
-            *Введите логин
-          </mat-error>
-        </mat-form-field>
+                <div class="input-block">
 
-        <mat-form-field class="input_box">
-          <mat-label>Пароль</mat-label>
-          <input formControlName="password" matInput type="password">
-          <mat-error>
-            *Пароль не может быть менее 6 символов
-          </mat-error>
-        </mat-form-field>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="login" type="text" formControlName="login">
+                            <label class="active" for="login">Логин</label>
+                        </div>
+                    </div>
+                    <span *ngIf="form.get('login').hasError('required') && form.get('login').touched"
+                    >*Введите логин
+        </span>
 
-        <button
-          class="input_box btn" extended="" mat-fab
-          type="submit">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="password" type="password" formControlName="password">
+                            <label class="active" for="password">Пароль</label>
+                        </div>
+                    </div>
+                    <span *ngIf="form.get('password').hasError('required') && form.get('password').touched"
+                    >*Введите пароль
+        </span>
+                    <button
+                            class="btn" extended="" mat-fab
+                            type="submit">
 
-          Войти
-        </button>
-      </form>
+                        Войти
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
 </div>

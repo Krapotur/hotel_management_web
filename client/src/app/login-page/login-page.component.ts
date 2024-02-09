@@ -11,6 +11,7 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PostsService} from "../shared/services/posts.service";
 import {Post} from "../shared/interfaces";
+import {MaterialService} from "../shared/classes/material.service";
 
 @Component({
   selector: 'app-login-page',
@@ -69,7 +70,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         this.router.navigate(['/admin-panel']).then(r => console.log(r))
       },
       error: error => {
-        console.warn(error)
+        MaterialService.toast(error.error.message)
         this.form.enable()
       }
     })

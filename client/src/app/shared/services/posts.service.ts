@@ -20,8 +20,8 @@ export class PostsService {
     return this.http.get<Post[]>('/api/posts')
   }
 
-  update(post: Post): Observable<Post> {
-    return this.http.patch<Post>(`/api/posts/${post._id}`, post)
+  update(post: Post): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`/api/posts/${post._id}`, post)
   }
 
   delete(post: Post): Observable<{ message: string }> {

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -13,7 +13,8 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {UsersService} from "../../shared/services/users.service";
 import {RoomsService} from "../../shared/services/rooms.service";
-import {error} from "@angular/compiler-cli/src/transformers/util";
+import {MaterialService} from "../../shared/classes/material.service";
+import {response} from "express";
 
 @Component({
     selector: 'app-hotel-create-page',
@@ -163,8 +164,6 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
             for (let i = 1; i <= this.floors.length; i++) {
                 this.form.controls['floor' + i].disable()
             }
-
-            this.title = this.form.get('title').value
         }
     }
 
@@ -180,6 +179,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
             }
         }
         this.stateService.quantityFloors = this.quantityFloors
+        this.title = this.form.get('title').value
     }
 
     protected readonly Number = Number;
@@ -221,11 +221,12 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
             }
 
             this.hSub = this.hotelService.create(hotel, this.image).subscribe({
-                next: message => console.log(message.message),
-                error: error => console.log(error.error.error)
+                next: message => {
+                    MaterialService.toast(message.message)
+                },
+                error: error =>  MaterialService.toast(error.error.error)
             })
             this.image = null
-            this.createRooms(hotel)
             this.openHotelsPage()
         } else this.updateUser(this.form.get('users').value)
         this.openHotelsPage()
@@ -250,8 +251,8 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
                 login: arr[i].login
             }
             this.uSub = this.usersService.update(user).subscribe({
-                next: message => console.log(message),
-                error: error => console.log(error.error.message)
+                next: message =>  MaterialService.toast(message.message),
+                error: error =>  MaterialService.toast(error.error.message)
             })
         }
 
@@ -264,8 +265,8 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
 
     delete() {
         this.hSub = this.hotelService.delete(this.hotel).subscribe({
-            next: message => console.log(message.message),
-            error: error => console.log(error.error.message)
+            next: message => MaterialService.toast(message.message),
+            error: error => MaterialService.toast(error.error.message)
         })
         this.openHotelsPage()
     }
@@ -291,4 +292,5 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy, Aft
             })
         }, 2000)
     }
+
 }

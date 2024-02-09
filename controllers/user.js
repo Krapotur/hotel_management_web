@@ -105,7 +105,7 @@ module.exports.update = async function (req, res) {
                 {new: true}
             )
             res.status(200).json({
-                message: `Изменения внесены" `
+                message: `Изменения внесены`
             })
         } catch (e) {
             errorHandler(res, e)
@@ -118,7 +118,7 @@ module.exports.update = async function (req, res) {
                 {new: true}
             )
             res.status(200).json({
-                message: `Изменения внесены" `
+                message: `Изменения внесены`
             })
         } catch (e) {
             errorHandler(res, e)

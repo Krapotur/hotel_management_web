@@ -4,7 +4,7 @@ $greyWithOpacity_01: rgba(128, 128, 128, 0.1);
 $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 
 * {
-  font-family: $lora
+  font-family: $lora;
 }
 
 .blur {
@@ -25,6 +25,8 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 }
 
 h2 {
+  margin: 0;
+  font-size: 35px;
   color: #3C3735;
 }
 
@@ -38,7 +40,7 @@ h2 {
 
 mat-form-field {
   margin-bottom: 11px;
-  width: 300px;
+  width: 250px;
 }
 
 mat-hint {
@@ -46,24 +48,43 @@ mat-hint {
   color: red;
 }
 
+.row {
+  display: flex;
+  flex-direction: column;
+
+  .input-field {
+    width: 270px;
+    margin-bottom: 0;
+  }
+
+  label {
+    border-bottom: #F57C23;
+  }
+
+  span {
+    color: red;
+    font-size: 13px;
+    padding-left: 20px;
+  }
+}
+
 .input-floors {
   border-radius: 5px;
-  background-color: $greyWithOpacity_01;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 10px;
-  margin: 0 0 15px 30px;
+  padding: 10px 0 15px 0;
   width: 280px;
 
   span {
+    font-size: 13px;
     color: rgba(0, 0, 0, 0.85);
-    padding-right: 2px;
+    padding-right: 5px;
   }
 }
 
 .input-floors input {
-  width: 35px;
+  width: 30px;
   height: 30px;
   outline: none;
   padding-left: 8px;
@@ -81,9 +102,8 @@ mat-hint {
   -webkit-appearance: none;
 }
 
-
 .input-rooms input {
-  width: 50px;
+  width: 40px;
   height: 30px;
   outline: none;
   padding: 0 5px;
@@ -110,6 +130,10 @@ hr {
   justify-content: space-evenly;
   flex-direction: column;
   padding: 5px 5px 10px 5px;
+
+  label {
+    font-size: 20px;
+  }
 }
 
 .img-group {

@@ -36,7 +36,7 @@ module.exports.create = async function (req, res) {
 
             await post.save()
             res.status(201).json({
-                message: `Должность "${req.body.title}" успешно создан`
+                message: `Должность "${req.body.title}" успешно создана`
             })
         }
     } catch (e) {
@@ -68,7 +68,9 @@ module.exports.update = async function (req, res) {
             {$set: updated},
             {new: true}
         )
-        res.status(200).json(post)
+        res.status(200).json({
+            message: 'Изменения внесены'
+        })
     } catch (e) {
         errorHandler(res, e)
     }

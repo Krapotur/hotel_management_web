@@ -14,6 +14,7 @@ import {Subscription} from "rxjs";
 import {HotelsService} from "../../shared/services/hotels.service";
 import {UsersService} from "../../shared/services/users.service";
 import {FilterUsersPipe} from "../../shared/pipes/filter-users.pipe";
+import {MaterialService} from "../../shared/classes/material.service";
 
 @Component({
   selector: 'app-hotels-list-page',
@@ -85,7 +86,7 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   getUsers() {
     this.uSub = this.userService.getUsers().subscribe({
       next: users => this.users = users,
-      error: error => console.log(error.error.message)
+      error: error => MaterialService.toast(error.error.message)
     })
   }
 
