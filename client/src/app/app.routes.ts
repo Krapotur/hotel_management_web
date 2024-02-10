@@ -25,9 +25,9 @@ export const routes: Routes = [
       {path: 'user-create', component: UserCreatePageComponent},
       {path: 'groups', component: PostsPageComponent},
       {path: 'hotels', component: HotelsListPageComponent},
-      {path: 'hotel', component: HotelPageComponent},
+      {path: 'hotel/:id', component: HotelPageComponent},
       {path: 'hotel-create', component: HotelCreatePageComponent},
-      {path: 'hotel-edit', component: HotelEditPageComponent},
+      {path: 'hotel-edit/:id', component: HotelEditPageComponent},
       {path: 'houses', component:HousesListComponent},
     ]
   },

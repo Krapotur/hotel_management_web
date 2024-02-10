@@ -6,14 +6,14 @@ export interface Login {
 export interface User {
   position?: number;
   _id?: string
-  lastName: string;
-  firstName: number;
-  post: string;
-  phone: string;
+  lastName?: string;
+  firstName?: number;
+  post?: string;
+  phone?: string;
   hotels?: string[];
   hotel?: string;
   edit?: string,
-  login: string,
+  login?: string,
   password?: string
 }
 

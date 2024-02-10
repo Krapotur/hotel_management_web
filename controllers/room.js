@@ -5,7 +5,7 @@ const errorHandler = require('../utils/errorHandler')
 
 module.exports.getAll = async function (req, res) {
     try {
-       await Room.find().then(rooms => res.status(200).json(rooms))
+        await Room.find().then(rooms => res.status(200).json(rooms))
     } catch (e) {
         errorHandler(res, e)
     }
@@ -27,7 +27,6 @@ module.exports.create = async function (req, res) {
         let rooms = []
         for (let i = 0; i < req.body.roomsStr.length; i++) {
             let arr = req.body.roomsStr[i].split('-')
-            console.log(arr)
             for (let j = arr[1]; j <= arr[2]; j++) {
                 let room = {
                     numberRoom: Number(j),
@@ -40,7 +39,6 @@ module.exports.create = async function (req, res) {
             }
         }
 
-        console.log(rooms)
         try {
             await Room.collection.insertMany(rooms)
             res.status(201)
@@ -56,7 +54,7 @@ module.exports.create = async function (req, res) {
             message: `Номер ${req.body.numberRoom} уже существует`
         })
     } else {
-        const room = new Room ({
+        const room = new Room({
             numberRoom: req.body.numberRoom,
             floor: req.body.floor,
             status: req.body.status,
@@ -76,12 +74,23 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.delete = async function (req, res) {
-    try {
-        const room = await Room.findById({_id: req.params.id})
-        await Room.deleteOne({_id: room._id})
-        res.status(200).json({message: `Номер ${room.numberRoom} удален`})
-    } catch (e) {
-        errorHandler(res, e)
+    let room = await Room.findOne({_id: req.params.id})
+    let hotel = await Hotel.findOne({_id: room.hotel})
+    if (!hotel) {
+        try {
+            await Room.deleteMany({hotel: room.hotel})
+            res.status(200).json({message: `Гостиница удалена`})
+        } catch (e) {
+            errorHandler(res, e)
+        }
+    } else {
+        try {
+            const room = await Room.findById({_id: req.params.id})
+            await Room.deleteOne({_id: room._id})
+            res.status(200).json({message: `Номер ${room.numberRoom} удален`})
+        } catch (e) {
+            errorHandler(res, e)
+        }
     }
 }
 

@@ -4,7 +4,7 @@
   align-items: center;
 
   h3 {
-    font-size: 30px;
+    font-size: 25px;
     padding-bottom: 10px;
     color: #F87839
   }
@@ -15,7 +15,7 @@
   flex-wrap: wrap;
   flex-direction: row;
   width: 50vh;
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 
   .room {
     padding: 5px;
@@ -31,7 +31,6 @@
   border-radius: 2px;
   height: 30px;
 }
-
 
 .toggle-right {
   padding: 20px 0 0 50px;

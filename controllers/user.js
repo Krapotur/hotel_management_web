@@ -1,4 +1,5 @@
 const User = require('../models/User')
+const Hotel = require('../models/Hotel')
 const errorHandler = require('../utils/errorHandler')
 const bcrypt = require('bcryptjs')
 
@@ -63,10 +64,7 @@ module.exports.create = async function (req, res) {
         } catch (e) {
             errorHandler(res, e)
         }
-
-
     }
-
 }
 
 module.exports.update = async function (req, res) {
@@ -92,6 +90,13 @@ module.exports.update = async function (req, res) {
         updated.hotels = arr
     }
 
+    const hotel = await Hotel.findOne({title: req.body.hotel})
+    console.log('hotel', hotel)
+    if(!hotel){
+        let users = await User.find({hotel: req.body.hotel})
+        console.log('users', users)
+    }
+
     if (req.body.password) {
         const salt = bcrypt.genSaltSync(10)
         const password = req.body.password
@@ -105,7 +110,7 @@ module.exports.update = async function (req, res) {
                 {new: true}
             )
             res.status(200).json({
-                message: `Изменения внесены`
+                message: `Пароль успешно изменен`
             })
         } catch (e) {
             errorHandler(res, e)
