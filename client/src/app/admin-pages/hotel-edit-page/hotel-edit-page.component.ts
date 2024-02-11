@@ -1,4 +1,4 @@
-import {Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -7,7 +7,7 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {HotelsService} from "../../shared/services/hotels.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Floor, Hotel, Room, User} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
@@ -15,6 +15,7 @@ import {RoomsPageComponent} from "../rooms-page/rooms-page.component";
 import {RoomsService} from "../../shared/services/rooms.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {UsersService} from "../../shared/services/users.service";
+import {HotelPageComponent} from "../hotel-page/hotel-page.component";
 
 
 @Component({
@@ -32,7 +33,9 @@ import {UsersService} from "../../shared/services/users.service";
     ReactiveFormsModule,
     NgOptimizedImage,
     MatSlideToggleModule,
-    RoomsPageComponent
+    RoomsPageComponent,
+    HotelPageComponent,
+    RouterLink
   ],
   templateUrl: './hotel-edit-page.component.html',
   styleUrl: './hotel-edit-page.component.scss'
@@ -40,7 +43,6 @@ import {UsersService} from "../../shared/services/users.service";
 export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   form: FormGroup
   hotel: Hotel
-  title = ''
   image: File
   hotelId: string
   floors: Floor[] = []
@@ -56,7 +58,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   isEdit = false
 
   @ViewChild('inputImg') inputImgRef: ElementRef
-  @ViewChild('modal') modalRef: ElementRef
 
   constructor(private hotelService: HotelsService,
               private userService: UsersService,
@@ -70,10 +71,10 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     this.hotelId = this.route.snapshot.params['id']
     this.getHotelById()
     this.getRooms()
-    this.getUsers()
   }
 
   ngDoCheck() {
+    this.isDelete ? this.form.disable() : this.form.enable()
   }
 
   ngOnDestroy() {
@@ -88,6 +89,7 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
+
   generateForm() {
     this.isEdit = !this.isEdit
     this.form = new FormGroup({
@@ -97,6 +99,49 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   onSubmit() {
+    let hotel: Hotel = {
+      _id: this.hotelId,
+      title: this.form.get('title').value,
+      personal: this.form.get('users').value
+    }
+
+    this.hSub = this.hotelService.update(hotel, this.image).subscribe({
+      next: message =>MaterialService.toast(message.message),
+      error: error => MaterialService.toast(error.error.message),
+    })
+    this.router.navigate(['admin-panel/hotels'])
+    this.updateUser(this.form.get('users').value)
+  }
+
+
+  updateUser(users: string[]) {
+    let arr = []
+    for (let i = 0; i < users.length; i++) {
+      for (let j = 0; j < this.users.length; j++) {
+        if ((this.users[j].lastName + ' ' + this.users[j].firstName) == users[i]) {
+          arr.push(this.users[j])
+        }
+      }
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+      let user = {
+        _id: arr[i]._id,
+        lastName: arr[i].lastName,
+        firstName: arr[i].firstName,
+        post: arr[i].post,
+        hotel: this.form.get('title').value,
+        phone: arr[i].phone,
+        login: arr[i].login
+      }
+
+      setTimeout(() => {
+        this.uSub = this.userService.update(user).subscribe({
+          next: message => MaterialService.toast(message.message),
+          error: error => MaterialService.toast(error.error.message)
+        })
+      }, 1000)
+    }
   }
 
   getHotelById() {
@@ -106,6 +151,8 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
           this.personal.push(hotel.personal[k])
         }
         this.hotel = hotel
+        this.generateForm()
+        this.getUsers()
       },
       error: error => MaterialService.toast(error.error.message)
     })
@@ -151,10 +198,10 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
       next: message => MaterialService.toast(message.message),
       error: error => MaterialService.toast(error.error.message)
     })
+    this.router.navigate([`admin-panel/hotels`])
+
     this.deleteRooms()
     this.deletePersonal()
-
-    this.router.navigate([`admin-panel/hotels`])
   }
 
   deleteRooms() {
@@ -169,7 +216,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
 
   deletePersonal() {
     let users: User[] = []
-
     for (let i = 0; i < this.users.length; i++) {
       for (let j = 0; j < this.users[i].hotels.length; j++) {
           if (this.users[i].hotels[j] === this.hotel.title){
@@ -177,23 +223,24 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
           }
       }
     }
-    console.log(users)
-    let user: User = {
-        _id: users[0]._id,
-        hotels: users[0].hotels,
-        hotel: users[0].hotel
-    }
 
-    console.log(user)
-    setTimeout(() => {
-      this.uSub = this.userService.update(user).subscribe({
-        next: message => MaterialService.toast(message.message),
-        error: error => MaterialService.toast(error.error.message)
-      })
-    }, 2000)
+    users.forEach(user => {
+      let userNew: User = {
+        _id: user._id,
+        hotels: user.hotels,
+        hotel: this.hotel.title
+      }
+
+      setTimeout(() => {
+        this.uSub = this.userService.update(userNew).subscribe({
+          next: message => MaterialService.toast(message.message),
+          error: error => MaterialService.toast(error.error.message)
+        })
+      }, 2000)
+    })
   }
 
   openHotelsPage() {
-    this.router.navigate([`admin-panel/hotel-edit/${this.hotelId}`])
+    this.router.navigate([`admin-panel/hotels`])
   }
 }

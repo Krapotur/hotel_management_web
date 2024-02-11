@@ -78,7 +78,7 @@
             </button>
             <button
                     type="submit"
-                    class="btn-save" extended="" mat-fab
+                    [class]="isDelete ? 'btn-delete':'btn-save'" extended="" mat-fab
                     (click)="isDelete ? delete() : onSubmit()"
             >
                 {{ isDelete ? 'Да' : 'Сохранить' }}

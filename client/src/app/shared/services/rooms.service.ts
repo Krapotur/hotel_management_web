@@ -10,7 +10,6 @@ export class RoomsService {
   quantityRooms = 0
   constructor(private http: HttpClient) { }
 
-
   create(room: Room): Observable<{ message: string }> {
     return this.http.post<{ message: string }>('/api/rooms', room)
   }

@@ -70,9 +70,9 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnDestroy() {
-    // if (this.hSub) {
-    //   this.hSub.unsubscribe()
-    // }
+    if (this.hSub) {
+      this.hSub.unsubscribe()
+    }
     if (this.uSub) {
       this.uSub.unsubscribe()
     }
@@ -203,25 +203,23 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
       }
 
       this.hSub = this.hotelService.create(hotel, this.image).subscribe({
-        next: message => {
-          MaterialService.toast(message.message)
-        },
+        next: message =>MaterialService.toast(message.message),
         error: error => MaterialService.toast(error.error.message),
-        complete: () => {
-          this.createRooms(hotel)
-        }
       })
-      this.image = null
       this.openHotelsPage()
+      this.createRooms(hotel)
+      this.image = null
       this.updateUser(this.form.get('users').value)
     }
   }
 
   updateUser(users: string[]) {
     let arr = []
-    for (let i = 0; i < this.users.length; i++) {
-      if ((this.users[i].lastName + ' ' + this.users[i].firstName) == users[i]) {
-        arr.push(this.users[i])
+    for (let i = 0; i < users.length; i++) {
+      for (let j = 0; j < this.users.length; j++) {
+        if ((this.users[j].lastName + ' ' + this.users[j].firstName) == users[i]) {
+          arr.push(this.users[j])
+        }
       }
     }
 
@@ -236,12 +234,12 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
         login: arr[i].login
       }
 
-      setTimeout(()=>{
+      setTimeout(() => {
         this.uSub = this.usersService.update(user).subscribe({
           next: message => MaterialService.toast(message.message),
           error: error => MaterialService.toast(error.error.message)
         })
-      },2000)
+      }, 1000)
     }
   }
 

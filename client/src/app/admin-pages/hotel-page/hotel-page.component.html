@@ -1,1 +1,30 @@
-<p>hotel-page works!</p>
+<div class="container">
+  <div class="left-block">
+    <div class="img-block">
+      <img [ngSrc]="hotel.imgSrc" alt="image" fill="">
+    </div>
+    <div class="title-block">
+      <div>
+        <h2>Гостиница <span>"{{ hotel.title }}"</span></h2>
+      </div>
+      <div>
+        <h3>Номерной фонд: <span>{{ quantityRooms }}</span></h3>
+      </div>
+    </div>
+
+    <div class="personal-block">
+      <h3>Персонал</h3>
+      <hr>
+      <div class="personal" *ngFor="let personal of personal">
+        <p> {{personal }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div [class]="quantityRooms >60 ? 'right-block-scroll': 'right-block'">
+      <app-rooms-page [hotelId]="hotel._id"></app-rooms-page>
+    </div>
+  </div>
+
+</div>

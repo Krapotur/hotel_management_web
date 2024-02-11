@@ -15,6 +15,7 @@ import {HotelsService} from "../../shared/services/hotels.service";
 import {UsersService} from "../../shared/services/users.service";
 import {FilterUsersPipe} from "../../shared/pipes/filter-users.pipe";
 import {MaterialService} from "../../shared/classes/material.service";
+import {HousesListComponent} from "../houses-list/houses-list.component";
 
 @Component({
   selector: 'app-hotels-list-page',
@@ -31,7 +32,8 @@ import {MaterialService} from "../../shared/classes/material.service";
     PostsPageComponent,
     MatInputModule,
     RouterLink,
-    FilterUsersPipe
+    FilterUsersPipe,
+    HousesListComponent
   ],
   templateUrl: './hotels-list-page.component.html',
   styleUrl: './hotels-list-page.component.scss'
@@ -42,7 +44,6 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   hSub: Subscription
   uSub: Subscription
   hotels: Hotel[] =[]
-  users: User[] = []
 
   constructor(private router: Router,
               private hotelService: HotelsService,
@@ -50,12 +51,12 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
 
   }
 
-  displayedColumns: string[] = ['#', 'title', 'floors', 'rooms', 'personal', 'edit'];
+  displayedColumns: string[] = ['#', 'title', 'floors',  'personal', 'edit'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
-    this.getAll()
+    this.getHotels()
     this.getUsers()
   }
 
@@ -71,7 +72,7 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  getAll() {
+  getHotels() {
     this.hSub = this.hotelService.getAll().subscribe({
       next: hotels => {
         let position = 1
@@ -84,8 +85,21 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   getUsers() {
+
     this.uSub = this.userService.getUsers().subscribe({
-      next: users => this.users = users,
+      next: users => {
+        this.hotels.forEach(hotel => hotel.personal = [])
+
+        for (let i = 0; i < this.hotels.length; i++) {
+          for (let k = 0; k < users.length; k++) {
+            for (let j = 0; j < users[k].hotels.length; j++) {
+              if (this.hotels[i].title === users[k].hotels[j]) {
+                this.hotels[i].personal.push(users[k].lastName + ' ' + users[k].firstName)
+              }
+            }
+          }
+        }
+      },
       error: error => MaterialService.toast(error.error.message)
     })
   }

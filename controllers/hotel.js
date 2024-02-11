@@ -38,7 +38,6 @@ module.exports.create = async function (req, res) {
             message: `Гостиница ${req.body.title} уже есть`
         })
     } else {
-
         let hotel = new Hotel({
             title: req.body.title,
             imgSrc: req.file ? req.file.path : '',
@@ -58,8 +57,17 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.update = async function (req, res) {
+
+    const hotel = await Hotel.findOne({title: req.body.title})
+
+
     const updated = {
-        title: req.body.title
+        title: req.body.title,
+        personal: req.body.personal
+    }
+
+    if (!req.body.personal){
+        updated.personal = []
     }
 
     if (req.file) {
@@ -67,13 +75,16 @@ module.exports.update = async function (req, res) {
     }
 
     try {
-        const hotel = await Hotel.findByIdAndUpdate(
+        await Hotel.findByIdAndUpdate(
             {_id: req.params.id},
             {$set: updated},
             {new: true}
         )
-        res.status(200).json(hotel)
+        res.status(200).json({
+            message: 'Изменения внесены в гостиницу'
+        })
     } catch (e) {
         errorHandler(res, e)
     }
+
 }

@@ -29,7 +29,7 @@ export interface Floor {
 export interface Hotel {
   _id?: string,
   title: string,
-  floors: number,
+  floors?: number,
   rooms?: Room[]
   roomsStr?: string[],
   imgSrc?: string,

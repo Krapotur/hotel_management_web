@@ -58,8 +58,7 @@ module.exports.create = async function (req, res) {
         try {
             await user.save()
             res.status(201).json({
-                message: 'Успех'
-                // message: `Пользователь ${user.lastName + ' ' + user.firstName} успешно создан`
+                message: `Пользователь ${user.lastName + ' ' + user.firstName} успешно создан`
             })
         } catch (e) {
             errorHandler(res, e)
@@ -69,7 +68,6 @@ module.exports.create = async function (req, res) {
 
 module.exports.update = async function (req, res) {
 
-    console.log(req.body.hotel)
     const candidate = await User.findOne({_id: req.params.id})
     const updated = {
         lastName: req.body.lastName,
@@ -88,13 +86,7 @@ module.exports.update = async function (req, res) {
             arr.splice(idxHotel)
         }
         updated.hotels = arr
-    }
-
-    const hotel = await Hotel.findOne({title: req.body.hotel})
-    console.log('hotel', hotel)
-    if(!hotel){
-        let users = await User.find({hotel: req.body.hotel})
-        console.log('users', users)
+        console.log(arr)
     }
 
     if (req.body.password) {
