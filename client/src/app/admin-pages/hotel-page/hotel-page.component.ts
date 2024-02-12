@@ -98,13 +98,7 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy{
   }
 
   getRooms() {
-    this.rSub = this.roomsService.getAll().subscribe({
-      next: rooms => {
-        this.roomsHotel = rooms.filter(room => room.hotel === this.hotelId)
-        this.quantityRooms = this.roomsHotel.length
-      },
-      error: error => MaterialService.toast(error.error.message)
-    })
-
+    this.roomsHotel = this.getDataService.getRooms(this.hotelId)
+    this.quantityRooms = this.roomsHotel.length
   }
 }

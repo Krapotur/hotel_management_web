@@ -4,6 +4,7 @@ import {UsersService} from "./users.service";
 import {HotelsService} from "./hotels.service";
 import {MaterialService} from "../classes/material.service";
 import {Subscription} from "rxjs";
+import {Room} from "../interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import {Subscription} from "rxjs";
 export class GetDateService implements OnDestroy{
 
   uSub: Subscription
-
+  rSub: Subscription
   constructor(private hotelsService: HotelsService,
               private roomsService: RoomsService,
               private usersService: UsersService) {
@@ -20,6 +21,9 @@ export class GetDateService implements OnDestroy{
  ngOnDestroy() {
     if (this.uSub){
       this.uSub.unsubscribe()
+    }
+    if (this.rSub){
+      this.rSub.unsubscribe()
     }
  }
 
@@ -38,5 +42,16 @@ export class GetDateService implements OnDestroy{
       error: error => MaterialService.toast(error.error.message)
     })
     return personalList
+  }
+
+  getRooms(hotelId: String): Room[]{
+    let roomsHotel: Room[]
+    this.rSub = this.roomsService.getAll().subscribe({
+      next: rooms => {
+        roomsHotel = rooms.filter(room => room.hotel === hotelId)
+      },
+      error: error => MaterialService.toast(error.error.message)
+    })
+    return roomsHotel
   }
 }

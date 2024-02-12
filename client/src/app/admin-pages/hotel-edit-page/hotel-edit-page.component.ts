@@ -183,11 +183,11 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
       }, 1000)
     }
 
-    if (personal.length == 0 ){
+    if (personal.length == 0) {
       for (let i = 0; i < this.users.length; i++) {
         for (let j = 0; j < this.users[i].hotels.length; j++) {
 
-          if (this.users[i].hotels[j] == this.hotel.title ) {
+          if (this.users[i].hotels[j] == this.hotel.title) {
             let user = {
               _id: this.users[i]._id,
               lastName: this.users[i].lastName,
@@ -234,14 +234,8 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   getRooms() {
-    this.rSub = this.roomsService.getAll().subscribe({
-      next: rooms => {
-        this.roomsHotel = rooms.filter(room => room.hotel === this.hotelId)
-        this.quantityRooms = this.roomsHotel.length
-      },
-      error: error => MaterialService.toast(error.error.message)
-    })
-
+    this.roomsHotel = this.getDataService.getRooms(this.hotelId)
+    this.quantityRooms = this.roomsHotel.length
   }
 
   triggerClick() {
