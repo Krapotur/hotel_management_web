@@ -11,7 +11,7 @@ export class HotelsService {
     constructor(private http: HttpClient) {
     }
 
-    create(hotel: Hotel, image: File): Observable<{ message: string }> {
+    create(hotel: Hotel, image: File): Observable<Hotel> {
         const fd = new FormData()
         fd.append('title', hotel.title)
         if (hotel.floors) {
@@ -26,7 +26,7 @@ export class HotelsService {
             fd.append('image', image, image.name)
         }
 
-        return this.http.post<{ message: string }>('/api/hotels', fd)
+        return this.http.post<Hotel>('/api/hotels', fd)
     }
 
     getAll(): Observable<Hotel[]> {

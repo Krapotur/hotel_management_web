@@ -47,9 +47,7 @@ module.exports.create = async function (req, res) {
 
         try {
             await hotel.save()
-            res.status(201).json({
-                message: `Гостиница ${hotel.title} успешно добавлена`
-            })
+            res.status(201).json(hotel)
         } catch (e) {
             errorHandler(res, e)
         }
@@ -59,7 +57,6 @@ module.exports.create = async function (req, res) {
 module.exports.update = async function (req, res) {
 
     const hotel = await Hotel.findOne({title: req.body.title})
-
 
     const updated = {
         title: req.body.title,
@@ -86,5 +83,4 @@ module.exports.update = async function (req, res) {
     } catch (e) {
         errorHandler(res, e)
     }
-
 }

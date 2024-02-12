@@ -41,7 +41,9 @@ module.exports.create = async function (req, res) {
 
         try {
             await Room.collection.insertMany(rooms)
-            res.status(201)
+            res.status(201).json({
+                message: `Гостиница "${hotel.title}" успешно добавлена`
+            })
 
         } catch (e) {
             errorHandler(res, e)

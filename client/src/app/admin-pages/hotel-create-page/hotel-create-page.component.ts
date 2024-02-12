@@ -203,14 +203,35 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
       }
 
       this.hSub = this.hotelService.create(hotel, this.image).subscribe({
-        next: message =>MaterialService.toast(message.message),
+        next: hotel => {
+          if(hotel){
+            this.createRooms(hotel)
+            this.updateUser(this.form.get('users').value)
+            this.openHotelsPage()
+          } else MaterialService.toast(`Гостиница "${this.form.get('title').value}" уже существует`)
+        },
         error: error => MaterialService.toast(error.error.message),
       })
-      this.openHotelsPage()
-      this.createRooms(hotel)
       this.image = null
-      this.updateUser(this.form.get('users').value)
     }
+  }
+
+  createRooms(hotel: Hotel) {
+    let room: Room = {
+      hotelTitle: hotel.title,
+      roomsStr: []
+    }
+
+    for (let i = 1; i <= this.floors.length; i++) {
+      room.roomsStr.push(this.form.get('floor' + i).value + '-' + this.form.get('startRoom' + i).value + '-' + this.form.get('endRoom' + i).value)
+    }
+
+    setTimeout(() => {
+      this.rSub = this.roomsService.create(room).subscribe({
+        next: message => MaterialService.toast(message.message),
+        error: error => MaterialService.toast(error.error.message)
+      })
+    }, 2000)
   }
 
   updateUser(users: string[]) {
@@ -236,33 +257,15 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
 
       setTimeout(() => {
         this.uSub = this.usersService.update(user).subscribe({
-          next: message => MaterialService.toast(message.message),
+          next: message => '',
           error: error => MaterialService.toast(error.error.message)
         })
-      }, 1000)
+      }, 2000)
     }
   }
 
   openHotelsPage() {
     this.router.navigate(['admin-panel/hotels'])
-  }
-
-  createRooms(hotel: Hotel) {
-    let room: Room = {
-      hotelTitle: hotel.title,
-      roomsStr: []
-    }
-
-    for (let i = 1; i <= this.floors.length; i++) {
-      room.roomsStr.push(this.form.get('floor' + i).value + '-' + this.form.get('startRoom' + i).value + '-' + this.form.get('endRoom' + i).value)
-    }
-
-    setTimeout(() => {
-      this.rSub = this.roomsService.create(room).subscribe({
-        next: message => console.log(message),
-        error: error => console.log(error.error.message)
-      })
-    }, 2000)
   }
 
 }

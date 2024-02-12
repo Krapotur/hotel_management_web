@@ -13,6 +13,7 @@ import {HotelsService} from "../../shared/services/hotels.service";
 import {UsersService} from "../../shared/services/users.service";
 import {RoomsService} from "../../shared/services/rooms.service";
 import {ActivatedRoute} from "@angular/router";
+import {GetDateService} from "../../shared/services/get-date.service";
 
 @Component({
   selector: 'app-hotel-page',
@@ -47,6 +48,7 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy{
   constructor(private hotelService: HotelsService,
               private userService: UsersService,
               private roomsService: RoomsService,
+              private getDataService: GetDateService,
               private route: ActivatedRoute
               ) {
   }
@@ -87,17 +89,10 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy{
   }
 
   getUsers() {
+    this.personalList = this.getDataService.getPersonal()
+
     this.uSub = this.userService.getUsers().subscribe({
-      next: users => {
-        this.users = users
-        users.filter(user => {
-          if (user.post === 'Горничная') {
-            if (!this.personalList.includes(user.lastName + ' ' + user.firstName)) {
-              this.personalList.push(user.lastName + ' ' + user.firstName)
-            }
-          }
-        })
-      },
+      next: users => this.users = users,
       error: error => MaterialService.toast(error.error.message)
     })
   }

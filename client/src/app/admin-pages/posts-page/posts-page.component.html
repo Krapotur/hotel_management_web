@@ -80,6 +80,7 @@
                     type="submit"
                     [class]="isDelete ? 'btn-delete':'btn-save'" extended="" mat-fab
                     (click)="isDelete ? delete() : onSubmit()"
+                    [disabled]="form.invalid"
             >
                 {{ isDelete ? 'Да' : 'Сохранить' }}
             </button>

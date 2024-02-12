@@ -61,6 +61,7 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit() {
+    this.getHotels()
   }
 
   ngOnDestroy() {
@@ -85,7 +86,6 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   getUsers() {
-
     this.uSub = this.userService.getUsers().subscribe({
       next: users => {
         this.hotels.forEach(hotel => hotel.personal = [])

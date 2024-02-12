@@ -16,6 +16,7 @@ import {RoomsService} from "../../shared/services/rooms.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {UsersService} from "../../shared/services/users.service";
 import {HotelPageComponent} from "../hotel-page/hotel-page.component";
+import {GetDateService} from "../../shared/services/get-date.service";
 
 
 @Component({
@@ -62,6 +63,7 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   constructor(private hotelService: HotelsService,
               private userService: UsersService,
               private roomsService: RoomsService,
+              private getDataService: GetDateService,
               private route: ActivatedRoute,
               private router: Router
   ) {
@@ -106,33 +108,71 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     }
 
     this.hSub = this.hotelService.update(hotel, this.image).subscribe({
-      next: message =>MaterialService.toast(message.message),
+      next: message => MaterialService.toast(message.message),
       error: error => MaterialService.toast(error.error.message),
     })
     this.router.navigate(['admin-panel/hotels'])
-    this.updateUser(this.form.get('users').value)
+    this.findAndSortUsers(this.form.get('users').value)
   }
 
+  findAndSortUsers(users: string[]) {
+    let listUsersForAddHotel: User[] = []
 
-  updateUser(users: string[]) {
-    let arr = []
     for (let i = 0; i < users.length; i++) {
       for (let j = 0; j < this.users.length; j++) {
         if ((this.users[j].lastName + ' ' + this.users[j].firstName) == users[i]) {
-          arr.push(this.users[j])
+
+          if (this.users[j].hotels.length == 0) listUsersForAddHotel.push(this.users[j])
+
+          for (let k = 0; k < this.users[j].hotels.length; k++) {
+            if (!this.users[j].hotels[k].includes(this.hotel.title)) {
+              listUsersForAddHotel.push(this.users[j])
+            }
+          }
         }
       }
     }
+    if (listUsersForAddHotel.length > 0) this.updateUsers(listUsersForAddHotel, users)
 
-    for (let i = 0; i < arr.length; i++) {
+    if (listUsersForAddHotel.length == 0 && users.length !== 0) {
+      for (let k = 0; k < users.length; k++) {
+        for (let i = 0; i < this.users.length; i++) {
+          for (let j = 0; j < this.users[i].hotels.length; j++) {
+
+            if (this.users[i].hotels[j] == this.hotel.title && this.users[i].lastName + ' ' + this.users[i].firstName !== users[k]) {
+              let user = {
+                _id: this.users[i]._id,
+                lastName: this.users[i].lastName,
+                firstName: this.users[i].firstName,
+                post: this.users[i].post,
+                hotel: this.form.get('title').value,
+                phone: this.users[i].phone,
+                login: this.users[i].login
+              }
+
+              setTimeout(() => {
+                this.uSub = this.userService.update(user).subscribe({
+                  next: message => MaterialService.toast(message.message),
+                  error: error => MaterialService.toast(error.error.message)
+                })
+              }, 1000)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  updateUsers(users?: User[], personal?: string[]) {
+    for (let i = 0; i < users.length; i++) {
       let user = {
-        _id: arr[i]._id,
-        lastName: arr[i].lastName,
-        firstName: arr[i].firstName,
-        post: arr[i].post,
+        _id: users[i]._id,
+        lastName: users[i].lastName,
+        firstName: users[i].firstName,
+        post: users[i].post,
         hotel: this.form.get('title').value,
-        phone: arr[i].phone,
-        login: arr[i].login
+        phone: users[i].phone,
+        login: users[i].login
       }
 
       setTimeout(() => {
@@ -141,6 +181,32 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
           error: error => MaterialService.toast(error.error.message)
         })
       }, 1000)
+    }
+
+    if (personal.length == 0 ){
+      for (let i = 0; i < this.users.length; i++) {
+        for (let j = 0; j < this.users[i].hotels.length; j++) {
+
+          if (this.users[i].hotels[j] == this.hotel.title ) {
+            let user = {
+              _id: this.users[i]._id,
+              lastName: this.users[i].lastName,
+              firstName: this.users[i].firstName,
+              post: this.users[i].post,
+              hotel: this.form.get('title').value,
+              phone: this.users[i].phone,
+              login: this.users[i].login
+            }
+
+            setTimeout(() => {
+              this.uSub = this.userService.update(user).subscribe({
+                next: message => MaterialService.toast(message.message),
+                error: error => MaterialService.toast(error.error.message)
+              })
+            }, 1500)
+          }
+        }
+      }
     }
   }
 
@@ -159,17 +225,10 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   getUsers() {
+    this.personalList = this.getDataService.getPersonal()
+
     this.uSub = this.userService.getUsers().subscribe({
-      next: users => {
-        this.users = users
-        users.filter(user => {
-          if (user.post === 'Горничная') {
-            if (!this.personalList.includes(user.lastName + ' ' + user.firstName)) {
-              this.personalList.push(user.lastName + ' ' + user.firstName)
-            }
-          }
-        })
-      },
+      next: users => this.users = users,
       error: error => MaterialService.toast(error.error.message)
     })
   }
@@ -218,9 +277,9 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     let users: User[] = []
     for (let i = 0; i < this.users.length; i++) {
       for (let j = 0; j < this.users[i].hotels.length; j++) {
-          if (this.users[i].hotels[j] === this.hotel.title){
-            users.push(this.users[i])
-          }
+        if (this.users[i].hotels[j] === this.hotel.title) {
+          users.push(this.users[i])
+        }
       }
     }
 

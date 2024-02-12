@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, DoCheck, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
@@ -30,7 +30,7 @@ import {MaterialService} from "../../shared/classes/material.service";
     templateUrl: './posts-page.component.html',
     styleUrl: './posts-page.component.scss'
 })
-export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy {
+export class PostsPageComponent implements OnInit, OnDestroy {
     form: FormGroup
     titleForm = ''
     titlePost = ''
@@ -54,13 +54,6 @@ export class PostsPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
     ngOnInit() {
         this.getPosts()
         this.generateForm()
-    }
-
-    ngDoCheck() {
-
-    }
-
-    ngAfterViewInit() {
     }
 
     ngOnDestroy() {
