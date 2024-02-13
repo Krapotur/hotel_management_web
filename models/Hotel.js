@@ -45,7 +45,6 @@ const hotelSchema = new Schema({
             type: String
         }]
     }
-
 })
 
 module.exports = mongoose.model('hotels', hotelSchema)

@@ -202,9 +202,10 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
         personal: this.form.get('users').value
       }
 
+
       this.hSub = this.hotelService.create(hotel, this.image).subscribe({
         next: hotel => {
-          if(hotel){
+          if (hotel) {
             this.createRooms(hotel)
             this.updateUser(this.form.get('users').value)
             this.openHotelsPage()
@@ -235,28 +236,25 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   updateUser(users: string[]) {
-    let arr = []
-    for (let i = 0; i < users.length; i++) {
-      for (let j = 0; j < this.users.length; j++) {
-        if ((this.users[j].lastName + ' ' + this.users[j].firstName) == users[i]) {
-          arr.push(this.users[j])
-        }
-      }
-    }
+    let userList: User[] = []
 
-    for (let i = 0; i < arr.length; i++) {
-      let user = {
-        _id: arr[i]._id,
-        lastName: arr[i].lastName,
-        firstName: arr[i].firstName,
-        post: arr[i].post,
+    this.users.forEach(user => {
+      if (users.includes(user.lastName + ' ' + user.firstName)) userList.push(user)
+    })
+
+    for (const user of userList) {
+      let newUser = {
+        _id: user._id,
+        lastName: user.lastName,
+        firstName: user.firstName,
+        post: user.post,
         hotel: this.form.get('title').value,
-        phone: arr[i].phone,
-        login: arr[i].login
+        phone: user.phone,
+        login: user.login
       }
 
       setTimeout(() => {
-        this.uSub = this.usersService.update(user).subscribe({
+        this.uSub = this.usersService.update(newUser).subscribe({
           next: message => '',
           error: error => MaterialService.toast(error.error.message)
         })

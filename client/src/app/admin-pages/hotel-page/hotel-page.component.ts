@@ -18,22 +18,22 @@ import {GetDateService} from "../../shared/services/get-date.service";
 @Component({
   selector: 'app-hotel-page',
   standalone: true,
-    imports: [
-        FormsModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatOptionModule,
-        MatSelectModule,
-        NgForOf,
-        NgIf,
-        NgOptimizedImage,
-        ReactiveFormsModule,
-        RoomsPageComponent
-    ],
+  imports: [
+    FormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
+    NgForOf,
+    NgIf,
+    NgOptimizedImage,
+    ReactiveFormsModule,
+    RoomsPageComponent
+  ],
   templateUrl: './hotel-page.component.html',
   styleUrl: './hotel-page.component.scss'
 })
-export class HotelPageComponent implements OnInit, DoCheck, OnDestroy{
+export class HotelPageComponent implements OnInit, DoCheck, OnDestroy {
   hotelId: string
   hotel: Hotel
   users: User[] = []
@@ -50,14 +50,14 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy{
               private roomsService: RoomsService,
               private getDataService: GetDateService,
               private route: ActivatedRoute
-              ) {
+  ) {
   }
 
 
   ngOnInit() {
     this.hotelId = this.route.snapshot.params['id']
     this.getHotelById()
-    this.getRooms()
+    this.getQuantityRooms()
     this.getUsers()
   }
 
@@ -89,7 +89,7 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy{
   }
 
   getUsers() {
-    this.personalList = this.getDataService.getPersonal()
+    this.personalList = this.getDataService.getPersonal(this.hotel).personalList
 
     this.uSub = this.userService.getUsers().subscribe({
       next: users => this.users = users,
@@ -97,8 +97,13 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy{
     })
   }
 
-  getRooms() {
-    this.roomsHotel = this.getDataService.getRooms(this.hotelId)
-    this.quantityRooms = this.roomsHotel.length
+  getQuantityRooms() {
+    this.rSub = this.roomsService.getAll().subscribe({
+      next: rooms => {
+        this.roomsHotel = rooms.filter(room => room.hotel === this.hotelId)
+        this.quantityRooms = this.roomsHotel.length
+      },
+      error: error => MaterialService.toast(error.error.message),
+    })
   }
 }

@@ -33,6 +33,8 @@ module.exports.delete = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
+    console.log(req.body.personal)
+
     if (await Hotel.findOne({title: req.body.title})) {
         res.status(409).json({
             message: `Гостиница ${req.body.title} уже есть`
@@ -55,8 +57,6 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.update = async function (req, res) {
-
-    const hotel = await Hotel.findOne({title: req.body.title})
 
     const updated = {
         title: req.body.title,

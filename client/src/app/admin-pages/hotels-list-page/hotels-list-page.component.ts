@@ -16,6 +16,7 @@ import {UsersService} from "../../shared/services/users.service";
 import {FilterUsersPipe} from "../../shared/pipes/filter-users.pipe";
 import {MaterialService} from "../../shared/classes/material.service";
 import {HousesListComponent} from "../houses-list/houses-list.component";
+import {RoomsService} from "../../shared/services/rooms.service";
 
 @Component({
   selector: 'app-hotels-list-page',
@@ -41,23 +42,26 @@ import {HousesListComponent} from "../houses-list/houses-list.component";
 export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy {
   showTemplate = false
   dataSource: MatTableDataSource<Hotel>
+
   hSub: Subscription
+  rSub: Subscription
   uSub: Subscription
-  hotels: Hotel[] =[]
+  hotels: Hotel[] = []
+  personalList: User[] = []
 
   constructor(private router: Router,
               private hotelService: HotelsService,
+              private roomService: RoomsService,
               private userService: UsersService) {
 
   }
 
-  displayedColumns: string[] = ['#', 'title', 'floors',  'personal', 'edit'];
+  displayedColumns: string[] = ['#', 'title', 'floors', 'quantityRooms', 'personal', 'edit'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
     this.getHotels()
-    this.getUsers()
   }
 
   ngAfterViewInit() {
@@ -67,6 +71,9 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   ngOnDestroy() {
     if (this.hSub) {
       this.hSub.unsubscribe()
+    }
+    if (this.rSub) {
+      this.rSub.unsubscribe()
     }
     if (this.uSub) {
       this.uSub.unsubscribe()
@@ -78,6 +85,8 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
       next: hotels => {
         let position = 1
         this.hotels = hotels
+        this.getUsers(this.hotels)
+        this.getQuantityRoomsInHotel(this.hotels)
         this.hotels.map(hotel => hotel.position = position++)
         this.dataSource = new MatTableDataSource<Hotel>(this.hotels)
         this.dataSource.paginator = this.paginator
@@ -85,27 +94,36 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
     })
   }
 
-  getUsers() {
+  getUsers(hotels: Hotel[]) {
     this.uSub = this.userService.getUsers().subscribe({
       next: users => {
-        this.hotels.forEach(hotel => hotel.personal = [])
+       hotels.forEach(hotel => {
+          let arr = hotel.personal
+          hotel.personal = []
 
-        for (let i = 0; i < this.hotels.length; i++) {
-          for (let k = 0; k < users.length; k++) {
-            for (let j = 0; j < users[k].hotels.length; j++) {
-              if (this.hotels[i].title === users[k].hotels[j]) {
-                this.hotels[i].personal.push(users[k].lastName + ' ' + users[k].firstName)
-              }
-            }
+          for (const user of users) {
+            if (arr.includes(user._id)) hotel.personal.push(user.lastName + ' ' + user.firstName)
           }
-        }
+        })
       },
       error: error => MaterialService.toast(error.error.message)
     })
   }
 
-  openCreateHotelPage(hotel?: Hotel){
-    if(hotel){
+  getQuantityRoomsInHotel(hotels: Hotel[]) {
+    this.rSub = this.roomService.getAll().subscribe({
+      next: rooms => {
+        hotels.map(hotel => {
+          let roomsHotel = rooms.filter( room => hotel._id == room.hotel)
+
+          hotel.quantityRooms = roomsHotel.length
+        })
+      }
+    })
+  }
+
+  openCreateHotelPage(hotel?: Hotel) {
+    if (hotel) {
       this.router.navigate([`admin-panel/hotel-edit/${hotel._id}`])
     } else {
       this.router.navigate(['admin-panel/hotel-create'])

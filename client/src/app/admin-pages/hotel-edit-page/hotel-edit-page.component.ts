@@ -91,20 +91,28 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-
   generateForm() {
     this.isEdit = !this.isEdit
     this.form = new FormGroup({
       title: new FormControl(this.hotel.title),
-      users: new FormControl(this.hotel.personal)
+      users: new FormControl(this.personal)
     })
   }
 
   onSubmit() {
+    let personal = []
+    this.users.forEach(user => {
+      if (this.form.get('users').value.includes(user.lastName + ' ' + user.firstName)) {
+        personal.push(user._id)
+      }
+    })
+
+    console.log(personal)
+
     let hotel: Hotel = {
       _id: this.hotelId,
       title: this.form.get('title').value,
-      personal: this.form.get('users').value
+      personal: personal
     }
 
     this.hSub = this.hotelService.update(hotel, this.image).subscribe({
@@ -112,130 +120,40 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
       error: error => MaterialService.toast(error.error.message),
     })
     this.router.navigate(['admin-panel/hotels'])
-    this.findAndSortUsers(this.form.get('users').value)
-  }
-
-  findAndSortUsers(users: string[]) {
-    let listUsersForAddHotel: User[] = []
-
-    for (let i = 0; i < users.length; i++) {
-      for (let j = 0; j < this.users.length; j++) {
-        if ((this.users[j].lastName + ' ' + this.users[j].firstName) == users[i]) {
-
-          if (this.users[j].hotels.length == 0) listUsersForAddHotel.push(this.users[j])
-
-          for (let k = 0; k < this.users[j].hotels.length; k++) {
-            if (!this.users[j].hotels[k].includes(this.hotel.title)) {
-              listUsersForAddHotel.push(this.users[j])
-            }
-          }
-        }
-      }
-    }
-    if (listUsersForAddHotel.length > 0) this.updateUsers(listUsersForAddHotel, users)
-
-    if (listUsersForAddHotel.length == 0 && users.length !== 0) {
-      for (let k = 0; k < users.length; k++) {
-        for (let i = 0; i < this.users.length; i++) {
-          for (let j = 0; j < this.users[i].hotels.length; j++) {
-
-            if (this.users[i].hotels[j] == this.hotel.title && this.users[i].lastName + ' ' + this.users[i].firstName !== users[k]) {
-              let user = {
-                _id: this.users[i]._id,
-                lastName: this.users[i].lastName,
-                firstName: this.users[i].firstName,
-                post: this.users[i].post,
-                hotel: this.form.get('title').value,
-                phone: this.users[i].phone,
-                login: this.users[i].login
-              }
-
-              setTimeout(() => {
-                this.uSub = this.userService.update(user).subscribe({
-                  next: message => MaterialService.toast(message.message),
-                  error: error => MaterialService.toast(error.error.message)
-                })
-              }, 1000)
-            }
-          }
-        }
-      }
-    }
-  }
-
-  updateUsers(users?: User[], personal?: string[]) {
-    for (let i = 0; i < users.length; i++) {
-      let user = {
-        _id: users[i]._id,
-        lastName: users[i].lastName,
-        firstName: users[i].firstName,
-        post: users[i].post,
-        hotel: this.form.get('title').value,
-        phone: users[i].phone,
-        login: users[i].login
-      }
-
-      setTimeout(() => {
-        this.uSub = this.userService.update(user).subscribe({
-          next: message => MaterialService.toast(message.message),
-          error: error => MaterialService.toast(error.error.message)
-        })
-      }, 1000)
-    }
-
-    if (personal.length == 0) {
-      for (let i = 0; i < this.users.length; i++) {
-        for (let j = 0; j < this.users[i].hotels.length; j++) {
-
-          if (this.users[i].hotels[j] == this.hotel.title) {
-            let user = {
-              _id: this.users[i]._id,
-              lastName: this.users[i].lastName,
-              firstName: this.users[i].firstName,
-              post: this.users[i].post,
-              hotel: this.form.get('title').value,
-              phone: this.users[i].phone,
-              login: this.users[i].login
-            }
-
-            setTimeout(() => {
-              this.uSub = this.userService.update(user).subscribe({
-                next: message => MaterialService.toast(message.message),
-                error: error => MaterialService.toast(error.error.message)
-              })
-            }, 1500)
-          }
-        }
-      }
-    }
   }
 
   getHotelById() {
     this.hSub = this.hotelService.getHotelById(this.hotelId).subscribe({
       next: hotel => {
-        for (let k = 0; k < hotel.personal.length; k++) {
-          this.personal.push(hotel.personal[k])
-        }
         this.hotel = hotel
-        this.generateForm()
         this.getUsers()
+        this.generateForm()
       },
       error: error => MaterialService.toast(error.error.message)
     })
   }
 
   getUsers() {
-    this.personalList = this.getDataService.getPersonal()
-
     this.uSub = this.userService.getUsers().subscribe({
-      next: users => this.users = users,
+      next: users => {
+        this.users = users
+        users.forEach(user => {
+          if (this.hotel.personal.includes(user._id)) this.personal.push(user.lastName + ' ' + user.firstName)
+          if (user.post == 'Горничная') this.personalList.push(user.lastName + ' ' + user.firstName)
+        })
+      },
+
       error: error => MaterialService.toast(error.error.message)
     })
   }
 
   getRooms() {
-    this.roomsHotel = this.getDataService.getRooms(this.hotelId)
-    this.quantityRooms = this.roomsHotel.length
+    this.rSub = this.roomsService.getAll().subscribe({
+      next: rooms => {
+        this.roomsHotel = rooms.filter(room => room.hotel === this.hotelId)
+      },
+      error: error => MaterialService.toast(error.error.message),
+    })
   }
 
   triggerClick() {

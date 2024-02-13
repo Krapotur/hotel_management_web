@@ -38,6 +38,11 @@ export interface Hotel {
   personal?: string[]
 }
 
+export interface Personal{
+  personalHotel?: string[]
+  personalList?: string[]
+}
+
 export interface Post {
   _id?: string,
   position?: number,
