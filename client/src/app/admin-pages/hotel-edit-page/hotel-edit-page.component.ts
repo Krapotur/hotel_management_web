@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -16,7 +16,6 @@ import {RoomsService} from "../../shared/services/rooms.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {UsersService} from "../../shared/services/users.service";
 import {HotelPageComponent} from "../hotel-page/hotel-page.component";
-import {GetDateService} from "../../shared/services/get-date.service";
 
 
 @Component({
@@ -46,6 +45,7 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   hotel: Hotel
   image: File
   hotelId: string
+  isHotel = false
   floors: Floor[] = []
   users: User[] = []
   roomsHotel: Room[] = []
@@ -63,7 +63,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   constructor(private hotelService: HotelsService,
               private userService: UsersService,
               private roomsService: RoomsService,
-              private getDataService: GetDateService,
               private route: ActivatedRoute,
               private router: Router
   ) {
@@ -76,7 +75,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngDoCheck() {
-    this.isDelete ? this.form.disable() : this.form.enable()
   }
 
   ngOnDestroy() {
@@ -99,7 +97,23 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     })
   }
 
+  checkHotel() {
+    this.hotelService.getAll().subscribe({
+      next: hotels => {
+        hotels.forEach(hotel => {
+          if (hotel.title == this.form.get('title').value) {
+            this.isHotel = true
+            MaterialService.toast(`Гостиница "${hotel.title}" уже есть!`)
+          } else {
+            this.isHotel = false
+          }
+        })
+      }
+    })
+  }
+
   onSubmit() {
+    let isHotel = false
     let personal = []
     this.users.forEach(user => {
       if (this.form.get('users').value.includes(user.lastName + ' ' + user.firstName)) {
@@ -107,19 +121,19 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
       }
     })
 
-    console.log(personal)
-
     let hotel: Hotel = {
       _id: this.hotelId,
       title: this.form.get('title').value,
       personal: personal
     }
 
-    this.hSub = this.hotelService.update(hotel, this.image).subscribe({
-      next: message => MaterialService.toast(message.message),
-      error: error => MaterialService.toast(error.error.message),
-    })
-    this.router.navigate(['admin-panel/hotels'])
+    if (!isHotel) {
+      this.hSub = this.hotelService.update(hotel, this.image).subscribe({
+        next: message => MaterialService.toast(message.message),
+        error: error => MaterialService.toast(error.error.message),
+      })
+      this.router.navigate(['admin-panel/hotels'])
+    }
   }
 
   getHotelById() {
@@ -142,7 +156,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
           if (user.post == 'Горничная') this.personalList.push(user.lastName + ' ' + user.firstName)
         })
       },
-
       error: error => MaterialService.toast(error.error.message)
     })
   }
@@ -151,6 +164,7 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     this.rSub = this.roomsService.getAll().subscribe({
       next: rooms => {
         this.roomsHotel = rooms.filter(room => room.hotel === this.hotelId)
+        this.quantityRooms = this.roomsHotel.length
       },
       error: error => MaterialService.toast(error.error.message),
     })

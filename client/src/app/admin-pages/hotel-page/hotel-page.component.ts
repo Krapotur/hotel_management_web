@@ -13,8 +13,6 @@ import {HotelsService} from "../../shared/services/hotels.service";
 import {UsersService} from "../../shared/services/users.service";
 import {RoomsService} from "../../shared/services/rooms.service";
 import {ActivatedRoute} from "@angular/router";
-import {GetDateService} from "../../shared/services/get-date.service";
-
 @Component({
   selector: 'app-hotel-page',
   standalone: true,
@@ -48,7 +46,6 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy {
   constructor(private hotelService: HotelsService,
               private userService: UsersService,
               private roomsService: RoomsService,
-              private getDataService: GetDateService,
               private route: ActivatedRoute
   ) {
   }
@@ -78,21 +75,19 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy {
 
   getHotelById() {
     this.hSub = this.hotelService.getHotelById(this.hotelId).subscribe({
-      next: hotel => {
-        for (let k = 0; k < hotel.personal.length; k++) {
-          this.personal.push(hotel.personal[k])
-        }
-        this.hotel = hotel
-      },
+      next: hotel => this.hotel = hotel,
       error: error => MaterialService.toast(error.error.message)
     })
   }
 
   getUsers() {
-    this.personalList = this.getDataService.getPersonal(this.hotel).personalList
-
     this.uSub = this.userService.getUsers().subscribe({
-      next: users => this.users = users,
+      next: users => {
+        this.users = users
+        users.forEach(user => {
+          if (this.hotel.personal.includes(user._id)) this.personal.push(user.lastName + ' ' + user.firstName)
+        })
+      },
       error: error => MaterialService.toast(error.error.message)
     })
   }

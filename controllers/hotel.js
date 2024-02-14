@@ -58,29 +58,37 @@ module.exports.create = async function (req, res) {
 
 module.exports.update = async function (req, res) {
 
-    const updated = {
-        title: req.body.title,
-        personal: req.body.personal
-    }
-
-    if (!req.body.personal){
-        updated.personal = []
-    }
-
-    if (req.file) {
-        updated.imageSrc = req.file.path
-    }
-
-    try {
-        await Hotel.findByIdAndUpdate(
-            {_id: req.params.id},
-            {$set: updated},
-            {new: true}
-        )
-        res.status(200).json({
-            message: 'Изменения внесены в гостиницу'
+    const hotel = await Hotel.findOne({title: req.body.title})
+    if(hotel){
+        res.status(409).json({
+            message: `Гостиница ${req.body.title} уже есть`
         })
-    } catch (e) {
-        errorHandler(res, e)
+    } else {
+        const updated = {
+            title: req.body.title,
+            personal: req.body.personal
+        }
+
+        if (!req.body.personal){
+            updated.personal = []
+        }
+
+        if (req.file) {
+            updated.imageSrc = req.file.path
+        }
+
+        try {
+            await Hotel.findByIdAndUpdate(
+                {_id: req.params.id},
+                {$set: updated},
+                {new: true}
+            )
+            res.status(200).json({
+                message: 'Изменения внесены'
+            })
+        } catch (e) {
+            errorHandler(res, e)
+        }
     }
+
 }

@@ -18,8 +18,8 @@ export class RoomsService {
     return this.http.get<Room[]>('/api/rooms')
   }
 
-  update(room: Room): Observable<Room> {
-    return this.http.patch<Room>(`/api/rooms/${room._id}`, room)
+  update(room: Room): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`/api/rooms/${room._id}`, room)
   }
 
   delete(room: Room): Observable<{ message: string }> {

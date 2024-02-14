@@ -1,7 +1,12 @@
+* {
+  margin: 0;
+}
+
 .floor-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 20px;
 
   h3 {
     font-size: 25px;
@@ -22,8 +27,18 @@
   }
 }
 
-.btn-room {
+.room-ready {
   background-color: seagreen;
+  width: 60px;
+}
+
+.room-dirty {
+  background-color: brown;
+  width: 60px;
+}
+
+.room-progress button{
+  background-color: #F87839;
   width: 60px;
 }
 
@@ -35,3 +50,85 @@
 .toggle-right {
   padding: 20px 0 0 50px;
 }
+
+///////Edit-Form
+
+.room-container {
+  background-color: white;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #F87839;
+  padding: 60px 77px 70px 77px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  z-index: 2;
+  top: 7%;
+  right: 12%;
+
+  h4 {
+    font-size: 28px;
+    color: rgba(128, 128, 128, 0.75);
+
+  }
+
+  p {
+    font-weight: bold;
+    color: #F87839;
+    font-size: 30px;
+    padding-bottom: 30px;
+  }
+
+mat-form-field {
+  width: 250px;
+}
+
+  .task-block {
+    width: 250px;
+
+    textarea {
+      resize: none;
+      color: rgba(56, 55, 55, 0.95);
+      padding: 10px;
+      height: 100px;
+      outline: none;
+      border: 1px solid rgba(128, 128, 128, 0.45);
+      border-radius: 3px;
+    }
+
+    textarea:focus {
+      color: black;
+      resize: none;
+      padding: 10px;
+      height: 100px;
+      outline: none;
+      box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+  }
+
+  .btn-group button {
+    margin-top: 20px;
+    height: 35px;
+    padding: 0 10px;
+    border-radius: 1px;
+  }
+
+  .btn-cancel {
+    background-color: #F87839;
+    width: 90px;
+  }
+
+  .btn-save {
+    background-color: seagreen;
+    width: 90px;
+  }
+
+
+}
+

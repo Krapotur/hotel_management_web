@@ -15,7 +15,7 @@
 
           <div class="row">
             <div class="input-field col s6">
-              <input id="title" type="text" formControlName="title">
+              <input id="title" type="text" formControlName="title" (keyup)="checkHotel()">
               <label class="active" for="title">Название</label>
             </div>
             <span *ngIf="form.get('title').hasError('required') && form.get('title').touched"
@@ -24,7 +24,6 @@
           </div>
 
           <mat-form-field>
-<!--            <mat-label>Горничная <span *ngIf="!personalList.length">(список пуст)</span></mat-label>-->
             <mat-label>Горничная </mat-label>
             <mat-select formControlName="users" multiple>
               <mat-select-trigger>
@@ -69,7 +68,7 @@
             type="submit"
             class="btn-save" extended="" mat-fab
             (click)="onSubmit()"
-            [disabled]="form.disabled"
+            [disabled]="form.disabled || isHotel"
           >
             Сохранить
           </button>
@@ -79,7 +78,7 @@
       <!--Template for Delete-->
     </div>
     <div *ngIf="!isDelete">
-      <div [class]="quantityRooms >60 ? 'right-block-scroll': 'right-block'">
+      <div [class]="quantityRooms > 60 ? 'right-block-scroll': 'right-block'">
         <app-rooms-page [hotelId]="hotel._id"></app-rooms-page>
       </div>
     </div>

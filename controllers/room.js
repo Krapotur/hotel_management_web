@@ -98,10 +98,15 @@ module.exports.delete = async function (req, res) {
 
 
 module.exports.update = async function (req, res) {
-
     const updated = {
-        title: req.body.title
+        status: req.body.status,
+        comments: req.body.comments
     }
+
+    if (req.body.status === 'Готов'){
+        updated.comments =[]
+    }
+
 
     try {
         const room = await Room.findByIdAndUpdate(
@@ -109,7 +114,7 @@ module.exports.update = async function (req, res) {
             {$set: updated},
             {new: true}
         )
-        res.status(200).json(room)
+        res.status(200).json({message: 'Изменения внесены'})
     } catch (e) {
         errorHandler(res, e)
     }

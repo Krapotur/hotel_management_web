@@ -1,13 +1,63 @@
-<div class="floor-container" *ngFor="let floor of floors">
+<div *ngIf="!isEdit">
+  <form [formGroup]="form">
+    <div class="room-container">
+      <h4>Номер гостиницы</h4>
+      <p>"{{room.numberRoom}}"</p>
+      <mat-form-field>
+        <mat-label>Статус</mat-label>
+        <mat-select formControlName="status">
+          @for (status of statuses; track status) {
+            <mat-option [value]="status">{{ status }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="task-block">
+        <label for="textarea">Задание:</label>
+        <textarea id="textarea"
+                  maxlength="200"
+                  placeholder="Что требуется сделать?"
+                  formControlName="comment"
+        ></textarea>
+      </div>
+
+      <div class="btn-group">
+        <button
+          class="btn-cancel" extended="" mat-fab
+          (click)="isEdit = !isEdit"
+        >
+          Отмена
+        </button>
+        <button
+          type="submit"
+          class="btn-save" extended="" mat-fab
+          (click)="onSubmit()"
+          [disabled]="form.disabled"
+        >
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div>
+  <div class="floor-container" *ngFor="let floor of floors">
     <h3>{{ floor.numberFloor }} этаж</h3>
     <div class="rooms">
-        <div class="room" *ngFor="let room of floor.rooms">
-            <button
-                    class="btn-room" extended="" mat-fab
-                    (click)="deleteRoom(room)"
-            >
-                {{ room.numberRoom }}
-            </button>
+      <div class="room" *ngFor="let room of floor.rooms">
+        <div [class]="room.status === 'На уборке' ? 'room-progress' : 'room-ready'">
+        <button
+          [class]="room.status === 'Не готов' ? 'room-dirty': 'room-ready'" extended="" mat-fab
+          (click)="selectRoom(room)"
+        >
+          {{ room.numberRoom }}
+        </button>
         </div>
+      </div>
     </div>
+  </div>
 </div>
+
+
+

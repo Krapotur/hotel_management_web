@@ -4,7 +4,7 @@ import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {User} from "../../shared/interfaces";
 import {MatButtonModule} from "@angular/material/button";
 import {NgForOf, NgIf} from "@angular/common";
-import {FormControl, FormGroup, ReactiveFormsModule, } from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule,} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {PostsPageComponent} from "../posts-page/posts-page.component";
@@ -12,6 +12,7 @@ import {StateService} from "../../shared/services/state.service";
 import {Router, RouterLink} from "@angular/router";
 import {UsersService} from "../../shared/services/users.service";
 import {Subscription} from "rxjs";
+import {HotelsService} from "../../shared/services/hotels.service";
 
 
 @Component({
@@ -34,13 +35,17 @@ import {Subscription} from "rxjs";
 })
 export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy {
   form: FormGroup
-  post = new FormControl('');
+  post = new FormControl('')
+  users: User[]
   uSub: Subscription
+  hSub: Subscription
   isShowTemplate = false
 
   dataSource: MatTableDataSource<User>
+
   constructor(private stateService: StateService,
               private usersService: UsersService,
+              private hotelService: HotelsService,
               private router: Router) {
   }
 
@@ -60,33 +65,52 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
   }
 
   ngOnDestroy() {
-    if(this.uSub){
+    if (this.uSub) {
       this.uSub.unsubscribe()
+    }
+    if (this.hSub) {
+      this.hSub.unsubscribe()
     }
   }
 
-  getUsers(){
+  getUsers() {
     let position = 1
-   this.uSub = this.usersService.getUsers().subscribe({
+    this.uSub = this.usersService.getUsers().subscribe({
       next: users => {
-        let usersList = users.filter(user => user.post != 'admin')
-        usersList.map(user => user.position = position++)
-
-        this.dataSource = new MatTableDataSource<User>(usersList)
+        this.users = users.filter(user => user.post != 'admin')
+        this.users.map(user => user.position = position++)
+        this.checkAndAddHotelForUser()
+        this.dataSource = new MatTableDataSource<User>(this.users)
         this.dataSource.paginator = this.paginator;
       },
-     error: error => console.log(error.error.message)
+      error: error => console.log(error.error.message)
     })
   }
 
-  openCreateUserPage(user?: User){
-    if(user){
-      this.router.navigate(["admin-panel/user-create"], {queryParams:{
-        userID: user._id
-        }})
+  openCreateUserPage(user?: User) {
+    if (user) {
+      this.router.navigate(["admin-panel/user-create"], {
+        queryParams: {
+          userID: user._id
+        }
+      })
     } else {
       this.router.navigate(['admin-panel/user-create'])
     }
+  }
+
+  checkAndAddHotelForUser(){
+    this.hSub = this.hotelService.getAll().subscribe({
+      next: hotels => {
+        hotels.forEach(hotel => {
+          hotel.personal.forEach(personal => {
+            this.users.map(user => {
+              if (personal == user._id) user.hotels.push(hotel.title)
+            })
+          })
+        })
+      }
+    })
   }
 
 }

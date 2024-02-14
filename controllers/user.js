@@ -51,7 +51,7 @@ module.exports.create = async function (req, res) {
             phone: req.body.phone,
             post: req.body.post,
             hotels: [],
-            login: req.body.login,
+            login: req.body.login.toLowerCase(),
             password: bcrypt.hashSync(password, salt)
         })
 
@@ -74,7 +74,7 @@ module.exports.update = async function (req, res) {
         firstName: req.body.firstName,
         phone: req.body.phone,
         post: req.body.post,
-        login: req.body.login,
+        login: req.body.login.toLowerCase(),
     }
 
     if (req.body.hotel) {
@@ -86,7 +86,6 @@ module.exports.update = async function (req, res) {
             arr.splice(idxHotel)
         }
         updated.hotels = arr
-        console.log(arr)
     }
 
     if (req.body.password) {
