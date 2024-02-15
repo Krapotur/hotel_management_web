@@ -4,7 +4,7 @@
       <h4>Номер гостиницы</h4>
       <p>"{{room.numberRoom}}"</p>
       <mat-form-field>
-        <mat-label>Статус</mat-label>
+        <mat-label>Выберите статус</mat-label>
         <mat-select formControlName="status">
           @for (status of statuses; track status) {
             <mat-option [value]="status">{{ status }}</mat-option>
@@ -41,21 +41,22 @@
   </form>
 </div>
 
-<div>
+<div class="list-rooms">
+  <h4>Список номеров</h4>
   <div class="floor-container" *ngFor="let floor of floors">
     <h3>{{ floor.numberFloor }} этаж</h3>
-    <div class="rooms">
-      <div class="room" *ngFor="let room of floor.rooms">
-        <div [class]="room.status === 'На уборке' ? 'room-progress' : 'room-ready'">
-        <button
-          [class]="room.status === 'Не готов' ? 'room-dirty': 'room-ready'" extended="" mat-fab
-          (click)="selectRoom(room)"
-        >
-          {{ room.numberRoom }}
-        </button>
+      <div class="rooms">
+        <div class="room" *ngFor="let room of floor.rooms">
+          <div [class]="room.status === 'На уборке' ? 'room-progress' : 'room-ready'">
+            <button
+              [class]="room.status === 'Не готов' ? 'room-dirty': 'room-ready'" extended="" mat-fab
+              (click)="selectRoom(room)"
+            >
+              {{ room.numberRoom }}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
   </div>
 </div>
 

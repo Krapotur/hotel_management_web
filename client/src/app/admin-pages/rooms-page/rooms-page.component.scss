@@ -2,6 +2,16 @@
   margin: 0;
 }
 
+h4 {
+  color: #35302D;
+  text-align: center;
+  font-size: 25px;
+}
+
+.list-rooms h4 {
+ padding: 15px;
+}
+
 .floor-container {
   display: flex;
   flex-direction: column;
@@ -37,7 +47,7 @@
   width: 60px;
 }
 
-.room-progress button{
+.room-progress button {
   background-color: #F87839;
   width: 60px;
 }
@@ -52,36 +62,29 @@
 }
 
 ///////Edit-Form
-
 .room-container {
   background-color: white;
   position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid #F87839;
-  padding: 60px 77px 70px 77px;
+  padding: 35px 40px;
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
   z-index: 2;
-  top: 7%;
-  right: 12%;
-
-  h4 {
-    font-size: 28px;
-    color: rgba(128, 128, 128, 0.75);
-
-  }
+  top: 3%;
+  margin: 0;
+  right: 15%;
 
   p {
     font-weight: bold;
     color: #F87839;
     font-size: 30px;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
   }
 
-mat-form-field {
-  width: 250px;
-}
+  mat-form-field {
+    width: 250px;
+  }
 
   .task-block {
     width: 250px;
@@ -90,7 +93,7 @@ mat-form-field {
       resize: none;
       color: rgba(56, 55, 55, 0.95);
       padding: 10px;
-      height: 100px;
+      height: 50px;
       outline: none;
       border: 1px solid rgba(128, 128, 128, 0.45);
       border-radius: 3px;
@@ -109,7 +112,7 @@ mat-form-field {
   .btn-group {
     display: flex;
     justify-content: space-between;
-    width: 250px;
+    width: 200px;
   }
 
   .btn-group button {
@@ -128,7 +131,5 @@ mat-form-field {
     background-color: seagreen;
     width: 90px;
   }
-
-
 }
 

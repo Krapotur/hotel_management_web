@@ -63,6 +63,18 @@
             </mat-hint>
           </mat-form-field>
 
+          <div class="list-hotels">
+            <label>Список гостиниц</label>
+            <mat-form-field *ngIf="isEdit">
+              <mat-label>{{hotels.length > 0 ? hotels[0].title : 'Список пуст'}}<span class="example-additional-selection" *ngIf="hotels.length > 1">
+                   (еще {{ hotels.length - 1 }})
+                   </span></mat-label>
+              <mat-select>
+                <mat-option *ngFor="let hotel of hotels">{{ hotel.title }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
           <div class="row">
             <div class="input-field col s6">
               <input id="phone" type="tel" formControlName="phone">

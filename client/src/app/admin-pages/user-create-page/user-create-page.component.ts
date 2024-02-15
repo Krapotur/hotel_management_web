@@ -8,10 +8,11 @@ import {MatSelectModule} from "@angular/material/select";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {UsersService} from "../../shared/services/users.service";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {Post, User} from "../../shared/interfaces";
+import {Hotel, Post, User} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {PostsService} from "../../shared/services/posts.service";
 import {MaterialService} from "../../shared/classes/material.service";
+import {HotelsService} from "../../shared/services/hotels.service";
 
 @Component({
   selector: 'app-user-create-page',
@@ -37,9 +38,11 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
   formPassword: FormGroup
   post = new FormControl('');
   user: User
+  hotels: Hotel[] = []
   params: string
   postsSub: Subscription
   uSub: Subscription
+  hSub: Subscription
   pSub: Subscription
   titleForm = ''
   isEdit = true
@@ -49,6 +52,7 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
   posts: Post[]
 
   constructor(private userService: UsersService,
+              private hotelService: HotelsService,
               private postsService: PostsService,
               private router: Router,
               private route: ActivatedRoute) {
@@ -74,6 +78,9 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
     }
     if (this.uSub) {
       this.uSub.unsubscribe()
+    }
+    if (this.hSub) {
+      this.hSub.unsubscribe()
     }
   }
 
@@ -107,13 +114,13 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
             post: user.post,
             login: user.login
           })
-
           this.titleForm = user.lastName + ' ' + user.firstName
 
           this.user = user
         },
         error: error => console.log(error.error.message),
       })
+      this.getHotelsByUser()
     } else {
       this.titleForm = 'Новый сотрудник'
     }
@@ -123,6 +130,14 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
     this.postsSub = this.postsService.getAll().subscribe({
       next: posts => {
         this.posts = posts
+      }
+    })
+  }
+
+  getHotelsByUser(){
+    this.hSub = this.hotelService.getAll().subscribe({
+      next: hotels => {
+         this.hotels = hotels.filter(hotel => hotel.personal.includes(this.user._id))
       }
     })
   }
@@ -168,7 +183,6 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
     this.openUsersPage()
   }
 
-
   delete() {
     this.uSub = this.userService.delete(this.user).subscribe({
       next: message => console.log(message.message),
@@ -190,7 +204,7 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
   }
 
   resetPassword() {
-    if(this.formPassword.get('password').value == this.formPassword.get('checkPassword').value){
+    if (this.formPassword.get('password').value == this.formPassword.get('checkPassword').value) {
       this.userService.update({
         ...this.user,
         password: this.formPassword.get('password').value

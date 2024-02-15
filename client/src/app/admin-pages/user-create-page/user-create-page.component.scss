@@ -37,7 +37,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
     width: 70px;
   }
 
-  .img-del img{
+  .img-del img {
     cursor: pointer;
     position: absolute;
     padding-right: 0;
@@ -54,6 +54,28 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
 .left-block {
   margin-right: 40px;
+
+  .row{
+    padding-top: 10px;
+  }
+
+  input{
+    margin: 0;
+  }
+}
+
+.list-hotels {
+  display: flex;
+  flex-direction: column;
+
+  label{
+    padding-left: 10px;
+  }
+
+  span {
+    padding: 0;
+    color: rgba(128, 128, 128, 0.5);
+  }
 }
 
 .row {
@@ -89,7 +111,7 @@ mat-hint {
 .btn-group {
   display: flex;
   justify-content: space-between;
-  padding: 0 15px 20px 10px;
+  padding: 25px 5px 20px 10px;
 
   button {
     margin-top: 20px;
@@ -110,7 +132,6 @@ mat-hint {
 }
 
 .btn-delete {
-
   button {
     width: 200px;
     background-color: brown;

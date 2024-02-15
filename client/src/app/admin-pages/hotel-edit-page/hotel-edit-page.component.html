@@ -9,7 +9,7 @@
         >
       </div>
 
-      <h3>"{{hotel.title}}"</h3>
+      <p>"{{hotel.title}}"</p>
       <form [formGroup]="form">
         <div class="container-form">
 
@@ -60,7 +60,7 @@
           <button
             class="btn-cancel" extended="" mat-fab
             (click)="openHotelsPage()"
-            [disabled]="form.disabled"
+            [disabled]="form.disabled || isDelete"
           >
             Отмена
           </button>
@@ -68,7 +68,7 @@
             type="submit"
             class="btn-save" extended="" mat-fab
             (click)="onSubmit()"
-            [disabled]="form.disabled || isHotel"
+            [disabled]="form.disabled || isHotel || isDelete"
           >
             Сохранить
           </button>

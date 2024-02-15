@@ -70,9 +70,9 @@
         <mat-label>Горничная <span *ngIf="!users.length">(список пуст)</span></mat-label>
         <mat-select formControlName="users" multiple>
           <mat-select-trigger>
-            {{ personalList.length ? personalList[0].lastName + ' ' + personalList[0].firstName : '' }}
-            <span class="example-additional-selection" *ngIf="personalList.length > 1">
-                   (еще {{ personalList.length }})
+            {{ users.length ? users[0].lastName + ' ' + users[0].firstName : '' }}
+            <span class="example-additional-selection" *ngIf="form.get('users').value.length > 1">
+                   (еще {{ form.get('users').value.length - 1 }})
                    </span>
           </mat-select-trigger>
           <mat-option *ngFor="let user of users"
@@ -113,7 +113,7 @@
         type="submit"
         class="btn-save" extended="" mat-fab
         (click)="onSubmit()"
-        [disabled]="form.disabled || form.invalid"
+        [disabled]="form.disabled"
       >
         Сохранить
       </button>
