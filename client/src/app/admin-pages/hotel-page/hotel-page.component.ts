@@ -36,8 +36,7 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy {
   hotel: Hotel
   users: User[] = []
   roomsHotel: Room[] = []
-  personalList: string[] = []
-  personal: string[] = []
+  personal: User[] = []
   hSub: Subscription
   uSub: Subscription
   rSub: Subscription
@@ -85,7 +84,7 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy {
       next: users => {
         this.users = users
         users.forEach(user => {
-          if (this.hotel.personal.includes(user._id)) this.personal.push(user.lastName + ' ' + user.firstName)
+          if (this.hotel.personal.includes(user._id)) this.personal.push(user)
         })
       },
       error: error => MaterialService.toast(error.error.message)

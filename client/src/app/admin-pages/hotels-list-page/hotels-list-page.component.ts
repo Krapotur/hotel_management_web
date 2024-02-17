@@ -124,7 +124,9 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
 
   openCreateHotelPage(hotel?: Hotel) {
     if (hotel) {
-      this.router.navigate([`admin-panel/hotel/${hotel._id}`])
+      this.router.navigate([`admin-panel/hotel-edit/${hotel._id}`], {queryParams:{
+      edit: true}
+      })
     } else {
       this.router.navigate(['admin-panel/hotel-create'])
     }

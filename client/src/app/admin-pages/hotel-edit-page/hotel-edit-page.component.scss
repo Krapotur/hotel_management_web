@@ -29,7 +29,7 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
   flex-direction: column;
   width: 40vh;
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
-  padding: 60px 0 60px 0;
+  padding: 60px 0 50px 0;
 
   .img-del {
     position: absolute;
@@ -120,7 +120,6 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 .btn-group {
   display: flex;
   justify-content: space-between;
-  padding: 0 0 20px 0;
 }
 
 .btn-group button {
@@ -131,7 +130,7 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 }
 
 .btn-cancel {
-  background-color: #F87839;
+  background-color: slategrey;
   width: 90px;
 }
 
@@ -170,12 +169,12 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
   z-index: 1;
 
   h2 {
-    font-size: 30px;
-    padding-bottom: 10px;
+    font-size: 25px;
+    padding-bottom: 5px;
   }
 
   h3 {
-    font-size: 28px;
+    font-size: 23px;
     padding-bottom: 5px;
     color: #F87839
   }
@@ -193,7 +192,7 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
     }
 
     .btn-cancel {
-      background-color: #F87839;
+      background-color: slategrey;
       width: 90px;
     }
 

@@ -86,6 +86,11 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
     outline: none;
     background-color: #F87839;
   }
+
+  .personal{
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .toggle-left {

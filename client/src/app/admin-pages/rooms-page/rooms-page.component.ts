@@ -6,7 +6,9 @@ import {Floor, Hotel, Room} from "../../shared/interfaces";
 import {RoomsService} from "../../shared/services/rooms.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {MatSelectModule} from "@angular/material/select";
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {ActivatedRoute} from "@angular/router";
+import {addDiagnosticChain} from "@angular/compiler-cli/src/ngtsc/diagnostics";
 
 @Component({
   selector: 'app-rooms-page',
@@ -25,19 +27,29 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
 
   @Input('hotelId') hotelId: string
   form: FormGroup
+  addForm: FormGroup
   rSub: Subscription
+  isParams = false
   hotel: Hotel
   room: Room
+  title = ''
   floors: Floor[] = []
   isEdit = true
+  isDelete = false
+  isAddRoom =  false
   quantityRooms = 0
   statuses = ['Готов', 'На уборке', 'Не готов']
 
-  constructor(private roomsService: RoomsService) {
+  constructor(private roomsService: RoomsService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.getRooms()
+    this.route.queryParams.subscribe(params => {
+      if (params['edit']) this.isParams = true
+    })
+
   }
 
   ngOnDestroy() {
@@ -50,7 +62,6 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
     let floors = []
     this.rSub = this.roomsService.getAll().subscribe({
       next: rooms => {
-
         let roomsHotel = rooms.filter(room => room.hotel == this.hotelId)
         this.quantityRooms = roomsHotel.length
         for (let i = 0; i < roomsHotel.length; i++) {
@@ -93,20 +104,38 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  selectRoom(room: Room) {
-    this.room = room
-    this.isEdit = !this.isEdit
-    this.generateForm()
+  selectRoom(room?: Room) {
+    if (room) {
+      this.room = room
+      this.isEdit = !this.isEdit
+      this.generateForm()
+    }
+    else {
+      this.isAddRoom = !this.isAddRoom
+      this.generateAddForm()
+    }
   }
 
-  generateForm(){
+  generateForm() {
     this.form = new FormGroup({
       status: new FormControl(this.room.status),
       comment: new FormControl(this.room.comments)
     })
   }
+  generateAddForm() {
+    this.addForm = new FormGroup({
+      numberRoom: new FormControl(null, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(4000)]),
+      floor: new FormControl(null, [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(5)]),
+    })
+  }
 
-  onSubmit(){
+  onSubmit() {
     let room = {
       _id: this.room._id,
       status: this.form.get('status').value,
@@ -119,10 +148,16 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
     this.isEdit = !this.isEdit
   }
 
-  deleteRoom(room: Room) {
-    this.rSub = this.roomsService.delete(room).subscribe({
+  openTemplateDelete(room: Room) {
+    this.isDelete = !this.isDelete
+    this.room = room
+  }
+
+  deleteRoom() {
+    this.rSub = this.roomsService.delete(this.room).subscribe({
       next: message => MaterialService.toast(message.message)
     })
   }
+
 }
 

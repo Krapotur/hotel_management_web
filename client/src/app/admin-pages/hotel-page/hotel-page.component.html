@@ -16,7 +16,7 @@
       <h3>Персонал</h3>
       <hr>
       <div class="personal" *ngFor="let personal of personal">
-        <p> {{personal }}</p>
+        <p> {{personal.lastName + ' ' + personal.firstName }}</p> <p>+7 {{personal.phone}}</p>
       </div>
     </div>
   </div>
