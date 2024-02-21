@@ -3,6 +3,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 * {
   font-family: $lora;
   margin: 0;
+  user-select: none;
 }
 
 .container {
@@ -30,11 +31,12 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
   h2 {
     color: #3C3735;
+    font-size: 30px;
   }
 
   img {
     padding-right: 15px;
-    width: 70px;
+    width: 60px;
   }
 
   .img-del img {
@@ -178,23 +180,23 @@ mat-hint {
     font-size: 20px;
     color: #F87839;
   }
+}
 
-  .btn-group-del {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    width: 210px;
+.btn-group-del {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  width: 210px;
 
-    button {
-      margin-top: 20px;
-      height: 35px;
-      padding: 0 10px;
-      border-radius: 1px;
-    }
+  button {
+    margin-top: 20px;
+    height: 35px;
+    padding: 0 10px;
+    border-radius: 1px;
+  }
 
-    .btn-save{
-      background-color: brown;
-    }
+  .btn-save{
+    background-color: brown;
   }
 }
 
@@ -216,5 +218,9 @@ mat-hint {
   h2 {
     font-size: 28px;
     padding-bottom: 10px;
+  }
+
+  .btn-save{
+    background-color: seagreen;
   }
 }

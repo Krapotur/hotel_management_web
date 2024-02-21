@@ -1,60 +1,112 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatButtonModule} from "@angular/material/button";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {Group, Hotel} from "../../shared/interfaces";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Hotel, House, User} from "../../shared/interfaces";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {NgForOf, NgIf} from "@angular/common";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
+import {UsersService} from "../../shared/services/users.service";
+import {Subscription} from "rxjs";
+import {HousesService} from "../../shared/services/houses.service";
+import {MaterialService} from "../../shared/classes/material.service";
+import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-houses-list',
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatPaginatorModule,
-    MatTableModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    NgForOf,
-    NgIf,
-    ReactiveFormsModule
-  ],
-  templateUrl: './houses-list.component.html',
-  styleUrl: './houses-list.component.scss'
+    selector: 'app-houses-list',
+    standalone: true,
+    imports: [
+        MatButtonModule,
+        MatPaginatorModule,
+        MatTableModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgForOf,
+        NgIf,
+        ReactiveFormsModule,
+        MatOptionModule,
+        MatSelectModule
+    ],
+    templateUrl: './houses-list.component.html',
+    styleUrl: './houses-list.component.scss'
 })
-export class HousesListComponent implements OnInit {
-  showTemplate = false
-  form: FormGroup
-  houses:Hotel [] = []
+export class HousesListComponent implements OnInit, OnDestroy {
+    showTemplate = false
+    dataSource: MatTableDataSource<House>
 
+    houses: Hotel [] = []
+    users: User[] = []
+    personal: string[] = []
+    uSub: Subscription
+    hSub: Subscription
 
-  isTrue = false
+    displayedColumns: string[] = ['#', 'name', 'floors', 'personal', 'edit'];
 
-  displayedColumns: string[] = ['#', 'name', 'floors', 'personal', 'edit'];
-  dataSource = new MatTableDataSource<Hotel>(this.houses);
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+    constructor(private usersService: UsersService,
+                private houseService: HousesService,
+                private router: Router) {
+    }
 
-  ngOnInit() {
-    this.generateForm()
-  }
+    ngOnInit() {
+        this.getHouses()
+    }
 
-  generateForm() {
-    this.form = new FormGroup({
-      title: new FormControl(null, [Validators.required]),
-      floors: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
-    })
-  }
+    ngOnDestroy() {
+        if (this.uSub) {
+            this.uSub.unsubscribe()
+        }
 
-  openTemplate() {
-    this.showTemplate = !this.showTemplate
-  }
+        if (this.hSub) {
+            this.hSub.unsubscribe()
+        }
+    }
 
-  save(){
-    this.isTrue = !this.isTrue
+    getUsers() {
+        this.uSub = this.usersService.getUsers().subscribe({
+            next: users => {
+                this.users = users.filter(user => user.post == 'Горничная')
+                this.houses.forEach(house => {
 
-  }
+                    let arr = house.personal
+                    house.personal = []
+                    for (const user of this.users) {
+                        if (arr.includes(user._id)) {
+                            house.personal.push(user.lastName + ' ' + user.firstName)
+                        }
+                    }
+                })
+            },
+            error: error => MaterialService.toast(error.error.message)
+        })
+    }
+
+    getHouses() {
+        this.hSub = this.houseService.getAll().subscribe({
+            next: houses => {
+                this.houses = houses
+                let position = 1
+                this.getUsers()
+                this.houses.map(house => house.position = position++)
+                this.dataSource = new MatTableDataSource<Hotel>(this.houses);
+                this.dataSource.paginator = this.paginator
+            },
+            error: error => MaterialService.toast(error.error.message)
+        })
+    }
+
+    openHousePage(house?: House) {
+        if (house) {
+            this.router.navigate([`admin-panel/house/${house._id}`])
+        } else this.router.navigate([`admin-panel/house`], {
+            queryParams: {
+                new: true
+            }
+        })
+    }
 }

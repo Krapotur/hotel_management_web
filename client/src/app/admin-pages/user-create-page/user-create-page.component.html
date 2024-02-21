@@ -63,9 +63,9 @@
             </mat-hint>
           </mat-form-field>
 
-          <div class="list-hotels">
+          <div class="list-hotels" *ngIf="isEdit">
             <label>Список гостиниц</label>
-            <mat-form-field *ngIf="isEdit">
+            <mat-form-field>
               <mat-label>{{hotels.length > 0 ? hotels[0].title : 'Список пуст'}}<span class="example-additional-selection" *ngIf="hotels.length > 1">
                    (еще {{ hotels.length - 1 }})
                    </span></mat-label>
@@ -154,6 +154,9 @@
   </div>
 </div>
 
+
+<!--Reset-form-->
+
 <div class="container-reset-password" *ngIf="isResetPassword">
   <h2>Смена пароля</h2>
   <form [formGroup]="formPassword">
@@ -165,7 +168,7 @@
             <label class="active" for="reset-password">Новый пароль*</label>
           </div>
         </div>
-        <span *ngIf="form.get('password').hasError('required') && form.get('password').touched"
+        <span *ngIf="formPassword.get('password').hasError('required') && formPassword.get('password').touched"
         >*Придумайте пароль
                     </span>
       </div>
@@ -177,7 +180,7 @@
             <label class="active" for="reset-password2">Подтверждение пароля*</label>
           </div>
         </div>
-        <span *ngIf="form.get('checkPassword').hasError('required') && form.get('checkPassword').touched"
+        <span *ngIf="formPassword.get('checkPassword').hasError('required') && formPassword.get('checkPassword').touched"
         >*Подтвердите пароль
                     </span>
       </div>
@@ -194,7 +197,7 @@
           type="submit"
           class="btn-save" extended="" mat-fab
           (click)="resetPassword()"
-          [disabled]="this.form.invalid"
+          [disabled]="this.formPassword.invalid"
         >
           Сохранить
         </button>
@@ -203,4 +206,5 @@
   </form>
 </div>
 
+<!--Reset-form-->
 

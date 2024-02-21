@@ -1,119 +1,65 @@
 <!--Table-->
 <div class="main">
-  <div [class]="showTemplate? 'blur' : ''">
-    <div class="mat-elevation-z8">
-      <h1>Дома</h1>
-      <hr>
-      <table mat-table [dataSource]="dataSource">
-        <!-- Position Column -->
-        <ng-container matColumnDef="#">
-          <th mat-header-cell *matHeaderCellDef> #</th>
-          <td mat-cell *matCellDef="let element">{{ element.position }}</td>
-        </ng-container>
+    <div [class]="showTemplate? 'blur' : ''">
+        <div class="mat-elevation-z8">
+            <h1>Дома</h1>
+            <hr>
+            <table mat-table [dataSource]="dataSource">
+                <!-- Position Column -->
+                <ng-container matColumnDef="#">
+                    <th mat-header-cell *matHeaderCellDef> #</th>
+                    <td mat-cell *matCellDef="let house">{{ house.position }}</td>
+                </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Название</th>
-          <td mat-cell *matCellDef="let element"> {{ element.name }}</td>
-        </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Название</th>
+                    <td mat-cell *matCellDef="let house"> {{ house.title }}</td>
+                </ng-container>
 
-        <!-- Post Column -->
-        <ng-container matColumnDef="floors">
-          <th mat-header-cell *matHeaderCellDef> Количество этажей</th>
-          <td mat-cell *matCellDef="let element"> {{ element.post }}</td>
-        </ng-container>
+                <!-- Post Column -->
+                <ng-container matColumnDef="floors">
+                    <th mat-header-cell *matHeaderCellDef> Количество этажей</th>
+                    <td mat-cell *matCellDef="let house"> {{ house.floors }}</td>
+                </ng-container>
 
-        <!-- Personal Column -->
-        <ng-container matColumnDef="personal">
-          <th mat-header-cell *matHeaderCellDef> Горничная</th>
-          <td mat-cell *matCellDef="let element"> {{ element }}</td>
-        </ng-container>
+                <!-- Personal Column -->
+                <ng-container matColumnDef="personal">
+                    <th mat-header-cell *matHeaderCellDef> Горничная</th>
+                    <td mat-cell *matCellDef="let house"> {{house.personal.length > 1 ? house.personal[0] + ' ( еще '+ (house.personal.length - 1) + ')': house.personal}}</td>
+                </ng-container>
 
-        <!-- Edit Column -->
-        <ng-container matColumnDef="edit">
-          <th mat-header-cell *matHeaderCellDef> Действие</th>
-          <td mat-cell *matCellDef="let element"> {{ element }}</td>
-        </ng-container>
+                <!-- Edit Column -->
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell *matHeaderCellDef> Действие</th>
+                    <td mat-cell *matCellDef="let house">
+                        <img (click)=" openHousePage(house)"
+                             src="../assets/icons/edit.png" alt="edit">
+                    </td>
+                </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-
-      </table>
-      <div *ngIf="houses.length == 0"
-           class="empty-block">
-        <p>Добавьте первый дом...</p>
-      </div>
-      <hr>
-      <div class="table-bottom">
-        <button class="btn" extended="" mat-fab
-                (click)="openTemplate()"
-
-        >
-          Добавить
-        </button>
-        <mat-paginator [pageSizeOptions]="[10, 20]"
-                       showFirstLastButtons
-                       aria-label="">
-        </mat-paginator>
-      </div>
-    </div>
-  </div>
-  <!--Table-->
-
-</div>
-
-<!--Form-->
-
-<div class="container" *ngIf="showTemplate">
-  <h3>Новый дом</h3>
-  <hr>
-  <form [formGroup]="form">
-    <div class="container-form">
-
-      <mat-form-field>
-        <mat-label>Название</mat-label>
-        <input type="text" matInput formControlName="title">
-        <mat-hint
-          *ngIf="form.get('title').hasError('required') && form.get('title').touched"
-        >Введите название гостиницы
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Количество этажей</mat-label>
-        <input type="number" matInput formControlName="floors" #inputFloors
-               min="1" max="4" placeholder="1-4">
-        <mat-hint
-          *ngIf="form.get('floors').hasError('required') && form.get('floors').touched"
-        >Введите количество этажей*
-        </mat-hint>
-        <mat-hint
-          *ngIf="form.get('floors').hasError('min') || form.get('floors').hasError('max')"
-        >Укажите количество этажей(с наличием номеров) в диапазоне от 1 - 4*
-        </mat-hint>
-      </mat-form-field>
-    </div>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
 
-    <!--    <span *ngIf="errorRequired" class="error-span">Заполните обязательные поля с номерами*</span>-->
+            </table>
+            <div *ngIf="houses.length == 0"
+                 class="empty-block">
+                <p>Добавьте первый дом...</p>
+            </div>
+            <hr>
+            <div class="table-bottom">
+                <button class="btn" extended="" mat-fab
+                        (click)="openHousePage()"
 
-    <div class="btn-group">
-      <button
-        class="btn-cancel" extended="" mat-fab
-                  (click)="openTemplate()"
                 >
-        Отмена
-      </button>
-      <button
-        type="submit"
-        class="btn-save" extended="" mat-fab
-      [disabled]="houses.length == 0"
-      >
-<!--        (click)="save()"-->
-
-        Сохранить
-      </button>
+                    Добавить
+                </button>
+                <mat-paginator [pageSizeOptions]="[10, 20]"
+                               showFirstLastButtons
+                               aria-label="">
+                </mat-paginator>
+            </div>
+        </div>
     </div>
-  </form>
 </div>

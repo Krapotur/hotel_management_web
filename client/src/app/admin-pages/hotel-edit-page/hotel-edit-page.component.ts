@@ -128,7 +128,20 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     }
 
     if (!isHotel) {
-      this.hSub = this.hotelService.update(hotel, this.image).subscribe({
+      const fd = new FormData()
+      fd.append('title', hotel.title)
+      if (hotel.floors) {
+        fd.append('floors', hotel.floors.toString())
+      }
+
+      for (let i = 0; i < hotel.personal.length; i++) {
+        fd.append('personal', hotel.personal[i])
+      }
+
+      if (this.image) {
+        fd.append('image', this.image, this.image.name)
+      }
+      this.hSub = this.hotelService.update(hotel._id, fd).subscribe({
         next: message => MaterialService.toast(message.message),
         error: error => MaterialService.toast(error.error.message),
       })
@@ -186,7 +199,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     this.router.navigate([`admin-panel/hotels`])
 
     this.deleteRooms()
-    this.deletePersonal()
   }
 
   deleteRooms() {
@@ -199,31 +211,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
     }, 2000)
   }
 
-  deletePersonal() {
-    let users: User[] = []
-    for (let i = 0; i < this.users.length; i++) {
-      for (let j = 0; j < this.users[i].hotels.length; j++) {
-        if (this.users[i].hotels[j] === this.hotel.title) {
-          users.push(this.users[i])
-        }
-      }
-    }
-
-    users.forEach(user => {
-      let userNew: User = {
-        _id: user._id,
-        hotels: user.hotels,
-        hotel: this.hotel.title
-      }
-
-      setTimeout(() => {
-        this.uSub = this.userService.update(userNew).subscribe({
-          next: message => MaterialService.toast(message.message),
-          error: error => MaterialService.toast(error.error.message)
-        })
-      }, 2000)
-    })
-  }
 
   openHotelsPage() {
     this.router.navigate([`admin-panel/hotels`])

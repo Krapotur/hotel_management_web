@@ -17,8 +17,12 @@ export interface User {
   password?: string
 }
 
-export interface Group {
-
+export interface House {
+  _id?: string,
+  title: string,
+  floors?: number,
+  imgSrc?: string,
+  personal?: string[]
 }
 
 export interface Floor {

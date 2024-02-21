@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Hotel, Room} from "../interfaces";
+import {Hotel} from "../interfaces";
 import {Observable} from "rxjs";
 
 @Injectable({
@@ -41,20 +41,7 @@ export class HotelsService {
         return this.http.delete<{ message: string }>(`/api/hotels/${hotelID}`)
     }
 
-    update(hotel: Hotel, image: File): Observable<{ message: string }> {
-        const fd = new FormData()
-        fd.append('title', hotel.title)
-        if (hotel.floors) {
-            fd.append('floors', hotel.floors.toString())
-        }
-
-        for (let i = 0; i < hotel.personal.length; i++) {
-            fd.append('personal', hotel.personal[i])
-        }
-
-        if (image) {
-            fd.append('image', image, image.name)
-        }
-        return this.http.patch<{ message: string }>(`/api/hotels/${hotel._id}`, fd)
+    update(hotelId: string, fd: FormData): Observable<{ message: string }> {
+        return this.http.patch<{ message: string }>(`/api/hotels/${hotelId}`, fd)
     }
 }

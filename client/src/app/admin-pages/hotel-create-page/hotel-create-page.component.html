@@ -66,6 +66,7 @@
         </div>
       </div>
       <span *ngIf="isErrorRequired" class="error-span">Заполните обязательные поля с номерами*</span>
+
       <mat-form-field>
         <mat-label>Горничная <span *ngIf="!users.length">(список пуст)</span></mat-label>
         <mat-select formControlName="users" multiple>

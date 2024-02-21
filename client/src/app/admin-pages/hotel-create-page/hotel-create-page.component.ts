@@ -8,7 +8,7 @@ import {Hotel, Room, User} from "../../shared/interfaces";
 import {StateService} from "../../shared/services/state.service";
 import {HotelsService} from "../../shared/services/hotels.service";
 import {Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {UsersService} from "../../shared/services/users.service";
@@ -49,8 +49,10 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   hSub: Subscription
   rSub: Subscription
   uSub: Subscription
+  hotelID: string
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               private stateService: StateService,
               private hotelService: HotelsService,
               private roomsService: RoomsService,
@@ -164,7 +166,6 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
     this.title = this.form.get('title').value
   }
 
-  protected readonly Number = Number;
 
   checkRooms(start: string, end: string, floor: string) {
     let floorRequired = this.form.get(floor).hasError('required')
@@ -202,12 +203,10 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
         personal: this.form.get('users').value
       }
 
-
       this.hSub = this.hotelService.create(hotel, this.image).subscribe({
         next: hotel => {
           if (hotel) {
             this.createRooms(hotel)
-            this.updateUser(this.form.get('users').value)
             this.openHotelsPage()
           } else MaterialService.toast(`Гостиница "${this.form.get('title').value}" уже существует`)
         },
@@ -235,35 +234,9 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
     }, 2000)
   }
 
-  updateUser(users: string[]) {
-    let userList: User[] = []
-
-    this.users.forEach(user => {
-      if (users.includes(user.lastName + ' ' + user.firstName)) userList.push(user)
-    })
-
-    for (const user of userList) {
-      let newUser = {
-        _id: user._id,
-        lastName: user.lastName,
-        firstName: user.firstName,
-        post: user.post,
-        hotel: this.form.get('title').value,
-        phone: user.phone,
-        login: user.login
-      }
-
-      setTimeout(() => {
-        this.uSub = this.usersService.update(newUser).subscribe({
-          next: message => '',
-          error: error => MaterialService.toast(error.error.message)
-        })
-      }, 2000)
-    }
-  }
-
   openHotelsPage() {
     this.router.navigate(['admin-panel/hotels'])
   }
 
+  protected readonly Number = Number;
 }

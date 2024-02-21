@@ -10,6 +10,8 @@ $greyWithOpacity_09: rgba(128, 128, 128, 0.9);
 
 * {
   font-family: $lora;
+  margin: 0;
+  user-select: none;
 }
 
 .main {
@@ -36,11 +38,19 @@ table {
     font-weight: bold;
     color: black;
     font-family: $lora;
+    text-align: center;
   }
 
   td {
     font-family: $lora;
-    padding-top: 5px;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  img {
+    width: 35px;
+    cursor: pointer;
+    border: none;
   }
 }
 
@@ -54,8 +64,7 @@ p {
 
 img {
   width: 50px;
-  border: 1px solid grey;
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 hr {
@@ -78,95 +87,4 @@ button {
 }
 
 /////////////////////////Form//////////////////////
-$nunito: 'Source Sans Pro', Nunito, Arial, sans-serif;
-$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
-$greyWithOpacity_01: rgba(128, 128, 128, 0.1);
-$greyWithOpacity_04: rgba(128, 128, 128, 0.4);
-* {
-  font-family: $lora
-}
 
-.container {
-  position: fixed;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  top: 8%;
-  left: 35%;
-  width: 55vh;
-  border: 1px solid seagreen;
-  background-color: white;
-  padding: 45px 0 30px 0;
-
-  h3 {
-    color: #3C3735;
-    font-size: 25px;
-  }
-}
-
-
-.container-form {
-  display: flex;
-  flex-direction: column;
-  padding-top: 40px;
-  width: 350px;
-}
-
-mat-form-field {
-  padding-bottom: 5px;
-  margin-bottom: 11px;
-}
-
-mat-hint {
-  font-size: 11px;
-  color: red;
-}
-
-.input-floors {
-  border-radius: 5px;
-  background-color: $greyWithOpacity_01;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 10px;
-  margin: 0 0 15px 30px;
-  width: 280px;
-
-  span {
-    color: rgba(0, 0, 0, 0.85);
-    padding-right: 2px;
-  }
-}
-
-.error-input input {
-  border: 1px solid red;
-}
-
-.error-span {
-  font-size: 12px;
-  color: red;
-}
-
-.btn-group {
-  width: 210px;
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 20px;
-}
-
-.btn-group button {
-  margin-top: 20px;
-  height: 35px;
-  padding: 0 10px;
-  border-radius: 1px;
-}
-
-.btn-cancel {
-  background-color: brown;
-  width: 100px;
-}
-
-.btn-save {
-  background-color: seagreen;
-  width: 100px;
-}
