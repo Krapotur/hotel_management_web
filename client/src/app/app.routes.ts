@@ -11,6 +11,7 @@ import {HotelCreatePageComponent} from "./admin-pages/hotel-create-page/hotel-cr
 import {HousesListComponent} from "./admin-pages/houses-list/houses-list.component";
 import {UserCreatePageComponent} from "./admin-pages/user-create-page/user-create-page.component";
 import {HousePageComponent} from "./admin-pages/house-page/house-page.component";
+import {HotelEditPageComponent} from "./admin-pages/hotel-edit-page/hotel-edit-page.component";
 export const routes: Routes = [
   {
     path: '', component: AuthLayoutComponent, children: [
@@ -27,6 +28,7 @@ export const routes: Routes = [
       {path: 'hotels', component: HotelsListPageComponent},
       {path: 'hotel/:id', component: HotelPageComponent},
       {path: 'hotel-create', component: HotelCreatePageComponent},
+      {path: 'hotel-edit/:id', component: HotelEditPageComponent},
       {path: 'house', component: HousePageComponent},
       {path: 'house/:id', component: HousePageComponent},
       {path: 'houses', component:HousesListComponent},

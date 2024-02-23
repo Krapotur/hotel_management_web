@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {House} from "../interfaces";
 import {Observable} from "rxjs";
@@ -14,9 +14,7 @@ export class HousesService {
   create(house: House, image: File): Observable<{ message: string }> {
     const fd = new FormData()
     fd.append('title', house.title)
-    if (house.floors) {
-      fd.append('floors', house.floors.toString())
-    }
+    fd.append('floors', house.floors.toString())
 
     for (let i = 0; i < house.personal.length; i++) {
       fd.append('personal', house.personal[i])
@@ -26,7 +24,7 @@ export class HousesService {
       fd.append('image', image, image.name)
     }
 
-    return this.http.post<{message: string}>('/api/houses', fd)
+    return this.http.post<{ message: string }>('/api/houses', fd)
   }
 
   getAll(): Observable<House[]> {
@@ -42,6 +40,6 @@ export class HousesService {
   }
 
   update(houseID: string, fd: FormData): Observable<{ message: string }> {
-    return this.http.patch<{ message: string }>(`/api/houses/${houseID }`, fd)
+    return this.http.patch<{ message: string }>(`/api/houses/${houseID}`, fd)
   }
 }

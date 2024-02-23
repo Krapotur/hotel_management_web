@@ -115,6 +115,8 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
   onSubmit() {
     let isHotel = false
     let personal = []
+    let title = this.form.get('title').value
+
     this.users.forEach(user => {
       if (this.form.get('users').value.includes(user.lastName + ' ' + user.firstName)) {
         personal.push(user._id)
@@ -123,7 +125,7 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
 
     let hotel: Hotel = {
       _id: this.hotelId,
-      title: this.form.get('title').value,
+      title: title.toLowerCase().charAt(0).toUpperCase() + title.slice(1),
       personal: personal
     }
 
@@ -197,7 +199,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
       error: error => MaterialService.toast(error.error.message)
     })
     this.router.navigate([`admin-panel/hotels`])
-
     this.deleteRooms()
   }
 
@@ -210,7 +211,6 @@ export class HotelEditPageComponent implements OnInit, DoCheck, OnDestroy {
       })
     }, 2000)
   }
-
 
   openHotelsPage() {
     this.router.navigate([`admin-panel/hotels`])

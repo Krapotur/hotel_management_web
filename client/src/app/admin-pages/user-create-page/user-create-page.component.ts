@@ -148,7 +148,7 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
       firstName: this.form.get('firstName').value,
       phone: this.form.get('phone').value,
       post: this.form.get('post').value,
-      login: this.form.get('login').value,
+      login: this.form.get('login').value.toString().toLowerCase(),
       password: this.form.get('password').value,
     }
 

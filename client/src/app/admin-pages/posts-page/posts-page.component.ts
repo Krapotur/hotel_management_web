@@ -9,7 +9,6 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {Post} from "../../shared/interfaces";
 import {PostsService} from "../../shared/services/posts.service";
 import {Subscription} from "rxjs";
-import {StateService} from "../../shared/services/state.service";
 import {MaterialService} from "../../shared/classes/material.service";
 
 @Component({
@@ -43,8 +42,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
     pSub: Subscription
     posts: Post[]
 
-    constructor(private postsService: PostsService,
-                private stateService: StateService) {
+    constructor(private postsService: PostsService) {
     }
 
     displayedColumns: string[] = ['#', 'post', 'action'];
@@ -73,7 +71,6 @@ export class PostsPageComponent implements OnInit, OnDestroy {
             case 'add': {
                 this.isDelete = false
                 this.isShowTemplate = true
-                this.stateService.showTemplate = true
                 this.titleForm = `Новая должность`
                 this.isEdit = false
                 this.form.get('title').reset()
@@ -87,7 +84,6 @@ export class PostsPageComponent implements OnInit, OnDestroy {
                 break;
             case 'edit': {
                 this.isShowTemplate = true
-                this.stateService.showTemplate = true
                 this.isEdit = true
                 this.isDelete = false
                 this.post = post
@@ -98,7 +94,6 @@ export class PostsPageComponent implements OnInit, OnDestroy {
                 break;
             default: {
                 this.titlePost = ''
-                this.stateService.showTemplate = false
                 this.isShowTemplate = false
             }
         }
@@ -120,7 +115,6 @@ export class PostsPageComponent implements OnInit, OnDestroy {
             )
         }
         this.isShowTemplate = false
-        this.stateService.showTemplate = false
     }
 
     getPosts() {
@@ -131,12 +125,12 @@ export class PostsPageComponent implements OnInit, OnDestroy {
                     this.isEmptyPosts = false
 
                     posts.map(post => post.position = position++)
-                    this.posts = posts
+                    this.posts = posts.filter(post => post.title !== 'admin')
                     this.dataSource = new MatTableDataSource<Post>(this.posts);
                     this.dataSource.paginator = this.paginator;
                 }
             },
-            error: error => console.log(error.error.message),
+            error: error => MaterialService.toast(error.error.message),
         })
     }
 
@@ -147,7 +141,6 @@ export class PostsPageComponent implements OnInit, OnDestroy {
             , error: error => MaterialService.toast(error.error.message)
         })
         this.isShowTemplate = !this.isShowTemplate
-        this.stateService.showTemplate = false
     }
 
     update(post: Post) {

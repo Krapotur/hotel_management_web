@@ -1,14 +1,17 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import {Hotel, User} from "../interfaces";
+import {Pipe, PipeTransform} from '@angular/core';
+import {User} from "../interfaces";
 
 @Pipe({
   name: 'filterUsers',
   standalone: true
 })
 export class FilterUsersPipe implements PipeTransform {
+  transform(userID: string, users: User[]): string {
+    let personal = ''
 
-  transform(users: User[], hotel: Hotel): User[] {
-    return users.filter(user =>         user.hotels.includes(hotel.title));
+    users.forEach(user => {
+      if (userID === user._id) personal = user.lastName + ' ' + user.firstName
+    })
+    return personal;
   }
-
 }

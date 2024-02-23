@@ -71,7 +71,7 @@
         <mat-label>Горничная <span *ngIf="!users.length">(список пуст)</span></mat-label>
         <mat-select formControlName="users" multiple>
           <mat-select-trigger>
-            {{ users.length ? users[0].lastName + ' ' + users[0].firstName : '' }}
+            {{ form.get('users').value[0] | filterUsers: users }}
             <span class="example-additional-selection" *ngIf="form.get('users').value.length > 1">
                    (еще {{ form.get('users').value.length - 1 }})
                    </span>

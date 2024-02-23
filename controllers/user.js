@@ -51,7 +51,7 @@ module.exports.create = async function (req, res) {
             phone: req.body.phone,
             post: req.body.post,
             hotels: [],
-            login: req.body.login.toLowerCase(),
+            login: req.body.login,
             password: bcrypt.hashSync(password, salt)
         })
 

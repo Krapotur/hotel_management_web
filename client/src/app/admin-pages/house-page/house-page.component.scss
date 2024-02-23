@@ -7,6 +7,10 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   user-select: none;
 }
 
+.blur {
+  filter: blur(5px);
+}
+
 .container {
   position: fixed;
   display: flex;
@@ -66,7 +70,6 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   }
 }
 
-
 .img-block {
   display: flex;
   justify-content: space-evenly;
@@ -124,3 +127,53 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   background-color: seagreen;
   width: 100px;
 }
+
+////////////Container Delete
+.container-del {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 25%;
+  left: 33%;
+  padding: 35px 63px;
+  background-color: white;
+  border: 1px solid #c90808;
+  z-index: 1;
+
+  h2 {
+    font-size: 25px;
+    padding-bottom: 5px;
+  }
+
+  h3 {
+    font-size: 23px;
+    padding-bottom: 5px;
+    color: #F87839
+  }
+
+  .btn-group-del {
+    display: flex;
+    justify-content: space-around;
+    width: 220px;
+
+    button {
+      margin-top: 20px;
+      height: 35px;
+      padding: 0 10px;
+      border-radius: 1px;
+    }
+
+    .btn-cancel {
+      background-color: slategrey;
+      width: 90px;
+    }
+
+    .btn-save {
+      background-color: darkred;
+      width: 90px;
+      margin-right: 10px;
+    }
+  }
+}
+

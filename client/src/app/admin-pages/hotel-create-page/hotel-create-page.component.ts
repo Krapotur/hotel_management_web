@@ -14,6 +14,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {UsersService} from "../../shared/services/users.service";
 import {RoomsService} from "../../shared/services/rooms.service";
 import {MaterialService} from "../../shared/classes/material.service";
+import {FilterUsersPipe} from "../../shared/pipes/filter-users.pipe";
 
 @Component({
   selector: 'app-hotel-create-page',
@@ -28,7 +29,8 @@ import {MaterialService} from "../../shared/classes/material.service";
     ReactiveFormsModule,
     MatOptionModule,
     MatSelectModule,
-    JsonPipe
+    JsonPipe,
+    FilterUsersPipe
   ],
   templateUrl: './hotel-create-page.component.html',
   styleUrl: './hotel-create-page.component.scss'
@@ -49,7 +51,6 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   hSub: Subscription
   rSub: Subscription
   uSub: Subscription
-  hotelID: string
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -197,8 +198,9 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
 
   onSubmit() {
     if (this.form.get('startRoom1').value) {
+      let title = this.form.get('title').value
       let hotel: Hotel = {
-        title: this.form.get('title').value,
+        title:  title.toLowerCase().charAt(0).toUpperCase() + title.slice(1),
         floors: this.quantityFloors,
         personal: this.form.get('users').value
       }
