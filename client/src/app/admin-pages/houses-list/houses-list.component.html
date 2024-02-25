@@ -1,5 +1,5 @@
 <!--Table-->
-<div class="main">
+<div class="main" *ngIf="isAdmin">
     <div [class]="showTemplate? 'blur' : ''">
         <div class="mat-elevation-z8">
             <h1>Дома</h1>
@@ -59,6 +59,22 @@
                                showFirstLastButtons
                                aria-label="">
                 </mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="!isAdmin" >
+    <div class="cards">
+        <div class="card" *ngFor="let house of houses">
+            <div class="img-block">
+                <img [ngSrc]="house.imgSrc" alt="image" fill="" >
+            </div>
+            <div class="title-block">
+                <div>
+                    <p> <span>"{{ house.title }}"</span></p>
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, RouterLink, RouterModule, RouterOutlet} from "@angular/router";
+import { Router, RouterLink, RouterModule, RouterOutlet} from "@angular/router";
 import {UsersPageComponent} from "../../../admin-pages/users-page/users-page.component";
 import {CommonModule, } from "@angular/common";
 import {HotelsListPageComponent} from "../../../admin-pages/hotels-list-page/hotels-list-page.component";
@@ -25,12 +25,18 @@ import {HousesListComponent} from "../../../admin-pages/houses-list/houses-list.
     styleUrl: './admin-layout.component.scss'
 })
 export class AdminLayoutComponent implements OnInit {
-
-    constructor(private route: ActivatedRoute) {
+    date: Date
+    user = JSON.parse(localStorage['user'])
+    constructor(private router: Router) {
     }
 
     ngOnInit() {
+        // setInterval(()=>this.date = new Date(),100)
     }
 
-    protected readonly Date = Date;
+    logout(){
+        localStorage.clear()
+        this.router.navigate(['login'])
+    }
+
 }

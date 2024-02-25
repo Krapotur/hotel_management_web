@@ -1,5 +1,5 @@
 <!--Table-->
-<div class="main">
+<div class="main" *ngIf="isAdmin">
   <div [class]="showTemplate? 'blur' : ''">
     <div class="mat-elevation-z8">
       <h1>Гостиницы</h1>
@@ -68,4 +68,19 @@
     </div>
   </div>
   <!--Table-->
+</div>
+
+<div *ngIf="!isAdmin" >
+  <div class="cards">
+    <div class="card" *ngFor="let hotel of hotels" (click)="openCreateHotelPage(hotel)">
+      <div class="img-block">
+        <img [ngSrc]="hotel.imgSrc" alt="image" fill="" >
+      </div>
+      <div class="title-block">
+        <div>
+          <p><span>"{{ hotel.title }}"</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

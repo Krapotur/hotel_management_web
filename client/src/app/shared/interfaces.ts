@@ -42,10 +42,6 @@ export interface Hotel {
   personal?: string[]
 }
 
-export interface Personal{
-  personalHotel?: string[]
-  personalList?: string[]
-}
 
 export interface Post {
   _id?: string,
@@ -62,4 +58,10 @@ export interface Room {
   roomsStr?: string[],
   hotelTitle?: string,
   hotel?: string
+}
+
+export interface AuthToken {
+  token: string,
+  post: string,
+  user: string
 }

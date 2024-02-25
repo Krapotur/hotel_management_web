@@ -1,1 +1,34 @@
-<p>management-layout works!</p>
+<div class="container">
+    <div class="sidebar" role="banner">
+        <div class="logo-container">
+            <img src="../assets/images/logo.png" alt="logo">
+            <h1 class="title">
+                Hotel Management
+            </h1>
+        </div>
+
+        <hr>
+
+        <div class="user">
+            <p>{{user.user}}</p>
+            <p class="post">"{{user.post.toLowerCase()}}"</p>
+        </div>
+
+        <hr class="hr-bottom">
+
+        <div class="nav-wrap">
+            <nav class="main-nav" role="navigation">
+                <ul class="list-hover-slide">
+                    <li><a routerLink="/management/hotels">Гостиницы</a></li>
+                    <li><a routerLink="/management/houses">Дома</a></li>
+                    <li (click)="logout()"><a>Выйти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="container-right">
+        <div class="container-right-title">
+        </div>
+        <router-outlet></router-outlet>
+    </div>
+</div>

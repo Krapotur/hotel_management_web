@@ -4,20 +4,30 @@
       <img src="../assets/images/logo.png" alt="logo">
       <h1 class="title">
         Hotel Management
-        <!--      <h3>{{activeUser}}</h3>-->
-        <hr>
       </h1>
     </div>
+
+      <hr>
+
+      <div class="user">
+          <p>{{user.user}}</p>
+          <p class="post">"{{user.post.toLowerCase()}}"</p>
+      </div>
+
+      <hr class="hr-bottom">
 
     <div class="nav-wrap">
       <nav class="main-nav" role="navigation">
         <ul class="list-hover-slide">
-<!--          <li><a routerLink="/da">Dashboard</a></li>-->
           <li><a routerLink="/admin-panel/hotels">Гостиницы</a></li>
           <li><a routerLink="/admin-panel/houses">Дома</a></li>
           <li><a routerLink="/admin-panel/users">Сотрудники</a></li>
-          <li><a routerLink="/">Выйти</a></li>
+          <li (click)="logout()"><a>Выйти</a></li>
         </ul>
+<!--          <div class="date">-->
+<!--              <p>{{date | date: 'd.MM.YYYY'}}</p>-->
+<!--              <p>{{date | date: 'hh : mm'}}</p>-->
+<!--          </div>-->
       </nav>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Login} from "../interfaces";
+import {AuthToken, Login} from "../interfaces";
 import {Observable, tap} from "rxjs";
 
 @Injectable({
@@ -13,12 +13,13 @@ export class AuthService {
   }
 
 
-  login(login: Login): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>('api/auth/login', login)
+  login(login: Login): Observable<AuthToken> {
+    return this.http.post<AuthToken>('api/auth/login', login)
       .pipe(
-        tap(({token}) => {
-          this.setToken(token)
-          localStorage.setItem('auth-token', token)
+        tap((authToken) => {
+          this.setToken(authToken.token)
+          localStorage.setItem('auth-token', authToken.token)
+          localStorage['user'] = JSON.stringify(authToken)
         })
       )
   }

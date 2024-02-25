@@ -6,7 +6,7 @@ import {Hotel, House, User} from "../../shared/interfaces";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {UsersService} from "../../shared/services/users.service";
@@ -29,13 +29,16 @@ import {Router} from "@angular/router";
         NgIf,
         ReactiveFormsModule,
         MatOptionModule,
-        MatSelectModule
+        MatSelectModule,
+        NgOptimizedImage
     ],
     templateUrl: './houses-list.component.html',
     styleUrl: './houses-list.component.scss'
 })
 export class HousesListComponent implements OnInit, OnDestroy {
     showTemplate = false
+    isAdmin = false
+
     dataSource: MatTableDataSource<House>
 
     houses: Hotel [] = []
@@ -55,6 +58,7 @@ export class HousesListComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.getHouses()
+        if(JSON.parse(localStorage['user']).post !== 'Администратор') this.isAdmin = true
     }
 
     ngOnDestroy() {
@@ -102,8 +106,8 @@ export class HousesListComponent implements OnInit, OnDestroy {
 
     openHousePage(house?: House) {
         if (house) {
-            this.router.navigate([`admin-panel/house/${house._id}`])
-        } else this.router.navigate([`admin-panel/house`], {
+            this.router.navigate([`admin-panel/house-edit/${house._id}`])
+        } else this.router.navigate([`admin-panel/house-edit`], {
             queryParams: {
                 new: true
             }

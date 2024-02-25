@@ -155,7 +155,11 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
 
   deleteRoom() {
     this.rSub = this.roomsService.delete(this.room).subscribe({
-      next: message => MaterialService.toast(message.message)
+      next: message => {
+        MaterialService.toast(message.message)
+        this.isDelete = !this.isDelete
+
+      }
     })
   }
 

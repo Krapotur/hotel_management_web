@@ -1,13 +1,12 @@
 //@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
 //@import url('https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+// FONTS
 
+$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 *, :before, :after {
   box-sizing: border-box;
 }
 
-// FONTS
-
-$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
 // COLORS
 $orange: #F87839;
@@ -20,8 +19,27 @@ $white-off: #DFDBD9;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 20px;
 }
 
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0 10px 0;
+
+  p {
+    color: $white-off;
+    font: 400 18px $lora;
+  }
+  .post{
+    font-size: 13px;
+  }
+}
+
+.hr-bottom {
+  margin-bottom: 30px;
+}
 
 .title {
   user-select: none;
@@ -36,7 +54,7 @@ hr {
   background-color: $orange;
   height: 2px;
   border: none;
-  margin: 0 15px 30px 15px;
+  margin: 0 15px 0 15px;
 }
 
 h3 {
@@ -125,16 +143,19 @@ h3 {
   }
 }
 
-.date{
+.date {
+  //position: fixed;
+  //top: 30px;
+  //right: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 50%;
 
-  h4{
-    margin: 0;
-    font-size: 20px;
+  p {
     color: $white-off;
+    font: 500 18px $lora;
+    height: 28px;
   }
 }
 
@@ -148,7 +169,7 @@ h3 {
 .container-right {
   margin: 30px 0 0 30vh;
 
-  .container-right-title h1{
+  .container-right-title h1 {
     margin-bottom: 10px;
     font-family: $lora;
     color: $gray;

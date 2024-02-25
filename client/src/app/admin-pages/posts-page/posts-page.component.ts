@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
@@ -10,6 +10,8 @@ import {Post} from "../../shared/interfaces";
 import {PostsService} from "../../shared/services/posts.service";
 import {Subscription} from "rxjs";
 import {MaterialService} from "../../shared/classes/material.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {StateService} from "../../shared/services/state.service";
 
 @Component({
     selector: 'app-posts-page',
@@ -42,7 +44,8 @@ export class PostsPageComponent implements OnInit, OnDestroy {
     pSub: Subscription
     posts: Post[]
 
-    constructor(private postsService: PostsService) {
+    constructor(private postsService: PostsService,
+                private stateService: StateService) {
     }
 
     displayedColumns: string[] = ['#', 'post', 'action'];
@@ -71,6 +74,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
             case 'add': {
                 this.isDelete = false
                 this.isShowTemplate = true
+                this.stateService.showTemplate = true
                 this.titleForm = `Новая должность`
                 this.isEdit = false
                 this.form.get('title').reset()
@@ -84,6 +88,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
                 break;
             case 'edit': {
                 this.isShowTemplate = true
+                this.stateService.showTemplate = true
                 this.isEdit = true
                 this.isDelete = false
                 this.post = post
@@ -95,6 +100,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
             default: {
                 this.titlePost = ''
                 this.isShowTemplate = false
+                this.stateService.showTemplate = false
             }
         }
     }
@@ -137,7 +143,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
 
     delete() {
         this.pSub = this.postsService.delete(this.post).subscribe({
-            next: message =>  MaterialService.toast(message.message)
+            next: message => MaterialService.toast(message.message)
             , error: error => MaterialService.toast(error.error.message)
         })
         this.isShowTemplate = !this.isShowTemplate
@@ -146,7 +152,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
     update(post: Post) {
         this.pSub = this.postsService.update(post).subscribe({
             next: message => MaterialService.toast(message.message),
-            error: error =>  MaterialService.toast(error.error.message)
+            error: error => MaterialService.toast(error.error.message)
         })
     }
 

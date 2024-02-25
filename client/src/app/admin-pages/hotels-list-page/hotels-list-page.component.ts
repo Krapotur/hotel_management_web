@@ -6,7 +6,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {PostsPageComponent} from "../posts-page/posts-page.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
@@ -34,7 +34,8 @@ import {RoomsService} from "../../shared/services/rooms.service";
     MatInputModule,
     RouterLink,
     FilterUsersPipe,
-    HousesListComponent
+    HousesListComponent,
+    NgOptimizedImage
   ],
   templateUrl: './hotels-list-page.component.html',
   styleUrl: './hotels-list-page.component.scss'
@@ -47,7 +48,7 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   rSub: Subscription
   uSub: Subscription
   hotels: Hotel[] = []
-  personalList: User[] = []
+  isAdmin = false
 
   constructor(private router: Router,
               private hotelService: HotelsService,
@@ -62,6 +63,7 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnInit() {
     this.getHotels()
+    if(JSON.parse(localStorage['user']).post !== 'Администратор') this.isAdmin = true
   }
 
   ngAfterViewInit() {
@@ -124,9 +126,13 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
 
   openCreateHotelPage(hotel?: Hotel) {
     if (hotel) {
-      this.router.navigate([`admin-panel/hotel-edit/${hotel._id}`], {queryParams:{
-      edit: true}
-      })
+      if(this.isAdmin) {
+        this.router.navigate([`admin-panel/hotel-edit/${hotel._id}`], {
+          queryParams: {
+            edit: true
+          }
+        })
+      }else this.router.navigate([`management/hotel/${hotel._id}`])
     } else {
       this.router.navigate(['admin-panel/hotel-create'])
     }

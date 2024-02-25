@@ -10,7 +10,7 @@ import {HotelPageComponent} from "./admin-pages/hotel-page/hotel-page.component"
 import {HotelCreatePageComponent} from "./admin-pages/hotel-create-page/hotel-create-page.component";
 import {HousesListComponent} from "./admin-pages/houses-list/houses-list.component";
 import {UserCreatePageComponent} from "./admin-pages/user-create-page/user-create-page.component";
-import {HousePageComponent} from "./admin-pages/house-page/house-page.component";
+import {HouseEditPageComponent} from "./admin-pages/house-page/house-edit-page.component";
 import {HotelEditPageComponent} from "./admin-pages/hotel-edit-page/hotel-edit-page.component";
 export const routes: Routes = [
   {
@@ -26,18 +26,21 @@ export const routes: Routes = [
       {path: 'user-create', component: UserCreatePageComponent},
       {path: 'groups', component: PostsPageComponent},
       {path: 'hotels', component: HotelsListPageComponent},
-      {path: 'hotel/:id', component: HotelPageComponent},
       {path: 'hotel-create', component: HotelCreatePageComponent},
       {path: 'hotel-edit/:id', component: HotelEditPageComponent},
-      {path: 'house', component: HousePageComponent},
-      {path: 'house/:id', component: HousePageComponent},
+      {path: 'house-edit', component: HouseEditPageComponent},
+      {path: 'house-edit/:id', component: HouseEditPageComponent},
       {path: 'houses', component:HousesListComponent},
     ]
   },
   {
     path: 'management', component: ManagementLayoutComponent, children: [
-      {path: 'management', redirectTo: '/management', pathMatch: "full"},
-      {path: 'management', component: ManagementLayoutComponent}
+      {path: '', redirectTo: '/management/hotels', pathMatch: "full"},
+      {path: 'management', component: ManagementLayoutComponent},
+      {path: 'hotels', component: HotelsListPageComponent},
+      {path: 'hotel/:id', component: HotelPageComponent},
+      {path: 'houses', component:HousesListComponent},
+      {path: 'houses/:id', component:HousesListComponent},
     ]
   }
 ];
