@@ -66,14 +66,18 @@
 
 
 <div *ngIf="!isAdmin" >
+  <div class="header">
+    <h2>Дома</h2>
+    <hr>
+  </div>
     <div class="cards">
-        <div class="card" *ngFor="let house of houses">
+        <div class="card-item" *ngFor="let house of houses">
             <div class="img-block">
                 <img [ngSrc]="house.imgSrc" alt="image" fill="" >
             </div>
             <div class="title-block">
                 <div>
-                    <p> <span>"{{ house.title }}"</span></p>
+                    <span>"{{ house.title }}"</span>
                 </div>
             </div>
         </div>

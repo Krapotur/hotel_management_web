@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {Hotel, User} from "../../shared/interfaces";
+import {Hotel, Room} from "../../shared/interfaces";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatOptionModule} from "@angular/material/core";
@@ -96,6 +96,20 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
     })
   }
 
+  getPercentReadyRooms(rooms: Room[]){
+    let quantityRooms = rooms.length
+    let readyRooms = 0
+    let percent: number
+
+    rooms.forEach(room=> {
+      if (room.status == 'isReady') readyRooms++
+    })
+
+    percent = (readyRooms / quantityRooms) * 100
+
+    return Math.round(percent)
+  }
+
   getUsers(hotels: Hotel[]) {
     this.uSub = this.userService.getUsers().subscribe({
       next: users => {
@@ -117,7 +131,7 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
       next: rooms => {
         hotels.map(hotel => {
           let roomsHotel = rooms.filter( room => hotel._id == room.hotel)
-
+          hotel.percentReadyRooms = this.getPercentReadyRooms(roomsHotel)
           hotel.quantityRooms = roomsHotel.length
         })
       }
@@ -131,10 +145,10 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
           queryParams: {
             edit: true
           }
-        })
-      }else this.router.navigate([`management/hotel/${hotel._id}`])
+        }).then()
+      }else this.router.navigate([`management/hotel/${hotel._id}`]).then()
     } else {
-      this.router.navigate(['admin-panel/hotel-create'])
+      this.router.navigate(['admin-panel/hotel-create']).then()
     }
   }
 }

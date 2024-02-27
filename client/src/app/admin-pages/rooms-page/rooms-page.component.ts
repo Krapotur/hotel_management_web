@@ -7,8 +7,7 @@ import {RoomsService} from "../../shared/services/rooms.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {MatSelectModule} from "@angular/material/select";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
-import {addDiagnosticChain} from "@angular/compiler-cli/src/ngtsc/diagnostics";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-rooms-page',
@@ -41,6 +40,7 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
   statuses = ['Готов', 'На уборке', 'Не готов']
 
   constructor(private roomsService: RoomsService,
+              private router: Router,
               private route: ActivatedRoute) {
   }
 
@@ -91,19 +91,6 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  addRoom() {
-    let room: Room = {
-      numberRoom: 7,
-      floor: 2,
-      status: 'isDirty',
-      comments: ['Застелить постель'],
-      hotel: this.hotelId
-    }
-    this.rSub = this.roomsService.create(room).subscribe({
-      next: message => MaterialService.toast(message.message)
-    })
-  }
-
   selectRoom(room?: Room) {
     if (room) {
       this.room = room
@@ -117,11 +104,28 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
   }
 
   generateForm() {
+    let status =''
+    switch (this.room.status){
+      case 'isReady': {
+        status = 'Готов'
+      }
+      break;
+      case 'notReady': {
+        status = 'Не готов'
+      }
+      break;
+      case 'inProcess': {
+        status = 'На уборке'
+      }
+      break;
+    }
+
     this.form = new FormGroup({
-      status: new FormControl(this.room.status),
+      status: new FormControl(status),
       comment: new FormControl(this.room.comments)
     })
   }
+
   generateAddForm() {
     this.addForm = new FormGroup({
       numberRoom: new FormControl(null, [
@@ -136,15 +140,33 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    let status = ''
+    switch (this.form.get('status').value){
+      case 'Готов':{
+        status = 'isReady'
+      }
+        break;
+      case 'Не готов': {
+        status = 'notReady'
+      }
+        break;
+      case 'На уборке': {
+        status = 'inProcess'
+      }
+    }
+
     let room = {
       _id: this.room._id,
-      status: this.form.get('status').value,
+      status: status,
       comments: this.form.get('comment').value
     }
     this.rSub = this.roomsService.update(room).subscribe({
       next: message => MaterialService.toast(message.message),
       error: error => MaterialService.toast(error.error.message)
     })
+    this.router.navigateByUrl('/').then(() => {
+          this.router.navigate([`management/hotel/${this.hotelId}`]).then()
+        })
     this.isEdit = !this.isEdit
   }
 

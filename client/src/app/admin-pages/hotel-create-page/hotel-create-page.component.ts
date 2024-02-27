@@ -86,7 +86,7 @@ export class HotelCreatePageComponent implements OnInit, DoCheck, OnDestroy {
 
   generateForm() {
     this.form = new FormGroup({
-      title: new FormControl(null, [Validators.required]),
+      title: new FormControl(null, [Validators.required, Validators.minLength(3)]),
       floors: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       floor1: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),
       floor2: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(4)]),

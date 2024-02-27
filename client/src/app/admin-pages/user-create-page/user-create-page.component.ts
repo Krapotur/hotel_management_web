@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
+import {Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -33,7 +33,7 @@ import {HotelsService} from "../../shared/services/hotels.service";
   templateUrl: './user-create-page.component.html',
   styleUrl: './user-create-page.component.scss'
 })
-export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy {
+export class UserCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   form: FormGroup
   formPassword: FormGroup
   post = new FormControl('');
@@ -69,9 +69,6 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
     this.isDelete || this.isResetPassword ? this.form.disable() : this.form.enable()
   }
 
-  ngAfterViewInit() {
-  }
-
   ngOnDestroy() {
     if (this.pSub) {
       this.pSub.unsubscribe()
@@ -86,11 +83,11 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
 
   generateForm() {
     this.form = new FormGroup({
-      lastName: new FormControl(null, [Validators.required]),
-      firstName: new FormControl(null, [Validators.required]),
-      phone: new FormControl(null, [Validators.required]),
-      post: new FormControl(null, [Validators.required]),
-      login: new FormControl(null, [Validators.required]),
+      lastName: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+      firstName: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+      phone: new FormControl(null, [Validators.required, Validators.min(9000000000),Validators.max(9999999999)]),
+      post: new FormControl(null, [Validators.required, Validators.minLength(3)]),
+      login: new FormControl(null, [Validators.required, Validators.minLength(3)]),
       password: new FormControl(null, [Validators.required]),
     })
   }
@@ -115,15 +112,12 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
             login: user.login
           })
           this.titleForm = user.lastName + ' ' + user.firstName
-
           this.user = user
         },
-        error: error => console.log(error.error.message),
+        error: error => MaterialService.toast(error.error.message),
       })
       this.getHotelsByUser()
-    } else {
-      this.titleForm = 'Новый сотрудник'
-    }
+    } else this.titleForm = 'Новый сотрудник'
   }
 
   getPosts() {
@@ -156,10 +150,9 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
       this.userService.create(user).subscribe({
         next: (message: { message: string }) => {
           MaterialService.toast(message.message)
-          this.router.navigate(['/admin-panel/users'])
-
+          this.router.navigate(['/admin-panel/users']).then()
         },
-        error: (error) => console.log(error.error.message)
+        error: (error) => MaterialService.toast(error.error.message)
       })
     } else {
       this.isResetPassword ? this.resetPassword() : this.userService.update({
@@ -171,11 +164,10 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
         login: this.form.get('login').value,
       }).subscribe({
         next: (message: { message: string }) => {
-          if (message.message == 'Успех') {
-            this.router.navigate(['/admin-panel/users'])
-          }
+            MaterialService.toast(message.message)
+            this.router.navigate(['/admin-panel/users']).then()
         },
-        error: (error) => console.log(error.error.message),
+        error: (error) => MaterialService.toast(error.error.message),
         complete: () => {
         }
       })
@@ -192,7 +184,7 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
   }
 
   openUsersPage() {
-    this.router.navigate(['admin-panel/users'])
+    this.router.navigate(['admin-panel/users']).then()
   }
 
   generateFormPassword() {
@@ -211,7 +203,7 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
       }).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          this.router.navigate(['/admin-panel/users'])
+          this.router.navigate(['/admin-panel/users']).then()
         },
         error: (error) => MaterialService.toast(error.error.message),
         complete: () => {
@@ -219,8 +211,6 @@ export class UserCreatePageComponent implements OnInit, DoCheck, AfterViewInit, 
       })
       this.openUsersPage()
     } else MaterialService.toast('Пароли не совпадают')
-
-
   }
 
   blur = blur;

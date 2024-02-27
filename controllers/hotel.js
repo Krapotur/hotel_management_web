@@ -59,7 +59,7 @@ module.exports.create = async function (req, res) {
 module.exports.update = async function (req, res) {
 
     const hotel = await Hotel.findOne({title: req.body.title})
-    if(hotel && !req.file && !req.body.title){
+    if(hotel && !req.file){
         res.status(409).json({
             message: `Гостиница ${req.body.title} уже есть`
         })

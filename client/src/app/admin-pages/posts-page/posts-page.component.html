@@ -68,6 +68,9 @@
             <span *ngIf="form.get('title').hasError('required') && form.get('title').touched"
             >*Введите название должности
             </span>
+          <span *ngIf="form.get('title').hasError('minlength') && form.get('title').touched"
+          >*Не менее 3х символов
+              </span>
         </div>
 
         <div class="btn-group">

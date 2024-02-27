@@ -5,7 +5,7 @@
     <div class="rooms">
       <div class="room" *ngFor="let room of floor.rooms">
         <div [class]="isParams? 'delete-room' : 'room-ready'">
-          <div [class]="room.status === 'На уборке' ? 'room-progress' : 'room-ready'">
+          <div [class]="room.status === 'inProcess' ? 'room-progress' : 'room-ready'">
             <div class="x-delete" *ngIf="isParams">
               <img
                 *ngIf="!isDelete && !isAddRoom"
@@ -14,7 +14,7 @@
               >
             </div>
             <button
-              [class]="room.status === 'Не готов' ? 'room-dirty': 'room-ready'" extended="" mat-fab
+              [class]="room.status === 'notReady' ? 'room-dirty': 'room-ready'" extended="" mat-fab
               (click)="selectRoom(room)"
               [disabled]="isParams"
             >

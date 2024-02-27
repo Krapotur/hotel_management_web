@@ -25,6 +25,9 @@
             <span *ngIf="form.get('lastName').hasError('required') && form.get('lastName').touched"
             >*Введите фамилию
                     </span>
+            <span *ngIf="form.get('lastName').hasError('minlength') && form.get('lastName').touched"
+            >*Не менее 3х символов
+                    </span>
           </div>
 
           <div class="row">
@@ -33,7 +36,10 @@
               <label class="active" for="firstName">Имя</label>
               <span *ngIf="form.get('firstName').hasError('required') && form.get('firstName').touched"
               >*Введите имя
-                            </span>
+              </span>
+              <span *ngIf="form.get('firstName').hasError('minlength') && form.get('firstName').touched"
+              >*Не менее 3х символов
+              </span>
             </div>
           </div>
 
@@ -46,6 +52,9 @@
               <span *ngIf="form.get('login').hasError('required') && form.get('login').touched"
               >*Придумайте логин
                     </span>
+              <span *ngIf="form.get('login').hasError('minlength') && form.get('login').touched"
+              >*Не менее 3х символов
+              </span>
             </div>
           </div>
         </div>
@@ -77,12 +86,16 @@
 
           <div class="row">
             <div class="input-field col s6">
-              <input id="phone" type="tel" formControlName="phone">
+              <input id="phone" type="number" formControlName="phone">
               <label class="active" for="phone">Телефон</label>
             </div>
             <span *ngIf="form.get('phone').hasError('required') && form.get('phone').touched"
-            >*Введите номер телефона
-                            </span>
+            >*Введите номер телефона без "+7"
+            </span>
+            <span *ngIf="form.get('phone').hasError('max') || form.get('phone').hasError('min') && form.get('phone').touched"
+            >*Введите номер в формате - 9XX XXX XX XX <br>
+              *Сейчас: {{form.get('phone').value.toString().length}}
+              </span>
           </div>
 
           <div *ngIf="!params">
@@ -110,7 +123,7 @@
           type="submit"
           class="btn-save" extended="" mat-fab
           (click)="onSubmit()"
-          [disabled]="form.disabled"
+          [disabled]="form.disabled || form.invalid"
         >
           Сохранить
         </button>

@@ -38,8 +38,9 @@ export interface Hotel {
   roomsStr?: string[],
   imgSrc?: string,
   quantityRooms?: number,
-  position?: number
-  personal?: string[]
+  position?: number,
+  personal?: string[],
+  percentReadyRooms?: number
 }
 
 

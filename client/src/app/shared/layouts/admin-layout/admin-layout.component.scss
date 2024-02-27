@@ -5,6 +5,7 @@
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 *, :before, :after {
   box-sizing: border-box;
+  user-select: none;
 }
 
 
@@ -30,7 +31,7 @@ $white-off: #DFDBD9;
 
   p {
     color: $white-off;
-    font: 400 18px $lora;
+    font: 400 16px $lora;
   }
   .post{
     font-size: 13px;

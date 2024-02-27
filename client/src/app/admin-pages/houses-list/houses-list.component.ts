@@ -106,11 +106,11 @@ export class HousesListComponent implements OnInit, OnDestroy {
 
     openHousePage(house?: House) {
         if (house) {
-            this.router.navigate([`admin-panel/house-edit/${house._id}`])
+            this.router.navigate([`admin-panel/house-edit/${house._id}`]).then()
         } else this.router.navigate([`admin-panel/house-edit`], {
             queryParams: {
                 new: true
             }
-        })
+        }).then()
     }
 }

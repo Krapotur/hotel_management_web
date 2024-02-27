@@ -71,15 +71,21 @@
 </div>
 
 <div *ngIf="!isAdmin" >
+  <div class="header">
+    <h2>Гостиницы</h2>
+    <hr>
+  </div>
+
   <div class="cards">
-    <div class="card" *ngFor="let hotel of hotels" (click)="openCreateHotelPage(hotel)">
+    <div class="card-item" *ngFor="let hotel of hotels" (click)="openCreateHotelPage(hotel)">
       <div class="img-block">
         <img [ngSrc]="hotel.imgSrc" alt="image" fill="" >
       </div>
-      <div class="title-block">
-        <div>
-          <p><span>"{{ hotel.title }}"</span></p>
-        </div>
+      <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">
+
+          <span>"{{ hotel.title }}"</span>
+          <span>Готовность номеров: {{hotel.percentReadyRooms}}%</span>
+
       </div>
     </div>
   </div>

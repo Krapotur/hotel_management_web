@@ -61,10 +61,12 @@ table {
 }
 
 
-//img {
-//  width: 50px;
-//  border-radius: 5px;
-//}
+.empty-block p {
+  font-size: 22px;
+  padding: 20px;
+  color: $greyWithOpacity_09;
+  text-align: center;
+}
 
 hr {
   margin: 0 20px;
@@ -86,47 +88,74 @@ button {
 }
 
 /////////////////Card of Houses
+.header{
+  padding-bottom: 20px;
+
+  h2{
+    margin: 0;
+  }
+
+  hr {
+    background-color: #F57C23;
+    height: 3px;
+    border: none;
+    width: 30%;
+  }
+}
 .cards {
   user-select: none;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  gap: 20px;
 
-  .card {
+  .card-item {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 2px;
 
     .img-block {
       position: relative;
       height: 20vh;
-      width: 30vh;
-      box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+      width: 32vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding-bottom: 20px;
     }
 
-    .title-block {
-      padding: 10px 0 20px 0;
+    .title-block-green {
+      width: 100%;
+      padding: 5px 0 5px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      background-color: seagreen;
+    }
 
-      p {
-        font-size: 18px;
-        padding: 2px;
-        text-align: center;
+    p {
+      color: white;
+      font-size: 20px;
+      text-align: center;
+    }
 
-        span {
-          color: #F57C23;
-        }
-      }
+    span {
+      color: black;
+      padding: 0 5px;
     }
   }
+
+  .title-block-red {
+    width: 100%;
+    padding: 5px 0 5px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: darkred;
+  }
+
+  .card-item:hover {
+    box-shadow: grey 0 2px 10px;
+  }
 }
-
-

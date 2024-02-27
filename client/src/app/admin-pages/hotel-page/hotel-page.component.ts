@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -31,7 +31,7 @@ import {ActivatedRoute} from "@angular/router";
   templateUrl: './hotel-page.component.html',
   styleUrl: './hotel-page.component.scss'
 })
-export class HotelPageComponent implements OnInit, DoCheck, OnDestroy {
+export class HotelPageComponent implements OnInit, OnDestroy {
   hotelId: string
   hotel: Hotel
   users: User[] = []
@@ -55,9 +55,6 @@ export class HotelPageComponent implements OnInit, DoCheck, OnDestroy {
     this.getHotelById()
     this.getQuantityRooms()
     this.getUsers()
-  }
-
-  ngDoCheck() {
   }
 
   ngOnDestroy() {
