@@ -64,22 +64,69 @@
     </div>
 </div>
 
+<div class="header" *ngIf="!isAdmin">
+    <h2>Дома</h2>
+</div>
 
 <div *ngIf="!isAdmin" >
-  <div class="header">
-    <h2>Дома</h2>
-    <hr>
-  </div>
     <div class="cards">
         <div class="card-item" *ngFor="let house of houses">
-            <div class="img-block">
-                <img [ngSrc]="house.imgSrc" alt="image" fill="" >
+            <div class="title">
+                <p>{{ house.title }}</p>
             </div>
-            <div class="title-block">
+            <div class="img-block">
+                <img [ngSrc]="house.imgSrc" alt="image" fill="" (click)="openTemplateEditStatus(house)">
+            </div>
+            <div [class]="house.status == 'isReady'?'title-block' : 'title-block-red'">
+                <span>Готовность дома</span>
+                <hr>
                 <div>
-                    <span>"{{ house.title }}"</span>
+                    <span>{{house.status | status}}</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!--Edit Template-->
+<div *ngIf="isEdit">
+    <form [formGroup]="form">
+        <div class="house-container">
+            <p>Изменение статуса</p>
+            <span>"{{house.title}}"</span>
+            <mat-form-field>
+                <mat-label>Выберите статус</mat-label>
+                <mat-select formControlName="status">
+                    <mat-option [value]="status" *ngFor="let status of statuses">{{ status }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="task-block">
+                <label for="textarea">Задание:</label>
+                <textarea id="textarea"
+                          maxlength="200"
+                          placeholder="Что требуется сделать?"
+                          formControlName="comment"
+                ></textarea>
+            </div>
+
+            <div class="btn-group">
+                <button
+                        class="btn-cancel" extended="" mat-fab
+                        (click)="isEdit = !isEdit"
+                >
+                    Отмена
+                </button>
+                <button
+                        type="submit"
+                        class="btn-save" extended="" mat-fab
+                        (click)="onSubmit()"
+                        [disabled]="form.disabled"
+                >
+                    Сохранить
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--Edit Template-->

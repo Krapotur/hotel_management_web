@@ -81,18 +81,22 @@ button {
 }
 
 /////////////////Card of Hotels
-.header{
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding-bottom: 20px;
 
-  h2{
+  h2 {
     margin: 0;
+    color: #F87839;
   }
 
   hr {
-    background-color: #F57C23;
+    background-color: grey;
     height: 3px;
     border: none;
-    width: 30%;
+    width: 40%;
   }
 }
 
@@ -108,11 +112,21 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: grey 0 2px 5px;
+
+    .title {
+      padding: 10px 0;
+      background-color: #F87839;
+      width: 100%;
+      text-align: center;
+
+
+    }
 
     .img-block {
       position: relative;
       height: 20vh;
-      width: 32vh;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -125,12 +139,27 @@ button {
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: seagreen;
+      background-color: #F87839;
+
+      p {
+        padding: 5px 0;
+        font-size: 18px;
+        color: white;
+        font-weight: 400;
+      }
     }
 
     span {
       color: white;
       padding: 0 5px;
+    }
+
+    hr {
+      background-color: white;
+      height: 2px;
+      border: none;
+      width: 210px;
+      padding: 0 15px;
     }
   }
 
@@ -140,11 +169,18 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: darkred;
+    background-color: rgba(243, 12, 12, 0.86);
+
+    p {
+      font-size: 18px;
+      padding: 5px 0;
+      color: white;
+      font-weight: 400;
+    }
   }
 
   .card-item:hover {
-    box-shadow: grey 0 2px 10px;
+    box-shadow: black 0 2px 15px;
   }
 }
 

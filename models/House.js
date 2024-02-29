@@ -7,6 +7,13 @@ const houseSchema = new Schema({
         require: true,
         unique: true
     },
+    status: {
+        type:String,
+        default: 'isReady'
+    },
+    comments:{
+      type: []
+    },
     imgSrc: {
         type: String,
         default: ''

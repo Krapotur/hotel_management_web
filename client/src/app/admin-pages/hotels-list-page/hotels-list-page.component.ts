@@ -129,10 +129,20 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   getQuantityRoomsInHotel(hotels: Hotel[]) {
     this.rSub = this.roomService.getAll().subscribe({
       next: rooms => {
+
         hotels.map(hotel => {
+          let notReadyRooms = 0
+          let inProcessRooms = 0
           let roomsHotel = rooms.filter( room => hotel._id == room.hotel)
           hotel.percentReadyRooms = this.getPercentReadyRooms(roomsHotel)
           hotel.quantityRooms = roomsHotel.length
+
+          roomsHotel.forEach(room => {
+            if (room.status == 'notReady') notReadyRooms++
+            if (room.status == 'inProcess') inProcessRooms++
+          })
+          hotel.notReadyRooms = notReadyRooms
+          hotel.inProcessRooms = inProcessRooms
         })
       }
     })

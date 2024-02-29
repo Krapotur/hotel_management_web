@@ -1,30 +1,39 @@
+
+
+<div class="header">
+    <a routerLink="/management/hotels"><< назад</a>
+    <h2>"{{hotel.title}}"</h2>
+
+</div>
+
 <div class="container">
-  <div class="left-block">
-    <div class="img-block">
-      <img [ngSrc]="hotel.imgSrc" alt="image" fill="">
-    </div>
-    <div class="title-block">
-      <div>
-        <h2>Гостиница <span>"{{ hotel.title }}"</span></h2>
-      </div>
-      <div>
-        <h3>Номерной фонд: <span>{{ quantityRooms }}</span></h3>
-      </div>
+    <div class="left-block">
+        <div class="img-block">
+            <img [ngSrc]="hotel.imgSrc" alt="image" fill="">
+        </div>
+        <div class="title-block">
+            <div>
+                <h2>Гостиница <span>"{{ hotel.title }}"</span></h2>
+            </div>
+            <div>
+                <h3>Номерной фонд: <span>{{ quantityRooms }}</span></h3>
+            </div>
+        </div>
+
+        <div class="personal-block">
+            <h3>Персонал</h3>
+            <hr>
+            <div class="personal" *ngFor="let personal of personal">
+                <p> {{personal.lastName + ' ' + personal.firstName }}</p>
+                <p>+7 {{personal.phone}}</p>
+            </div>
+        </div>
     </div>
 
-    <div class="personal-block">
-      <h3>Персонал</h3>
-      <hr>
-      <div class="personal" *ngFor="let personal of personal">
-        <p> {{personal.lastName + ' ' + personal.firstName }}</p> <p>+7 {{personal.phone}}</p>
-      </div>
+    <div>
+        <div [class]="quantityRooms >60 ? 'right-block-scroll': 'right-block'">
+            <app-rooms-page [hotelId]="hotel._id"></app-rooms-page>
+        </div>
     </div>
-  </div>
-
-  <div>
-    <div [class]="quantityRooms >60 ? 'right-block-scroll': 'right-block'">
-      <app-rooms-page [hotelId]="hotel._id"></app-rooms-page>
-    </div>
-  </div>
 
 </div>

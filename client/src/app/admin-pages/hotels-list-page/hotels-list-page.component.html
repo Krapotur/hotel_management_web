@@ -73,20 +73,24 @@
 <div *ngIf="!isAdmin" >
   <div class="header">
     <h2>Гостиницы</h2>
-    <hr>
   </div>
 
   <div class="cards">
     <div class="card-item" *ngFor="let hotel of hotels" (click)="openCreateHotelPage(hotel)">
+      <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">
+        <p>{{ hotel.title }}</p>
+      </div>
       <div class="img-block">
         <img [ngSrc]="hotel.imgSrc" alt="image" fill="" >
       </div>
       <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">
 
-          <span>"{{ hotel.title }}"</span>
-          <span>Готовность номеров: {{hotel.percentReadyRooms}}%</span>
-
+          <span style="font-size: 15px">Готовность номеров: {{hotel.percentReadyRooms}}%</span>
+        <hr>
+          <span>Грязные: {{hotel.notReadyRooms}}</span>
+          <span>На уборке: {{hotel.inProcessRooms}}</span>
       </div>
     </div>
+
   </div>
 </div>

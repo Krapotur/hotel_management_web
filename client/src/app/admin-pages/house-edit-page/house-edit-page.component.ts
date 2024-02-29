@@ -129,7 +129,7 @@ export class HouseEditPageComponent implements OnInit,DoCheck, OnDestroy {
         fd.append('image', this.image, this.image.name)
       }
 
-      this.hSub = this.houseService.update(this.houseID, fd).subscribe({
+      this.hSub = this.houseService.update(this.house, fd).subscribe({
         next: message => MaterialService.toast(message.message),
         error: error => MaterialService.toast(error.error.message)
       })

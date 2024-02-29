@@ -64,17 +64,14 @@ module.exports.update = async function (req, res) {
             message: `Гостиница ${req.body.title} уже есть`
         })
     } else {
-        const updated = {
+        let updated = {
             title: req.body.title,
-            personal: req.body.personal
+            personal: req.body.personal,
+            imgSrc: req.file ?  req.file.path: house.imageSrc
         }
 
         if (!req.body.personal){
             updated.personal = []
-        }
-
-        if (req.file) {
-            updated.imageSrc = req.file.path
         }
 
         try {

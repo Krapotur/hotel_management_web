@@ -60,25 +60,17 @@ module.exports.create = async function (req, res) {
 
 module.exports.update = async function (req, res) {
 
-    const house = await House.findOne({title: req.body.title})
-    if(house && !req.file && !req.body.title){
-        res.status(409).json({
-            message: `Дом ${req.body.title} уже есть`
-        })
-    } else {
-        const updated = {
+        let updated = {
             title: req.body.title,
-            personal: req.body.personal
+            personal: req.body.personal,
+            comments: req.body.comments
         }
 
-        if (!req.body.personal){
-            updated.personal = []
-        }
+        if (req.file) updated.imgSrc = req.file.path
 
-        if (req.file) {
-            updated.imageSrc = req.file.path
-        }
+        if(req.body.status) updated.status = req.body.status
 
+        console.log(updated)
         try {
             await House.findByIdAndUpdate(
                 {_id: req.params.id},
@@ -91,6 +83,4 @@ module.exports.update = async function (req, res) {
         } catch (e) {
             errorHandler(res, e)
         }
-    }
-
 }

@@ -39,7 +39,7 @@ export class HousesService {
     return this.http.delete<{ message: string }>(`/api/houses/${houseID}`)
   }
 
-  update(houseID: string, fd: FormData): Observable<{ message: string }> {
-    return this.http.patch<{ message: string }>(`/api/houses/${houseID}`, fd)
+  update(house?: House, fd?: FormData): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`/api/houses/${house._id}`, fd ? fd : house)
   }
 }

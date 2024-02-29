@@ -12,22 +12,23 @@ import {Subscription} from "rxjs";
 import {HotelsService} from "../../shared/services/hotels.service";
 import {UsersService} from "../../shared/services/users.service";
 import {RoomsService} from "../../shared/services/rooms.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 @Component({
   selector: 'app-hotel-page',
   standalone: true,
-  imports: [
-    FormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatOptionModule,
-    MatSelectModule,
-    NgForOf,
-    NgIf,
-    NgOptimizedImage,
-    ReactiveFormsModule,
-    RoomsPageComponent
-  ],
+    imports: [
+        FormsModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatOptionModule,
+        MatSelectModule,
+        NgForOf,
+        NgIf,
+        NgOptimizedImage,
+        ReactiveFormsModule,
+        RoomsPageComponent,
+        RouterLink
+    ],
   templateUrl: './hotel-page.component.html',
   styleUrl: './hotel-page.component.scss'
 })

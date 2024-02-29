@@ -7,12 +7,36 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
   user-select: none;
 }
 
+.header{
+  display: flex;
+  padding-top: 10px;
+
+  a{
+    color: grey;
+    font-size: 22px;
+    font-weight: 500;
+  }
+  a:hover{
+    color:  #F87839;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  h2{
+    margin: 0;
+    font-size: 35px;
+    text-align: center;
+    padding:0 0 20px 40%;
+    color: #F87839;
+  }
+
+}
+
 .container {
   position: relative;
   display: flex;
   justify-content: space-around;
   align-items: self-start;
-  margin: 0 15% 0 0;
   background-color: white;
   width: 100vh;
 }
@@ -105,7 +129,7 @@ $greyWithOpacity_04: rgba(128, 128, 128, 0.4);
 
 .right-block-scroll {
   overflow-y: scroll;
-  height: 90vh;
+  height: 80vh;
   padding: 20px 40px 0 40px;
   margin-left: 50px;
   box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
