@@ -13,6 +13,7 @@ const roomSchema = new Schema({
     status: {
         type: String,
         require: true,
+        default: 'isReady'
     },
     comments: {
         type: [],

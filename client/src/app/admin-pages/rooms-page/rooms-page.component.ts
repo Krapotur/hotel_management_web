@@ -35,7 +35,7 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
   floors: Floor[] = []
   isEdit = true
   isDelete = false
-  isAddRoom =  false
+  isAddRoom = false
   quantityRooms = 0
   statuses = ['Готов', 'На уборке', 'Не готов']
 
@@ -96,28 +96,27 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
       this.room = room
       this.isEdit = !this.isEdit
       this.generateForm()
-    }
-    else {
+    } else {
       this.isAddRoom = !this.isAddRoom
       this.generateAddForm()
     }
   }
 
   generateForm() {
-    let status =''
-    switch (this.room.status){
+    let status = ''
+    switch (this.room.status) {
       case 'isReady': {
         status = 'Готов'
       }
-      break;
+        break;
       case 'notReady': {
         status = 'Не готов'
       }
-      break;
+        break;
       case 'inProcess': {
         status = 'На уборке'
       }
-      break;
+        break;
     }
 
     this.form = new FormGroup({
@@ -140,34 +139,58 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let status = ''
-    switch (this.form.get('status').value){
-      case 'Готов':{
-        status = 'isReady'
-      }
-        break;
-      case 'Не готов': {
-        status = 'notReady'
-      }
-        break;
-      case 'На уборке': {
-        status = 'inProcess'
-      }
+    let status = 'isReady'
+
+    let room: Room = {
     }
 
-    let room = {
-      _id: this.room._id,
-      status: status,
-      comments: this.form.get('comment').value
+    if (this.room) {
+      switch (this.form.get('status').value) {
+        case 'Готов': {
+          status = 'isReady'
+        }
+          break;
+        case 'Не готов': {
+          status = 'notReady'
+        }
+          break;
+        case 'На уборке': {
+          status = 'inProcess'
+        }
+      }
+
+      room._id = this.room._id
+      room.status = status
+      room.comments = this.form.get('comment').value
+
+      this.rSub = this.roomsService.update(room).subscribe({
+        next: message => MaterialService.toast(message.message),
+        error: error => MaterialService.toast(error.error.message)
+      })
+      this.router.navigateByUrl('/').then(() => {
+        this.router.navigate([`management/hotel/${this.hotelId}`]).then()
+      })
+      this.isEdit = !this.isEdit
     }
-    this.rSub = this.roomsService.update(room).subscribe({
-      next: message => MaterialService.toast(message.message),
-      error: error => MaterialService.toast(error.error.message)
-    })
-    this.router.navigateByUrl('/').then(() => {
-          this.router.navigate([`management/hotel/${this.hotelId}`]).then()
-        })
-    this.isEdit = !this.isEdit
+
+    if (this.isAddRoom) {
+      let room: Room = {
+        numberRoom: this.addForm.get('numberRoom').value,
+        floor: this.addForm.get('floor').value,
+        hotel:this.hotelId
+      }
+
+      this.rSub = this.roomsService.create(room).subscribe({
+        next: message => MaterialService.toast(message.message),
+        error: error => MaterialService.toast(error.error.message)
+      })
+      this.router.navigateByUrl('/').then(() => {
+        this.router.navigate([`admin-panel/hotel-edit/${this.hotelId}`], {queryParams: {
+        edit: true}
+        }).then()
+      })
+      this.isAddRoom = !this.isAddRoom
+    }
   }
 
   openTemplateDelete(room: Room) {
@@ -180,8 +203,12 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
       next: message => {
         MaterialService.toast(message.message)
         this.isDelete = !this.isDelete
-
       }
+    })
+    this.router.navigateByUrl('/').then(() => {
+      this.router.navigate([`admin-panel/hotel-edit/${this.hotelId}`], {queryParams: {
+          edit: true}
+      }).then()
     })
   }
 

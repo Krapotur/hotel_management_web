@@ -121,19 +121,6 @@ button {
     align-items: center;
     box-shadow: grey 0 2px 5px;
 
-    .title {
-      padding: 10px 50px;
-      background-color: #F87839;
-      width: 100%;
-      text-align: center;
-
-      p {
-        font-size: 20px;
-        color: white;
-        font-weight: 400;
-      }
-    }
-
     .img-block {
       position: relative;
       height: 20vh;
@@ -144,13 +131,19 @@ button {
       padding-bottom: 20px;
     }
 
-    .title-block {
+    .title-block-green {
       width: 100%;
       padding: 5px 0 10px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       background-color: #F87839;
+
+      p {
+        font-size: 18px;
+        color: white;
+        font-weight: 400;
+      }
     }
 
     .title-block-red {
@@ -160,6 +153,12 @@ button {
       flex-direction: column;
       align-items: center;
       background-color: rgba(243, 12, 12, 0.86);
+
+      p {
+        font-size: 18px;
+        color: white;
+        font-weight: 400;
+      }
     }
 
     span {
@@ -198,7 +197,7 @@ button {
     font-size: 23px;
   }
 
-  span{
+  span {
     color: #F87839;
     font-size: 20px;
     padding-bottom: 10px;

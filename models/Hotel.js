@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const hotelSchema = new Schema({
+    status:{
+        type: Boolean,
+        default: true
+    },
     title: {
         type: String,
         require: true,

@@ -71,13 +71,13 @@
 <div *ngIf="!isAdmin" >
     <div class="cards">
         <div class="card-item" *ngFor="let house of houses">
-            <div class="title">
+            <div [class]="house.status == 'isReady'?'title-block-green' : 'title-block-red'">
                 <p>{{ house.title }}</p>
             </div>
             <div class="img-block">
                 <img [ngSrc]="house.imgSrc" alt="image" fill="" (click)="openTemplateEditStatus(house)">
             </div>
-            <div [class]="house.status == 'isReady'?'title-block' : 'title-block-red'">
+            <div [class]="house.status == 'isReady'?'title-block-green' : 'title-block-red'">
                 <span>Готовность дома</span>
                 <hr>
                 <div>

@@ -45,6 +45,14 @@
           </td>
         </ng-container>
 
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Статус</th>
+          <td mat-cell *matCellDef="let hotel">
+            <mat-slide-toggle color="warn" [checked]="hotel.status" (click)="changeStatus(hotel)"></mat-slide-toggle>
+          </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
@@ -76,7 +84,7 @@
   </div>
 
   <div class="cards">
-    <div class="card-item" *ngFor="let hotel of hotels" (click)="openCreateHotelPage(hotel)">
+    <div class="card-item" *ngFor="let hotel of hotels | filterHotelsActive " (click)="openCreateHotelPage(hotel)">
       <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">
         <p>{{ hotel.title }}</p>
       </div>

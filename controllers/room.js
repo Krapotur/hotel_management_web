@@ -59,8 +59,6 @@ module.exports.create = async function (req, res) {
         const room = new Room({
             numberRoom: req.body.numberRoom,
             floor: req.body.floor,
-            status: req.body.status,
-            comments: req.body.comment,
             hotel: req.body.hotel
         })
 

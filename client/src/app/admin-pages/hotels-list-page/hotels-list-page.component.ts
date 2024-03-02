@@ -17,6 +17,8 @@ import {FilterUsersPipe} from "../../shared/pipes/filter-users.pipe";
 import {MaterialService} from "../../shared/classes/material.service";
 import {HousesListComponent} from "../houses-list/houses-list.component";
 import {RoomsService} from "../../shared/services/rooms.service";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {FilterHotelsActivePipe} from "../../shared/pipes/filter-hotels-active.pipe";
 
 @Component({
   selector: 'app-hotels-list-page',
@@ -35,7 +37,9 @@ import {RoomsService} from "../../shared/services/rooms.service";
     RouterLink,
     FilterUsersPipe,
     HousesListComponent,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MatSlideToggleModule,
+    FilterHotelsActivePipe
   ],
   templateUrl: './hotels-list-page.component.html',
   styleUrl: './hotels-list-page.component.scss'
@@ -57,7 +61,7 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
 
   }
 
-  displayedColumns: string[] = ['#', 'title', 'floors', 'quantityRooms', 'personal', 'edit'];
+  displayedColumns: string[] = ['#', 'title', 'floors', 'quantityRooms', 'personal', 'edit', 'status'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -160,5 +164,15 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       this.router.navigate(['admin-panel/hotel-create']).then()
     }
+  }
+
+  changeStatus(hotel: Hotel){
+    let fd = new FormData()
+    fd.set('status', (!hotel.status).toString())
+
+    this.hSub = this.hotelService.update(hotel._id, fd).subscribe({
+      next: message => MaterialService.toast(message.message),
+      error: error => MaterialService.toast(error.error.message)
+    })
   }
 }

@@ -57,35 +57,24 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.update = async function (req, res) {
+    let updated = {}
 
-    const hotel = await Hotel.findOne({title: req.body.title})
-    if(hotel && !req.file){
-        res.status(409).json({
-            message: `Гостиница ${req.body.title} уже есть`
+    if (req.body.personal) updated.personal = req.body.personal
+    if (req.body.title) updated.title = req.body.title
+    if (req.body.status) updated.status = req.body.status
+    if (req.file) updated.imgSrc = req.file.path
+
+    try {
+        await Hotel.findByIdAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
+        res.status(200).json({
+            message: 'Изменения внесены'
         })
-    } else {
-        let updated = {
-            title: req.body.title,
-            personal: req.body.personal,
-            imgSrc: req.file ?  req.file.path: house.imageSrc
-        }
-
-        if (!req.body.personal){
-            updated.personal = []
-        }
-
-        try {
-            await Hotel.findByIdAndUpdate(
-                {_id: req.params.id},
-                {$set: updated},
-                {new: true}
-            )
-            res.status(200).json({
-                message: 'Изменения внесены'
-            })
-        } catch (e) {
-            errorHandler(res, e)
-        }
+    } catch (e) {
+        errorHandler(res, e)
     }
 
 }
