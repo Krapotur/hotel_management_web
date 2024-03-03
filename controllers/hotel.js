@@ -59,9 +59,9 @@ module.exports.create = async function (req, res) {
 module.exports.update = async function (req, res) {
     let updated = {}
 
-    if (req.body.personal) updated.personal = req.body.personal
-    if (req.body.title) updated.title = req.body.title
     if (req.body.status) updated.status = req.body.status
+    if (req.body.title) updated.title = req.body.title
+    if (req.body.personal) updated.personal = req.body.personal
     if (req.file) updated.imgSrc = req.file.path
 
     try {

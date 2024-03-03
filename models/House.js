@@ -8,6 +8,11 @@ const houseSchema = new Schema({
         unique: true
     },
     status: {
+        type: Boolean,
+        default: true
+    }
+    ,
+    statusReady: {
         type:String,
         default: 'isReady'
     },

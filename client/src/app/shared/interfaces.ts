@@ -20,7 +20,8 @@ export interface User {
 export interface House {
   position?: number,
   _id?: string,
-  status?: string,
+  status?: boolean,
+  statusReady?: string,
   title?: string,
   floors?: number,
   imgSrc?: string,

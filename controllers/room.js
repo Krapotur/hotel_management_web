@@ -101,13 +101,10 @@ module.exports.update = async function (req, res) {
         comments: req.body.comments
     }
 
-    if (req.body.status === 'Готов'){
-        updated.comments =[]
-    }
-
+    if (req.body.status === 'isReady') updated.comments = []
 
     try {
-        const room = await Room.findByIdAndUpdate(
+        await Room.findByIdAndUpdate(
             {_id: req.params.id},
             {$set: updated},
             {new: true}

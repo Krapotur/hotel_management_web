@@ -18,7 +18,7 @@ import {MaterialService} from "../../shared/classes/material.service";
 import {HousesListComponent} from "../houses-list/houses-list.component";
 import {RoomsService} from "../../shared/services/rooms.service";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {FilterHotelsActivePipe} from "../../shared/pipes/filter-hotels-active.pipe";
+import {FilterStatusActivePipe} from "../../shared/pipes/filter-status-active.pipe";
 
 @Component({
   selector: 'app-hotels-list-page',
@@ -39,7 +39,7 @@ import {FilterHotelsActivePipe} from "../../shared/pipes/filter-hotels-active.pi
     HousesListComponent,
     NgOptimizedImage,
     MatSlideToggleModule,
-    FilterHotelsActivePipe
+    FilterStatusActivePipe
   ],
   templateUrl: './hotels-list-page.component.html',
   styleUrl: './hotels-list-page.component.scss'
