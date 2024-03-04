@@ -69,13 +69,17 @@ module.exports.create = async function (req, res) {
 module.exports.update = async function (req, res) {
 
     const candidate = await User.findOne({_id: req.params.id})
-    const updated = {
-        lastName: req.body.lastName,
-        firstName: req.body.firstName,
-        phone: req.body.phone,
-        post: req.body.post,
-        login: req.body.login.toLowerCase(),
-    }
+    let updated = {}
+
+    if (req.body.status || !req.body.status) updated.status = req.body.status
+    if (req.body.lastName) updated.lastName = req.body.lastName
+    if (req.body.firstName) updated.firstName = req.body.firstName
+    if (req.body.phone) updated.phone = req.body.phone
+    if (req.body.post) updated.post = req.body.post
+    if (req.body.login) updated.login = req.body.login.toLowerCase()
+
+    console.log(req.body.status)
+    console.log(updated)
 
     if (req.body.hotel) {
         let arr = candidate.hotels
@@ -87,6 +91,7 @@ module.exports.update = async function (req, res) {
         }
         updated.hotels = arr
     }
+
 
     if (req.body.password) {
         const salt = bcrypt.genSaltSync(10)

@@ -8,9 +8,9 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {PostsPageComponent} from "../posts-page/posts-page.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
-import {Subscription} from "rxjs";
+import {find, Subscription} from "rxjs";
 import {HotelsService} from "../../shared/services/hotels.service";
 import {UsersService} from "../../shared/services/users.service";
 import {FilterUsersPipe} from "../../shared/pipes/filter-users.pipe";
@@ -19,6 +19,8 @@ import {HousesListComponent} from "../houses-list/houses-list.component";
 import {RoomsService} from "../../shared/services/rooms.service";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FilterStatusActivePipe} from "../../shared/pipes/filter-status-active.pipe";
+import {MatIconModule} from "@angular/material/icon";
+import {FindPipe} from "../../shared/pipes/find.pipe";
 
 @Component({
   selector: 'app-hotels-list-page',
@@ -39,7 +41,10 @@ import {FilterStatusActivePipe} from "../../shared/pipes/filter-status-active.pi
     HousesListComponent,
     NgOptimizedImage,
     MatSlideToggleModule,
-    FilterStatusActivePipe
+    FilterStatusActivePipe,
+    FormsModule,
+    MatIconModule,
+    FindPipe
   ],
   templateUrl: './hotels-list-page.component.html',
   styleUrl: './hotels-list-page.component.scss'
@@ -53,6 +58,7 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
   uSub: Subscription
   hotels: Hotel[] = []
   isAdmin = false
+  search = ''
 
   constructor(private router: Router,
               private hotelService: HotelsService,
@@ -175,4 +181,6 @@ export class HotelsListPageComponent implements OnInit, AfterViewInit, OnDestroy
       error: error => MaterialService.toast(error.error.message)
     })
   }
+
+  protected readonly find = find;
 }

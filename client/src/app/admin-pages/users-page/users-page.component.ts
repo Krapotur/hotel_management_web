@@ -13,23 +13,26 @@ import {Router, RouterLink} from "@angular/router";
 import {UsersService} from "../../shared/services/users.service";
 import {Subscription} from "rxjs";
 import {HotelsService} from "../../shared/services/hotels.service";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MaterialService} from "../../shared/classes/material.service";
 
 
 @Component({
   selector: 'app-users-page',
   standalone: true,
-  imports: [
-    MatTableModule,
-    MatPaginatorModule,
-    MatButtonModule,
-    NgIf,
-    NgForOf,
-    MatInputModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    PostsPageComponent,
-    RouterLink
-  ],
+    imports: [
+        MatTableModule,
+        MatPaginatorModule,
+        MatButtonModule,
+        NgIf,
+        NgForOf,
+        MatInputModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        PostsPageComponent,
+        RouterLink,
+        MatSlideToggleModule
+    ],
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.scss'
 })
@@ -49,7 +52,7 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
               private router: Router) {
   }
 
-  displayedColumns: string[] = ['#', 'name', 'post', 'phone', 'hotel', 'login', 'edit'];
+  displayedColumns: string[] = ['#', 'name', 'post', 'phone', 'hotel', 'login', 'edit', 'status'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -111,6 +114,19 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
         })
       }
     })
+  }
+
+  changeStatus(u: User){
+      let user = {
+        _id: u._id,
+        status: !u.status
+      }
+
+      console.log(user)
+      this.uSub = this.usersService.update(user).subscribe({
+        next: message => MaterialService.toast(message.message),
+        error: error => MaterialService.toast(error.error.message)
+      })
   }
 
 }

@@ -8,7 +8,7 @@ module.exports.login = async function (req, res) {
     const candidate = await User.findOne({login: req.body.login})
 
     try {
-        if (candidate) {
+        if (candidate && candidate.status) {
             const passwordResult = bcrypt.compareSync(req.body.password, candidate.password)
             if (passwordResult) {
                 const token = jwt.sign({
@@ -28,6 +28,10 @@ module.exports.login = async function (req, res) {
                     message: 'Неверный пароль. Попробуйте еще раз'
                 })
             }
+        } else if (candidate && !candidate.status) {
+            res.status(401).json({
+                message: 'Учетная запись отключена, обратитесь к администратору'
+            })
         } else {
             res.status(404).json({
                 message: 'Такого пользователя не существует, используйте существующий аккаунт'

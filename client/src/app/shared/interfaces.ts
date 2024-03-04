@@ -4,8 +4,9 @@ export interface Login {
 }
 
 export interface User {
+  _id?: string,
+  status?: boolean,
   position?: number;
-  _id?: string
   lastName?: string;
   firstName?: number;
   post?: string;
@@ -18,9 +19,9 @@ export interface User {
 }
 
 export interface House {
-  position?: number,
   _id?: string,
   status?: boolean,
+  position?: number,
   statusReady?: string,
   title?: string,
   floors?: number,
@@ -50,7 +51,6 @@ export interface Hotel {
   inProcessRooms?: number
 }
 
-
 export interface Post {
   _id?: string,
   position?: number,
@@ -59,9 +59,9 @@ export interface Post {
 
 export interface Room {
   _id?: string,
+  status?: string,
   numberRoom?: number,
   floor?: number,
-  status?: string,
   comments?: string[],
   roomsStr?: string[],
   hotelTitle?: string,

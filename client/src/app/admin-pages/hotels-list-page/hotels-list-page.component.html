@@ -1,3 +1,4 @@
+
 <!--Table-->
 <div class="main" *ngIf="isAdmin">
   <div [class]="showTemplate? 'blur' : ''">
@@ -23,7 +24,7 @@
           <td mat-cell *matCellDef="let hotel"> {{ hotel.floors }}</td>
         </ng-container>
 
-         QuantityRooms Column
+        QuantityRooms Column
         <ng-container matColumnDef="quantityRooms">
           <th mat-header-cell *matHeaderCellDef> Всего номеров</th>
           <td mat-cell *matCellDef="let hotel"> {{ hotel.quantityRooms }}</td>
@@ -32,7 +33,8 @@
         <!-- Personal Column -->
         <ng-container matColumnDef="personal">
           <th mat-header-cell *matHeaderCellDef> Горничная</th>
-          <td mat-cell *matCellDef="let hotel"> {{hotel.personal.length > 1 ? hotel.personal[0] + ' ( еще '+ (hotel.personal.length - 1) + ')': hotel.personal}}</td>
+          <td mat-cell
+              *matCellDef="let hotel"> {{hotel.personal.length > 1 ? hotel.personal[0] + ' ( еще ' + (hotel.personal.length - 1) + ')' : hotel.personal}}</td>
         </ng-container>
 
         <!-- Edit Column -->
@@ -64,8 +66,8 @@
       <hr>
       <div class="table-bottom">
         <button class="btn" extended="" mat-fab
-                    (click)="openCreateHotelPage()"
-                  >
+                (click)="openCreateHotelPage()"
+        >
           Добавить
         </button>
         <mat-paginator [pageSizeOptions]="[10, 20]"
@@ -78,27 +80,30 @@
   <!--Table-->
 </div>
 
-<div *ngIf="!isAdmin" >
+<div class="box-cards" *ngIf="!isAdmin">
   <div class="header">
     <h2>Гостиницы</h2>
   </div>
 
+  <div class="finder" *ngIf="!isAdmin">
+    <input matInput type="text" [(ngModel)]="search" placeholder="Поиск гостиницы">
+  </div>
+
   <div class="cards">
-    <div class="card-item" *ngFor="let hotel of hotels | filterStatusActive " (click)="openCreateHotelPage(hotel)">
+    <div class="card-item" *ngFor="let hotel of hotels | filterStatusActive | find: search" (click)="openCreateHotelPage(hotel)">
       <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">
         <p>{{ hotel.title }}</p>
       </div>
       <div class="img-block">
-        <img [ngSrc]="hotel.imgSrc" alt="image" fill="" >
+        <img [ngSrc]="hotel.imgSrc" alt="image" fill="">
       </div>
       <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">
 
-          <span style="font-size: 15px">Готовность номеров: {{hotel.percentReadyRooms}}%</span>
+        <span style="font-size: 15px">Готовность номеров: {{hotel.percentReadyRooms}}%</span>
         <hr>
-          <span>Грязные: {{hotel.notReadyRooms}}</span>
-          <span>На уборке: {{hotel.inProcessRooms}}</span>
+        <span>Грязные: {{hotel.notReadyRooms}}</span>
+        <span>На уборке: {{hotel.inProcessRooms}}</span>
       </div>
     </div>
-
   </div>
 </div>

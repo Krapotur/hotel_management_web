@@ -72,8 +72,6 @@ module.exports.update = async function (req, res) {
     } else updated.comments = ''
 
 
-    console.log('updated', updated)
-    console.log('req.body.comments', req.body.comments)
 
     try {
         await House.findByIdAndUpdate(

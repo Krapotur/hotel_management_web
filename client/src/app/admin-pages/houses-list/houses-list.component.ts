@@ -10,13 +10,14 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {UsersService} from "../../shared/services/users.service";
-import {Subscription} from "rxjs";
+import {find, Subscription} from "rxjs";
 import {HousesService} from "../../shared/services/houses.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {Router} from "@angular/router";
 import {StatusPipe} from "../../shared/pipes/status.pipe";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FilterStatusActivePipe} from "../../shared/pipes/filter-status-active.pipe";
+import {FindPipe} from "../../shared/pipes/find.pipe";
 
 @Component({
   selector: 'app-houses-list',
@@ -37,6 +38,7 @@ import {FilterStatusActivePipe} from "../../shared/pipes/filter-status-active.pi
     StatusPipe,
     MatSlideToggleModule,
     FilterStatusActivePipe,
+    FindPipe,
   ],
   templateUrl: './houses-list.component.html',
   styleUrl: './houses-list.component.scss'
@@ -53,6 +55,8 @@ export class HousesListComponent implements OnInit, OnDestroy {
   personal: string[] = []
   uSub: Subscription
   hSub: Subscription
+  search = '';
+
 
   statuses = ['Готов', 'На уборке', 'Не готов']
   displayedColumns: string[] = ['#', 'name', 'floors', 'personal', 'edit', 'status'];
@@ -194,5 +198,4 @@ export class HousesListComponent implements OnInit, OnDestroy {
       error: error => MaterialService.toast(error.error.message)
     })
   }
-
 }
