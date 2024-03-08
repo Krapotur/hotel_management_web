@@ -123,7 +123,7 @@ export class UserCreatePageComponent implements OnInit, DoCheck, OnDestroy {
   getPosts() {
     this.postsSub = this.postsService.getAll().subscribe({
       next: posts => {
-        this.posts = posts
+        this.posts = posts.filter(post => post.title.toLowerCase() !== 'admin')
       }
     })
   }

@@ -8,7 +8,7 @@ import {NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {AuthService} from "../shared/services/auth.service";
 import {Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Post} from "../shared/interfaces";
 import {MaterialService} from "../shared/classes/material.service";
 
@@ -36,13 +36,19 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     protected readonly onsubmit = onsubmit;
 
     constructor(private auth: AuthService,
-                private router: Router) {}
+                private router: Router,
+                private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.form = new FormGroup({
             login: new FormControl(null, [Validators.required]),
             password: new FormControl(null, [Validators.required, Validators.minLength(6)])
         })
+
+        this.route.queryParams.subscribe(params => {
+          if (params['sessionFailed']) MaterialService.toast('Сессия истекла, авторизуйтесь заново')
+        })
+
     }
 
     ngOnDestroy() {

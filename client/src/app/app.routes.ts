@@ -12,6 +12,8 @@ import {HousesListComponent} from "./admin-pages/houses-list/houses-list.compone
 import {UserCreatePageComponent} from "./admin-pages/user-create-page/user-create-page.component";
 import {HouseEditPageComponent} from "./admin-pages/house-edit-page/house-edit-page.component";
 import {HotelEditPageComponent} from "./admin-pages/hotel-edit-page/hotel-edit-page.component";
+import {isAuthGuard} from "./shared/classes/auth.guard";
+
 export const routes: Routes = [
   {
     path: '', component: AuthLayoutComponent, children: [
@@ -20,7 +22,7 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'admin-panel', component: AdminLayoutComponent,  children: [
+    path: 'admin-panel', component: AdminLayoutComponent, canActivate: [isAuthGuard], children: [
       {path: '', redirectTo: '/admin-panel/users', pathMatch: "full"},
       {path: 'users', component: UsersPageComponent},
       {path: 'user-create', component: UserCreatePageComponent},
@@ -30,17 +32,17 @@ export const routes: Routes = [
       {path: 'hotel-edit/:id', component: HotelEditPageComponent},
       {path: 'house-edit', component: HouseEditPageComponent},
       {path: 'house-edit/:id', component: HouseEditPageComponent},
-      {path: 'houses', component:HousesListComponent},
+      {path: 'houses', component: HousesListComponent},
     ]
   },
   {
-    path: 'management', component: ManagementLayoutComponent, children: [
+    path: 'management', component: ManagementLayoutComponent, canActivate: [isAuthGuard], children: [
       {path: '', redirectTo: '/management/hotels', pathMatch: "full"},
       {path: 'management', component: ManagementLayoutComponent},
       {path: 'hotels', component: HotelsListPageComponent},
       {path: 'hotel/:id', component: HotelPageComponent},
-      {path: 'houses', component:HousesListComponent},
-      {path: 'houses/:id', component:HousesListComponent},
+      {path: 'houses', component: HousesListComponent},
+      {path: 'houses/:id', component: HousesListComponent},
     ]
   }
 ];
