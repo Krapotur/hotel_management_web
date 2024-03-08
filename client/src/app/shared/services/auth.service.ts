@@ -8,6 +8,7 @@ import {Observable, tap} from "rxjs";
 })
 export class AuthService {
   private token = null
+  private status = null
 
   constructor(private http: HttpClient) {
   }
@@ -40,5 +41,13 @@ export class AuthService {
   logout(){
     this.setToken(null)
     localStorage.clear()
+  }
+
+  setStatus(status: number){
+    this.status = status
+  }
+
+  getStatus(){
+    return this.status
   }
 }

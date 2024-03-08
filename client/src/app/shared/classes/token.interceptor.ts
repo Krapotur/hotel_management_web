@@ -27,6 +27,8 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
             }
           }).then()
         }
+
+        auth.setStatus(error.status)
       }
     )
   )

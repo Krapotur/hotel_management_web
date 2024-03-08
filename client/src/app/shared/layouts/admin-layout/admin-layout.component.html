@@ -24,22 +24,20 @@
           <li><a routerLink="/admin-panel/users">Сотрудники</a></li>
           <li (click)="logout()"><a>Выйти</a></li>
         </ul>
-<!--          <div class="date">-->
-<!--              <p>{{date | date: 'd.MM.YYYY'}}</p>-->
-<!--              <p>{{date | date: 'hh : mm'}}</p>-->
-<!--          </div>-->
       </nav>
     </div>
   </div>
 
-  <div class="toggle-admin-checked">
+  <div class="toggle-admin-checked" *ngIf="!isErrorHttpStatus">
     <p>Режим администратора</p>
     <mat-slide-toggle color="warn" [checked]="true" (click)="selectMode()"></mat-slide-toggle>
   </div>
 
   <div class="container-right">
-    <div class="container-right-title">
+    <div class="loader" *ngIf="isErrorHttpStatus">
+      <p>Идет соединение с сервером... Ппробуйте обновить страницу</p>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
-    <router-outlet></router-outlet>
+    <router-outlet *ngIf="!isErrorHttpStatus" ></router-outlet>
   </div>
 </div>

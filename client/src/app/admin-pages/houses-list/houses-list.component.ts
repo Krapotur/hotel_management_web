@@ -18,6 +18,8 @@ import {StatusPipe} from "../../shared/pipes/status.pipe";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FilterStatusActivePipe} from "../../shared/pipes/filter-status-active.pipe";
 import {FindPipe} from "../../shared/pipes/find.pipe";
+import {AuthService} from "../../shared/services/auth.service";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @Component({
   selector: 'app-houses-list',
@@ -39,6 +41,7 @@ import {FindPipe} from "../../shared/pipes/find.pipe";
     MatSlideToggleModule,
     FilterStatusActivePipe,
     FindPipe,
+    MatProgressBarModule,
   ],
   templateUrl: './houses-list.component.html',
   styleUrl: './houses-list.component.scss'
@@ -64,6 +67,7 @@ export class HousesListComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private usersService: UsersService,
+              private auth: AuthService,
               private houseService: HousesService,
               private router: Router) {
   }

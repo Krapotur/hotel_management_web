@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink, RouterModule, RouterOutlet} from "@angular/router";
 import {UsersPageComponent} from "../../../admin-pages/users-page/users-page.component";
 import {CommonModule,} from "@angular/common";
@@ -8,34 +8,39 @@ import {HotelCreatePageComponent} from "../../../admin-pages/hotel-create-page/h
 import {HousesListComponent} from "../../../admin-pages/houses-list/houses-list.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {AuthService} from "../../services/auth.service";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    RouterLink,
-    RouterModule,
-    CommonModule,
-    HotelsListPageComponent,
-    UsersPageComponent,
-    PostsPageComponent,
-    HotelCreatePageComponent,
-    HousesListComponent,
-    MatSlideToggleModule
-  ],
+    imports: [
+        RouterOutlet,
+        RouterLink,
+        RouterModule,
+        CommonModule,
+        HotelsListPageComponent,
+        UsersPageComponent,
+        PostsPageComponent,
+        HotelCreatePageComponent,
+        HousesListComponent,
+        MatSlideToggleModule,
+        MatProgressBarModule
+    ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss'
 })
-export class AdminLayoutComponent {
-  date: Date
+export class AdminLayoutComponent implements OnInit{
   user = JSON.parse(localStorage['user'])
   post = localStorage.getItem('post')
+  isErrorHttpStatus = false
 
   constructor(private router: Router,
               private auth: AuthService) {
   }
 
+  ngOnInit() {
+    this.auth.getStatus() == 500 ? this.isErrorHttpStatus = true : this.isErrorHttpStatus = false
+  }
 
   logout() {
     this.auth.logout()
