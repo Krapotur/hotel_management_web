@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { Router, RouterLink, RouterOutlet} from "@angular/router";
 import {NgIf} from "@angular/common";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-management-layout',
@@ -21,11 +22,12 @@ export class ManagementLayoutComponent{
   user = JSON.parse(localStorage['user'])
   post = localStorage.getItem('post')
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private auth: AuthService) {
   }
 
   logout() {
-    localStorage.clear()
+    this.auth.logout()
     this.router.navigate(['login']).then()
   }
 

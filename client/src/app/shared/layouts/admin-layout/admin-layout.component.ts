@@ -7,6 +7,7 @@ import {PostsPageComponent} from "../../../admin-pages/posts-page/posts-page.com
 import {HotelCreatePageComponent} from "../../../admin-pages/hotel-create-page/hotel-create-page.component";
 import {HousesListComponent} from "../../../admin-pages/houses-list/houses-list.component";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-admin-layout',
@@ -31,12 +32,13 @@ export class AdminLayoutComponent {
   user = JSON.parse(localStorage['user'])
   post = localStorage.getItem('post')
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private auth: AuthService) {
   }
 
 
   logout() {
-    localStorage.clear()
+    this.auth.logout()
     this.router.navigate(['login']).then()
   }
 
