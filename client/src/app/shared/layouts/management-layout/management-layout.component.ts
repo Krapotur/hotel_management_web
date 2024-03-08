@@ -1,6 +1,7 @@
-import {Component, DoCheck} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterOutlet} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import { Router, RouterLink, RouterOutlet} from "@angular/router";
 import {NgIf} from "@angular/common";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @Component({
   selector: 'app-management-layout',
@@ -8,22 +9,19 @@ import {NgIf} from "@angular/common";
   imports: [
     RouterLink,
     RouterOutlet,
-    NgIf
+    NgIf,
+    MatSlideToggleModule
   ],
   templateUrl: './management-layout.component.html',
   styleUrl: './management-layout.component.scss'
 })
-export class ManagementLayoutComponent implements DoCheck {
+export class ManagementLayoutComponent{
   title = 'Гостиницы'
-  isParams = false
   date: Date
   user = JSON.parse(localStorage['user'])
+  post = localStorage.getItem('post')
 
-  constructor(private router: Router,
-              private route: ActivatedRoute) {
-  }
-
-  ngDoCheck() {
+  constructor(private router: Router) {
   }
 
   logout() {
@@ -33,5 +31,12 @@ export class ManagementLayoutComponent implements DoCheck {
 
   setTitle(title: string) {
     this.title = title
+  }
+
+  selectMode() {
+    this.user.post = localStorage.getItem('post')
+    localStorage['user'] = JSON.stringify(this.user)
+    this.user = JSON.parse(localStorage['user'])
+    this.router.navigate(['admin-panel/hotels'])
   }
 }

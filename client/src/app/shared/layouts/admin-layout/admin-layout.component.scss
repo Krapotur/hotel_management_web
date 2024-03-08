@@ -6,6 +6,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 *, :before, :after {
   box-sizing: border-box;
   user-select: none;
+  font-family: $lora;
 }
 
 
@@ -33,7 +34,8 @@ $white-off: #DFDBD9;
     color: $white-off;
     font: 400 16px $lora;
   }
-  .post{
+
+  .post {
     font-size: 13px;
   }
 }
@@ -145,9 +147,6 @@ h3 {
 }
 
 .date {
-  //position: fixed;
-  //top: 30px;
-  //right: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -172,10 +171,20 @@ h3 {
 
   .container-right-title h1 {
     margin-bottom: 10px;
-    font-family: $lora;
     color: $gray;
   }
 }
 
+.toggle-admin-checked {
+  position: fixed;
+  right: 2%;
+  top: 2%;
+  display: flex;
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+}
 
 

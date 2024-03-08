@@ -17,10 +17,6 @@ export class StatusPipe implements PipeTransform {
         newStatus = 'Не готов'
       }
         break;
-      case 'inProcess': {
-        newStatus = 'На уборке'
-      }
-        break;
     }
     return newStatus
   }

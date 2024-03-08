@@ -37,7 +37,7 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
   isDelete = false
   isAddRoom = false
   quantityRooms = 0
-  statuses = ['Готов', 'На уборке', 'Не готов']
+  statuses = ['Готов', 'Не готов']
 
   constructor(private roomsService: RoomsService,
               private router: Router,
@@ -113,10 +113,6 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
         status = 'Не готов'
       }
         break;
-      case 'inProcess': {
-        status = 'На уборке'
-      }
-        break;
     }
 
     this.form = new FormGroup({
@@ -154,9 +150,6 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
           status = 'notReady'
         }
           break;
-        case 'На уборке': {
-          status = 'inProcess'
-        }
       }
 
       room._id = this.room._id

@@ -7,23 +7,25 @@
             <!-- Position Column -->
             <ng-container matColumnDef="#">
                 <th mat-header-cell *matHeaderCellDef> #</th>
-                <td mat-cell *matCellDef="let element">{{ element.position }}</td>
+                <td mat-cell *matCellDef="let post">{{ post.position }}</td>
             </ng-container>
 
             <!-- Post Column -->
             <ng-container matColumnDef="post">
                 <th mat-header-cell *matHeaderCellDef> Название</th>
-                <td mat-cell *matCellDef="let element"> {{ element.title }}</td>
+                <td mat-cell *matCellDef="let post"> {{ post.title }}</td>
             </ng-container>
 
             <!-- Action Column -->
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> Действие</th>
-                <td mat-cell *matCellDef="let element">
-                    <img style="width: 35px"
+                <td mat-cell *matCellDef="let post">
+                    <img
+                      *ngIf="!excludedPostList.includes(post.title.toLowerCase())"
+                      style="width: 35px"
                          src="../assets/icons/edit.png"
                          alt="edit"
-                         (click)="changeTemplate('edit', element)"
+                         (click)="changeTemplate('edit', post)"
                     >
                 </td>
             </ng-container>

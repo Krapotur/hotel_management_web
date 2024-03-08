@@ -10,7 +10,7 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {UsersService} from "../../shared/services/users.service";
-import {find, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {HousesService} from "../../shared/services/houses.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {Router} from "@angular/router";
@@ -58,7 +58,7 @@ export class HousesListComponent implements OnInit, OnDestroy {
   search = '';
 
 
-  statuses = ['Готов', 'На уборке', 'Не готов']
+  statuses = ['Готов', 'Не готов']
   displayedColumns: string[] = ['#', 'name', 'floors', 'personal', 'edit', 'status'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -143,10 +143,6 @@ export class HousesListComponent implements OnInit, OnDestroy {
         status = 'Не готов'
       }
         break;
-      case 'inProcess': {
-        status = 'На уборке'
-      }
-        break;
     }
 
     this.form = new FormGroup({
@@ -166,9 +162,6 @@ export class HousesListComponent implements OnInit, OnDestroy {
         status = 'notReady'
       }
         break;
-      case 'На уборке': {
-        status = 'inProcess'
-      }
     }
 
     let house = {

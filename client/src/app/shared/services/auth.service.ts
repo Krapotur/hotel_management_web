@@ -20,6 +20,7 @@ export class AuthService {
           this.setToken(authToken.token)
           localStorage.setItem('auth-token', authToken.token)
           localStorage['user'] = JSON.stringify(authToken)
+          localStorage.setItem('post', authToken.post)
         })
       )
   }

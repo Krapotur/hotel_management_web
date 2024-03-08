@@ -43,6 +43,7 @@ export class PostsPageComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Post>
   pSub: Subscription
   posts: Post[]
+  excludedPostList = ['admin','администратор','руководитель','горничная']
 
   constructor(private postsService: PostsService,
               private stateService: StateService,
@@ -133,8 +134,8 @@ export class PostsPageComponent implements OnInit, OnDestroy {
         if (posts.length > 0) {
           this.isEmptyPosts = false
 
-          posts.map(post => post.position = position++)
           this.posts = posts.filter(post => post.title !== 'admin')
+          this.posts.map(post => post.position = position++)
           this.dataSource = new MatTableDataSource<Post>(this.posts);
           this.dataSource.paginator = this.paginator;
         }

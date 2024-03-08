@@ -36,9 +36,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     protected readonly onsubmit = onsubmit;
 
     constructor(private auth: AuthService,
-                private router: Router
-    ) {
-    }
+                private router: Router) {}
 
     ngOnInit() {
         this.form = new FormGroup({
