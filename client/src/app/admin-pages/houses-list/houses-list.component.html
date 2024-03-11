@@ -73,12 +73,13 @@
   </div>
 </div>
 
-<div class="header" *ngIf="!isAdmin">
-  <h2>Дома</h2>
-</div>
+<div class="box-cards" *ngIf="!isAdmin">
+  <div class="block-header">
+    <h2 class="header">Дома</h2>
 
-<div class="finder" *ngIf="!isAdmin">
-  <input matInput type="text" [(ngModel)]="search" placeholder="Поиск дома">
+    <div class="finder" *ngIf="!isAdmin">
+      <input matInput type="text" [(ngModel)]="search" placeholder="Поиск дома">
+    </div>
 </div>
 
 <div *ngIf="!isAdmin">

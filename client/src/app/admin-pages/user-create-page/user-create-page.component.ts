@@ -206,13 +206,9 @@ export class UserCreatePageComponent implements OnInit, DoCheck, OnDestroy {
           this.router.navigate(['/admin-panel/users']).then()
         },
         error: (error) => MaterialService.toast(error.error.message),
-        complete: () => {
-        }
       })
       this.openUsersPage()
     } else MaterialService.toast('Пароли не совпадают')
   }
-
-  blur = blur;
 
 }

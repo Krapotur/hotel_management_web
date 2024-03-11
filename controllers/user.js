@@ -46,9 +46,9 @@ module.exports.create = async function (req, res) {
         const password = req.body.password
 
         const user = new User({
-            lastName: req.body.lastName,
-            firstName: req.body.firstName,
-            phone: req.body.phone,
+            lastName: req.body.lastName ? req.body.lastName: '',
+            firstName: req.body.firstName ? req.body.firstName: '',
+            phone: req.body.phone ? req.body.phone : '',
             post: req.body.post,
             hotels: [],
             login: req.body.login,
@@ -77,9 +77,6 @@ module.exports.update = async function (req, res) {
     if (req.body.phone) updated.phone = req.body.phone
     if (req.body.post) updated.post = req.body.post
     if (req.body.login) updated.login = req.body.login.toLowerCase()
-
-    console.log(req.body.status)
-    console.log(updated)
 
     if (req.body.hotel) {
         let arr = candidate.hotels

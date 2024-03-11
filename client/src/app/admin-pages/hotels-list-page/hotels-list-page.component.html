@@ -81,12 +81,12 @@
 </div>
 
 <div class="box-cards" *ngIf="!isAdmin">
-  <div class="header">
-    <h2>Гостиницы</h2>
-  </div>
+  <div class="block-header">
+      <h2 class="header">Гостиницы</h2>
 
-  <div class="finder" *ngIf="!isAdmin">
-    <input matInput type="text" [(ngModel)]="search" placeholder="Поиск гостиницы">
+      <div class="finder" *ngIf="!isAdmin">
+        <input matInput type="text" [(ngModel)]="search" placeholder="Поиск гостиницы">
+      </div>
   </div>
 
   <div class="cards">
@@ -105,4 +105,20 @@
       </div>
     </div>
   </div>
+<!--  <div class="cards">-->
+<!--    <div class="card-item" *ngFor="let hotel of hotels | filterStatusActive | find: search" (click)="openCreateHotelPage(hotel)">-->
+<!--      <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">-->
+<!--        <p>{{ hotel.title }}</p>-->
+<!--      </div>-->
+<!--      <div class="img-block">-->
+<!--        <img [ngSrc]="hotel.imgSrc" alt="image" fill="">-->
+<!--      </div>-->
+<!--      <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">-->
+
+<!--        <span style="font-size: 15px">Готовность номеров: {{hotel.percentReadyRooms}}%</span>-->
+<!--        <hr>-->
+<!--        <span>Грязные: {{hotel.notReadyRooms}}</span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 </div>

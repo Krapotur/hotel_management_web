@@ -8,7 +8,7 @@ export interface User {
   status?: boolean,
   position?: number;
   lastName?: string;
-  firstName?: number;
+  firstName?: string;
   post?: string;
   phone?: string;
   hotels?: string[];

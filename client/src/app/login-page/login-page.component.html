@@ -1,7 +1,55 @@
 <div class="login_page">
     <img src="./assets/images/login_page_bg.jpg" alt="image" class="login_page_image">
     <div class="form_container">
-        <div class="login_form">
+
+      <!--Change-password-form-->
+
+      <div class="container-reset-password" *ngIf="isAdmin">
+        <h2>Задайте пароль для </h2>
+        <h2>"admin"</h2>
+        <form [formGroup]="formPassword" (ngSubmit)="onSubmit()">
+          <div class="input-block">
+            <div>
+              <div class="row">
+                <div class="input-field col s6">
+                  <input id="reset-password" type="password" formControlName="password" (click)="formPassword.get('checkPassword').touched ? checkPassword() : ''">
+                  <label class="active" for="reset-password">Новый пароль*</label>
+                </div>
+              </div>
+              <span *ngIf="formPassword.get('password').hasError('required') && formPassword.get('password').touched"
+              >*Придумайте пароль
+                    </span>
+              <span *ngIf="formPassword.get('password').hasError('min') && formPassword.get('password').touched">
+                *Не менее 6 символов
+              </span>
+            </div>
+
+            <div>
+              <div class="row">
+                <div class="input-field col s6">
+                  <input id="reset-password2" type="password" formControlName="checkPassword" (blur)="checkPassword()">
+                  <label class="active" for="reset-password2">Подтверждение пароля*</label>
+                </div>
+              </div>
+              <span *ngIf="formPassword.get('checkPassword').hasError('required') && formPassword.get('checkPassword').touched"
+              >*Подтвердите пароль
+                    </span>
+            </div>
+
+              <button
+                type="submit"
+                class="btn" extended="" mat-fab
+                [disabled]="isAdmin && !isTruePassword"
+              >
+                Сохранить
+              </button>
+          </div>
+        </form>
+      </div>
+
+      <!--Change-password-form-->
+
+        <div class="login_form" *ngIf="!isAdmin">
             <div class="logo">
                 <img src="./assets/images/logo2.png" alt="logo">
             </div>
@@ -22,7 +70,7 @@
                     </div>
                     <span *ngIf="form.get('login').hasError('required') && form.get('login').touched"
                     >*Введите логин
-        </span>
+                    </span>
 
                     <div class="row">
                         <div class="input-field col s6">
@@ -32,11 +80,11 @@
                     </div>
                     <span *ngIf="form.get('password').hasError('required') && form.get('password').touched"
                     >*Введите пароль
-        </span>
+                    </span>
+
                     <button
                             class="btn" extended="" mat-fab
                             type="submit">
-
                         Войти
                     </button>
                 </div>
@@ -44,3 +92,5 @@
         </div>
     </div>
 </div>
+
+

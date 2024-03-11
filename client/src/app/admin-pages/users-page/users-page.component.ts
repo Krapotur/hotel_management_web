@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, DoCheck, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, DoCheck, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {User} from "../../shared/interfaces";
@@ -36,7 +36,7 @@ import {MaterialService} from "../../shared/classes/material.service";
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.scss'
 })
-export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDestroy {
+export class UsersPageComponent implements OnInit, DoCheck, OnDestroy {
   form: FormGroup
   post = new FormControl('')
   users: User[]
@@ -64,9 +64,6 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
     this.isShowTemplate = this.stateService.showTemplate
   }
 
-  ngAfterViewInit() {
-  }
-
   ngOnDestroy() {
     if (this.uSub) {
       this.uSub.unsubscribe()
@@ -86,7 +83,7 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
         this.dataSource = new MatTableDataSource<User>(this.users)
         this.dataSource.paginator = this.paginator;
       },
-      error: error => console.log(error.error.message)
+      error: error => MaterialService.toast(error.error.message)
     })
   }
 
@@ -96,9 +93,9 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
         queryParams: {
           userID: user._id
         }
-      })
+      }).then()
     } else {
-      this.router.navigate(['admin-panel/user-create'])
+      this.router.navigate(['admin-panel/user-create']).then()
     }
   }
 
@@ -122,7 +119,6 @@ export class UsersPageComponent implements OnInit, DoCheck, AfterViewInit, OnDes
         status: !u.status
       }
 
-      console.log(user)
       this.uSub = this.usersService.update(user).subscribe({
         next: message => MaterialService.toast(message.message),
         error: error => MaterialService.toast(error.error.message)

@@ -29,16 +29,12 @@
       </div>
     </div>
 
-  <div class="toggle-admin-unchecked" *ngIf="(post.toLowerCase() === 'руководитель' || post.toLowerCase() === 'admin') && !isErrorHttpStatus">
-    <p>Режим администратора</p>
+  <div class="toggle-admin-unchecked" *ngIf="post.toLowerCase() === 'руководитель' || post.toLowerCase() === 'admin'">
+    <p>Администратор</p>
     <mat-slide-toggle color="warn" [checked]="user.post.toLowerCase() == 'admin'" (click)="selectMode()"></mat-slide-toggle>
   </div>
 
     <div class="container-right">
-      <div class="loader" *ngIf="isErrorHttpStatus">
-        <p>Идет соединение с сервером... Ппробуйте обновить страницу</p>
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </div>
-        <router-outlet *ngIf="!isErrorHttpStatus" ></router-outlet>
+        <router-outlet></router-outlet>
     </div>
 </div>
