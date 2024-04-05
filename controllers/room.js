@@ -143,7 +143,6 @@ module.exports.update = async function (req, res) {
             {new: true}
         )
 
-
         res.status(200).json({message: 'Изменения внесены'})
 
         if(req.body.status !== 'isReady'){
@@ -192,5 +191,4 @@ async function sendAlert(hotel, numberRoom) {
     })
     req.write(data)
     req.end()
-
 }
