@@ -123,7 +123,7 @@ module.exports.delete = async function (req, res) {
 
 
 module.exports.update = async function (req, res) {
-    const hotel =  await Hotel.findOne({_id: req.body.hotel})
+    const hotel = await Hotel.findOne({_id: req.body.hotel})
 
     const updated = {
         status: req.body.status,
@@ -145,8 +145,8 @@ module.exports.update = async function (req, res) {
 
         res.status(200).json({message: 'Изменения внесены'})
 
-        if(req.body.status !== 'isReady'){
-            await sendAlert(hotel.title, req.body.numberRoom)
+        if (req.body.status !== 'isReady') {
+            await sendAlert(hotel.title, hotel.imgSrc, req.body.numberRoom)
         }
 
     } catch (e) {
@@ -154,19 +154,19 @@ module.exports.update = async function (req, res) {
     }
 }
 
-async function sendAlert(hotel, numberRoom) {
+async function sendAlert(hotel, image, numberRoom) {
     const token = await getAccessToken()
 
+
+    console.log(`http://localhost:5000/${image}`)
     const data = JSON.stringify({
         message: {
-            topic:"hotels",
+            topic: "hotels",
             notification: {
                 title: `Гостиница ${hotel}`,
-                body: `Номер ${numberRoom}`
+                body: `Номер ${numberRoom}`,
+                image: `https://ethnomir.ru/upload/iblock/314/2.jpg`
             },
-            data: {
-                story_id: "story_12345"
-            }
         }
     })
 
