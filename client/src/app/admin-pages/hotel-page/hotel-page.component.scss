@@ -1,0 +1,136 @@
+$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+$greyWithOpacity_01: rgba(128, 128, 128, 0.1);
+$greyWithOpacity_04: rgba(128, 128, 128, 0.4);
+
+* {
+  font-family: $lora;
+  user-select: none;
+}
+
+.header {
+  display: flex;
+  padding: 40px;
+  justify-content: center;
+  margin-left: 200px;
+
+  a {
+    color: grey;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  a:hover {
+    color: #F87839;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 35px;
+    text-align: center;
+    color: #F87839;
+  }
+}
+
+.container-block {
+  display: flex;
+  justify-content: space-around;
+  align-items: self-start;
+  background-color: white;
+  width: 65vw;
+}
+
+.left-block {
+  margin-left: 200px;
+
+  .img-block {
+    position: relative;
+    height: 40vh;
+    width: 60vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 15px;
+  }
+
+  .title-block {
+    padding: 10px 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+      margin: 10px 0;
+      font-size: 20px;
+
+      span {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 17px;
+
+      span {
+        font-size: 20px;
+      }
+    }
+  }
+
+  span {
+    color: #F87839;
+    font-size: 25px;
+  }
+
+  .personal-block {
+    background-image: linear-gradient(0.28764504877243824deg, #95ecc9, #8a95a6);
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+    padding: 20px 20px;
+
+    h3 {
+      margin: 0;
+      text-align: center;
+      font-size: 20px;
+      padding: 10px 10px 0 10px;
+    }
+
+    p {
+      font-size: 17px;
+      padding: 10px 10px;
+    }
+  }
+
+  hr {
+    width: 100%;
+    margin-top: 10px;
+    outline: none;
+    background-color: #faf8f8;
+  }
+
+  .personal {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.toggle-left {
+  padding-top: 20px;
+}
+
+.right-block {
+  padding: 20px 40px 40px 40px;
+  margin-left: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+}
+
+.right-block-scroll {
+  overflow-y: scroll;
+  height: 80vh;
+  padding: 20px 40px 0 40px;
+  margin-left: 50px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+}

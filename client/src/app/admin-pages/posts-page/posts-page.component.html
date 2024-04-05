@@ -1,0 +1,94 @@
+<div [class]="isShowTemplate ? 'blur': ''">
+    <div class="mat-elevation-z8">
+        <h1>Должности</h1>
+        <hr>
+        <table mat-table [dataSource]="dataSource" *ngIf="!isEmptyPosts">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="#">
+                <th mat-header-cell *matHeaderCellDef> #</th>
+                <td mat-cell *matCellDef="let post">{{ post.position }}</td>
+            </ng-container>
+
+            <!-- Post Column -->
+            <ng-container matColumnDef="post">
+                <th mat-header-cell *matHeaderCellDef> Название</th>
+                <td mat-cell *matCellDef="let post"> {{ post.title }}</td>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Действие</th>
+                <td mat-cell *matCellDef="let post">
+                    <img
+                      *ngIf="!excludedPostList.includes(post.title.toLowerCase())"
+                      style="width: 35px"
+                         src="../assets/icons/edit.png"
+                         alt="edit"
+                         (click)="changeTemplate('edit', post)"
+                    >
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div *ngIf="posts.length <= 1" class="empty-block">
+            <p>Добавьте первую должность...</p>
+        </div>
+
+        <hr>
+        <div class="table-bottom">
+            <button *ngIf="posts.length <= 4"
+                    class="btn" extended="" mat-fab
+                    (click)="changeTemplate('add')"
+                    [disabled]="isShowTemplate"
+            >
+                Добавить
+            </button>
+        </div>
+    </div>
+
+</div>
+<!--Form-->
+<div class="container" *ngIf="isShowTemplate">
+    <h2>{{ titleForm }}</h2>
+    <h3>{{ titlePost }}</h3>
+    <form [formGroup]="form">
+        <div class="input-block" *ngIf="!isDelete">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="title" type="text" formControlName="title">
+                    <label class="active" for="title">Название должности</label>
+
+                </div>
+                <div>
+                    <img *ngIf="isEdit" (click)="changeTemplate('delete')"
+                            src="../assets/icons/delete.png" alt="delete">
+                </div>
+
+            </div>
+            <span *ngIf="form.get('title').hasError('required') && form.get('title').touched"
+            >*Введите название должности
+            </span>
+          <span *ngIf="form.get('title').hasError('minlength') && form.get('title').touched"
+          >*Не менее 3х символов
+              </span>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-cancel" extended="" mat-fab
+                    (click)="changeTemplate('')"
+            >
+                {{ isDelete ? 'Нет' : 'Отмена' }}
+            </button>
+            <button
+                    type="submit"
+                    [class]="isDelete ? 'btn-delete':'btn-save'" extended="" mat-fab
+                    (click)="isDelete ? delete() : onSubmit()"
+                    [disabled]="form.invalid"
+            >
+                {{ isDelete ? 'Да' : 'Сохранить' }}
+            </button>
+        </div>
+    </form>
+</div>

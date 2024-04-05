@@ -1,0 +1,227 @@
+$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+
+* {
+  font-family: $lora;
+  margin: 0;
+  user-select: none;
+}
+
+.container-block {
+  user-select: none;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 8%;
+  left: 30%;
+  width: 600px;
+  box-shadow: grey 0 2px 5px;
+  background-color: white;
+  padding: 45px 50px 40px 50px;
+}
+
+.dn {
+  display: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h2 {
+    color: #3C3735;
+    font-size: 25px;
+  }
+
+  img {
+    padding-right: 15px;
+    width: 50px;
+  }
+
+  .img-del img {
+    cursor: pointer;
+    position: absolute;
+    padding-right: 0;
+    width: 36px;
+    top: 5px;
+    right: 5px;
+  }
+}
+
+.container-form {
+  display: flex;
+  padding-top: 40px;
+}
+
+.left-block {
+  margin-right: 40px;
+
+  .row {
+    padding-top: 10px;
+  }
+
+  input {
+    margin: 0;
+    padding-left: 10px;
+  }
+}
+
+.list-hotels {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    padding-left: 10px;
+  }
+
+  span {
+    padding: 0;
+    color: rgba(128, 128, 128, 0.5);
+  }
+}
+
+.row {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+
+  .input-field {
+    width: 220px;
+    margin-bottom: 0;
+  }
+
+  label {
+    border-bottom: #F57C23;
+  }
+}
+
+.s6{
+  padding: 0 10px 0 0;
+}
+#phone {
+  width: 200px;
+  padding-left: 10px;
+}
+
+span {
+  color: red;
+  font-size: 13px;
+  padding-left: 20px;
+}
+
+mat-hint {
+  color: red;
+  font-size: 13px;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px 5px 20px 10px;
+
+  button {
+    margin-top: 20px;
+    height: 35px;
+    padding: 0 10px;
+    border-radius: 1px;
+  }
+}
+
+.btn-cancel {
+  background-color: slategrey;
+  width: 100px;
+}
+
+.btn-save {
+  background-color: seagreen;
+  width: 100px;
+}
+
+.btn-delete {
+  button {
+    width: 200px;
+    background-color: brown;
+  }
+}
+
+.btn-reset-password {
+  width: 140px;
+  height: 40px;
+
+  button {
+    background-color: rgba(128, 128, 128, 0.5);
+    padding: 0 10px;
+    border-radius: 1px;
+  }
+}
+
+.blur {
+  filter: blur(5px);
+}
+//////////////////////////////container-delete-form
+.container-del {
+  user-select: none;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 30%;
+  left: 43%;
+  width: 340px;
+  border: 1px solid brown;
+  background-color: white;
+  padding: 25px 0 5px 0;
+
+
+  h2 {
+    font-size: 20px;
+    padding-bottom: 5px;
+  }
+
+  h3 {
+    font-size: 20px;
+    color: #F87839;
+  }
+}
+
+.btn-group-del {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  width: 210px;
+
+  button {
+    margin-top: 20px;
+    height: 35px;
+    padding: 0 10px;
+    border-radius: 1px;
+  }
+
+  .btn-save{
+    background-color: brown;
+  }
+}
+/////////////container-reset-password
+.container-reset-password {
+  user-select: none;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 10%;
+  left: 43%;
+  width: 35vh;
+  border: 1px solid seagreen;
+  background-color: white;
+  padding: 45px 0 40px 0;
+
+  h2 {
+    font-size: 28px;
+    padding-bottom: 10px;
+  }
+
+  .btn-save{
+    background-color: seagreen;
+  }
+}

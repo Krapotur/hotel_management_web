@@ -1,0 +1,251 @@
+* {
+  margin: 0;
+}
+
+h4 {
+  color: #35302D;
+  text-align: center;
+  font-size: 23px;
+}
+
+.list-rooms h4 {
+  padding: 15px;
+}
+
+.floor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 20px;
+
+  h3 {
+    font-size: 25px;
+    padding-bottom: 10px;
+    color: #F87839
+  }
+}
+
+.rooms {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 50vh;
+  padding-bottom: 10px;
+
+  .room {
+    position: relative;
+    padding: 5px;
+
+    .x-delete {
+      position: absolute;
+      z-index: 1;
+      right: 0;
+      top: 0;
+
+      img {
+        cursor: pointer;
+        width: 20px;
+      }
+
+      img:hover {
+        cursor: pointer;
+        width: 25px;
+      }
+    }
+  }
+}
+
+.room-ready {
+  background-color: seagreen;
+  width: 60px;
+}
+
+.room-dirty {
+  background-color: brown;
+  width: 60px;
+}
+
+.inProcess{
+  button{
+    background-color: #F87839;
+    width: 60px;
+  }
+}
+
+.delete-room button {
+  background-color: lightgrey;
+  width: 60px;
+}
+
+.room button {
+  border-radius: 2px;
+  height: 30px;
+}
+
+.toggle-right {
+  padding: 20px 0 0 50px;
+}
+
+///////Edit-Form
+.room-container {
+  background-color: white;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 35px 40px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  z-index: 2;
+  top: 10%;
+  margin: 0;
+  right: 20%;
+
+  p {
+    font-weight: bold;
+    color: #F87839;
+    font-size: 23px;
+    padding-bottom: 10px;
+  }
+
+  mat-form-field {
+    width: 250px;
+  }
+
+  .task-block {
+    width: 250px;
+
+    textarea {
+      resize: none;
+      color: rgba(56, 55, 55, 0.95);
+      padding: 10px;
+      height: 50px;
+      outline: none;
+      border: 1px solid rgba(128, 128, 128, 0.45);
+      border-radius: 3px;
+    }
+
+    textarea:focus {
+      color: black;
+      resize: none;
+      padding: 10px;
+      height: 100px;
+      outline: none;
+      box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+    }
+  }
+}
+
+.comments{
+  #textarea2{
+    border: 1px dashed rgba(128, 128, 128, 0.45);
+    color: rgba(56, 55, 55, 0.65);
+  }
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+}
+
+.btn-group button {
+  margin-top: 20px;
+  height: 35px;
+  padding: 0 10px;
+  border-radius: 1px;
+  color: white;
+}
+
+.btn-save {
+  background-color: seagreen;
+  width: 90px;
+}
+
+.btn-cancel {
+  background-color: slategrey;
+  width: 90px;
+}
+
+/////////////Delete Room
+.container-del {
+  user-select: none;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 25%;
+  left: 43%;
+  width: 37vh;
+  border: 1px solid brown;
+  background-color: white;
+  padding: 25px 0 0 0;
+  z-index: 2;
+
+  h2 {
+    font-size: 25px;
+    padding-bottom: 5px;
+  }
+
+  h3 {
+    font-size: 25px;
+    color: #F87839;
+  }
+
+  .btn-group-del {
+    display: flex;
+    justify-content: space-between;
+    width: 210px;
+    padding: 20px 0 20px 0;
+
+    button{
+      height: 35px;
+      border-radius: 2px;
+    }
+
+    .btn-save {
+      background-color: brown;
+      width: 90px;
+    }
+  }
+}
+
+.btn-add {
+  height: 40px;
+  background-color: seagreen;
+  border-radius: 2px;
+  margin-bottom: 10px;
+}
+
+////////Add RoomForm
+
+.add-room-container {
+  background-color: white;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 35px 40px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  z-index: 2;
+  top: 13%;
+  margin: 0;
+  right: 37%;
+
+  h4 {
+    font-size: 20px;
+  }
+
+  .row {
+    padding-top: 35px;
+  }
+
+  .input-field {
+    width: 100%;
+  }
+
+  span {
+    color: red;
+    font-size: 13px;
+    padding-left: 10px;
+  }
+}

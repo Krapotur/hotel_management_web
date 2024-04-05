@@ -1,0 +1,37 @@
+
+<div class="header">
+    <h2>"{{hotel ? hotel.title : 'Гостиница'}}"</h2>
+
+</div>
+
+<div class="container-block">
+    <div class="left-block">
+        <div class="img-block">
+            <img *ngIf="hotel" [ngSrc]="hotel.imgSrc " alt="image" fill="">
+        </div>
+        <div class="title-block">
+            <div>
+                <h2>Гостиница <span>"{{ hotel ? hotel.title : '...' }}"</span></h2>
+            </div>
+            <div>
+                <h3>Номерной фонд: <span>{{ quantityRooms }}</span></h3>
+            </div>
+        </div>
+
+        <div class="personal-block">
+            <h3>Персонал</h3>
+            <hr>
+            <div class="personal" *ngFor="let personal of personal">
+                <p> {{ personal ? personal.lastName + ' ' + personal.firstName : '' }}</p>
+                <p>+7 {{ personal ? personal.phone : ''}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div [class]="quantityRooms >60 ? 'right-block-scroll': 'right-block'">
+            <app-rooms-page [hotelId]="hotel ? hotel._id : ''"></app-rooms-page>
+        </div>
+    </div>
+
+</div>

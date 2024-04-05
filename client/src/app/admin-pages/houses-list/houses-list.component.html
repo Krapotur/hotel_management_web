@@ -1,0 +1,179 @@
+<!--Table-->
+<div class="main" *ngIf="isAdmin">
+  <div [class]="showTemplate? 'blur' : ''">
+    <div class="mat-elevation-z8">
+      <h1>Дома</h1>
+      <hr>
+      <table mat-table [dataSource]="dataSource">
+        <!-- Position Column -->
+        <ng-container matColumnDef="#">
+          <th mat-header-cell *matHeaderCellDef> #</th>
+          <td mat-cell *matCellDef="let house">{{ house.position }}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Название</th>
+          <td mat-cell *matCellDef="let house"> {{ house.title }}</td>
+        </ng-container>
+
+        <!-- Post Column -->
+        <ng-container matColumnDef="floors">
+          <th mat-header-cell *matHeaderCellDef> Количество этажей</th>
+          <td mat-cell *matCellDef="let house"> {{ house.floors }}</td>
+        </ng-container>
+
+        <!-- Personal Column -->
+        <ng-container matColumnDef="personal">
+          <th mat-header-cell *matHeaderCellDef> Горничная</th>
+          <td mat-cell
+              *matCellDef="let house"> {{ house.personal.length > 1 ? house.personal[0] + ' ( еще ' + (house.personal.length - 1) + ')' : house.personal }}
+          </td>
+        </ng-container>
+
+        <!-- Edit Column -->
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Действие</th>
+          <td mat-cell *matCellDef="let house">
+            <img (click)=" openHousePage(house)"
+                 src="../assets/icons/edit.png" alt="edit">
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Статус</th>
+          <td mat-cell *matCellDef="let house">
+            <mat-slide-toggle color="warn" [checked]="house.status" (click)="changeStatus(house)"></mat-slide-toggle>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+      </table>
+      <div *ngIf="houses.length == 0"
+           class="empty-block">
+        <p>Добавьте первый дом...</p>
+      </div>
+      <hr>
+      <div class="table-bottom">
+        <button class="btn" extended="" mat-fab
+                (click)="openHousePage()"
+
+        >
+          Добавить
+        </button>
+        <mat-paginator [pageSizeOptions]="[10, 20]"
+                       showFirstLastButtons
+                       aria-label="">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="box-cards" *ngIf="!isAdmin">
+  <div class="block-header">
+    <h2 class="header">Дома</h2>
+
+    <div class="finder" *ngIf="!isAdmin && !isEmpty">
+      <input matInput type="text" [(ngModel)]="search" placeholder="Поиск дома...">
+    </div>
+  </div>
+
+  <div class="empty-list" *ngIf="isEmpty">
+    <p>Список домов пуст...</p>
+    <img style="width: 100px"
+         src="../assets/images/empty-box.png" alt="edit">
+  </div>
+
+  <div *ngIf="!isAdmin">
+    <div class="cards">
+      <div class="card-item" *ngFor="let house of houses | filterStatusActive | find: search"  (click)="openTemplateEditStatus(house)">
+        <div [class]="house | statusClass">
+          <p>{{ house.title }}</p>
+        </div>
+        <div class="img-block">
+          <img [ngSrc]="house.imgSrc" alt="image" fill="">
+        </div>
+        <div [class]="house | statusClass">
+          <span>Готовность дома</span>
+          <hr>
+          <div>
+            <span>{{ house.statusReady | status }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Edit Template-->
+  <div *ngIf="isEdit">
+    <form [formGroup]="form">
+      <div class="house-container">
+        <p>Изменение статуса</p>
+        <span>"{{ house.title }}"</span>
+        <mat-form-field>
+          <mat-label>Выберите статус</mat-label>
+          <mat-select formControlName="status">
+            <mat-option [value]="status" *ngFor="let status of statuses">{{ status }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="list-personal" *ngIf="isEdit">
+          <mat-form-field >
+            <mat-label>
+              {{house.personal.length > 0 ? house.personal[0] : 'Нет персонала'}}<span class="example-additional-selection" *ngIf="house.personal.length > 1">
+                (еще {{ house.personal.length - 1 }})</span>
+            </mat-label>
+            <mat-select >
+              <mat-option *ngFor="let personal of house.personal"
+              >{{ personal }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="task-block">
+          <label for="textarea">Задание:</label>
+          <textarea id="textarea"
+                    maxlength="200"
+                    placeholder="Что требуется сделать?"
+                    formControlName="task"
+          ></textarea>
+          <div class="comments" *ngIf="house.comments">
+            <label for="textarea2">Комментарий персонала:</label>
+            <textarea id="textarea2"
+                      maxlength="200"
+                      [disabled]="house.comments"
+            >{{ house.comments }}</textarea>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button
+            class="btn-cancel" extended="" mat-fab
+            (click)="isEdit = !isEdit"
+          >
+            Отмена
+          </button>
+          <button
+            type="submit"
+            class="btn-save" extended="" mat-fab
+            (click)="onSubmit()"
+            [disabled]="form.disabled"
+          >
+            Сохранить
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--Edit Template-->
+</div>
+
+<div class="footer" *ngIf="!isAdmin && !isEmpty">
+
+</div>

@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+
+$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+$greyWithOpacity_01: rgba(128, 128, 128, 0.1);
+$greyWithOpacity_04: rgba(128, 128, 128, 0.4);
+$greyWithOpacity_09: rgba(128, 128, 128, 0.9);
+
+* {
+  font-family: $lora;
+}
+
+.finder {
+  width: 240px;
+  padding: 0 0 10px 10px;
+}
+
+.main {
+  user-select: none;
+  min-width: max-content;
+}
+
+.mat-elevation-z8 {
+  margin-top: 23px;
+
+  h1 {
+    margin: 0;
+    font-size: 40px;
+    padding: 20px 0 10px 30px;
+  }
+}
+
+.blur {
+  filter: blur(5px);
+}
+
+table {
+  padding: 5px 20px 0 20px;
+
+  th {
+    font-weight: bold;
+    color: black;
+    font-family: $lora;
+    text-align: center;
+  }
+
+  td {
+    font-family: $lora;
+    font-size: 16px;
+    text-align: center;
+  }
+}
+
+img {
+  width: 50px;
+  cursor: pointer;
+}
+
+.empty-block {
+  padding: 30px 0;
+  font-size: 20px;
+
+  p {
+    text-align: center;
+    color: $greyWithOpacity_09;
+  }
+}
+
+hr {
+  margin: 0;
+  height: 1px;
+  background-color: #35302D;
+  border: none;
+}
+
+.table-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0 25px 20px;
+}
+
+button {
+  background-color: #F87839;
+  border-radius: 1px;
+  height: 40px;
+}
+
+/////////////////Card of Hotels
+.block-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  padding: 40px 0 20px 0;
+  box-shadow: 0 5px 5px -5px rgba(0, 0, 0, .5);
+}
+
+.header {
+  margin: 0 auto;
+  text-align: center;
+  color: #F87839;
+  width: 84vw;
+  font-size: 40px;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 60vh;
+
+  p {
+    text-align: center;
+    font-size: 20px;
+    padding: 50px 0 0 0;
+    color: #989696;
+  }
+
+  img {
+    filter: opacity(50%);
+    cursor: auto;
+  }
+}
+
+.cards {
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 15px 0 10px 15px;
+  padding-bottom: 10px;
+
+  .card-item {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: grey 0 2px 5px;
+
+    .img-block {
+      position: relative;
+      height: 20vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 20px;
+    }
+
+    .title-block-green {
+      width: 100%;
+      padding: 5px 0 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: linear-gradient(280.20563200957037deg, #73C8A9, #373B44);
+
+      p {
+        padding: 5px 0;
+        font-size: 18px;
+        color: white;
+        font-weight: 400;
+      }
+    }
+
+    span {
+      color: white;
+      padding: 0 5px;
+    }
+
+    hr {
+      background-color: white;
+      height: 2px;
+      border: none;
+      width: 210px;
+      padding: 0 15px;
+    }
+  }
+
+  .title-block-red {
+    width: 100%;
+    padding: 5px 0 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: linear-gradient(280.20563200957037deg, #e52f2f, #414958);
+
+    p {
+      font-size: 18px;
+      padding: 5px 0;
+      color: white;
+      font-weight: 400;
+    }
+  }
+
+  .card-item:hover {
+    box-shadow: black 0 2px 15px;
+  }
+}
+
+////Footer////
+.footer {
+  height: 50px;
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  background-color: white;
+  box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, .5);
+}
+
+.mat-mdc-slide-toggle.mat-warn {
+  --mdc-switch-selected-handle-color: #f65405;
+  --mdc-switch-selected-track-color: #f87a56;
+}
+

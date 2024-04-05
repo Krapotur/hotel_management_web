@@ -1,0 +1,118 @@
+
+<!--Table-->
+<div class="main" *ngIf="isAdmin">
+  <div [class]="showTemplate? 'blur' : ''">
+    <div class="mat-elevation-z8">
+      <h1>Гостиницы</h1>
+      <hr>
+      <table mat-table [dataSource]="dataSource">
+        <!-- Position Column -->
+        <ng-container matColumnDef="#">
+          <th mat-header-cell *matHeaderCellDef> #</th>
+          <td mat-cell *matCellDef="let hotel">{{ hotel.position }}</td>
+        </ng-container>
+
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef> Название</th>
+          <td mat-cell *matCellDef="let hotel"> {{ hotel.title }}</td>
+        </ng-container>
+
+        <!-- Post Column -->
+        <ng-container matColumnDef="floors">
+          <th mat-header-cell *matHeaderCellDef> Кол-во этажей(с номерами)</th>
+          <td mat-cell *matCellDef="let hotel"> {{ hotel.floors }}</td>
+        </ng-container>
+
+        QuantityRooms Column
+        <ng-container matColumnDef="quantityRooms">
+          <th mat-header-cell *matHeaderCellDef> Всего номеров</th>
+          <td mat-cell *matCellDef="let hotel"> {{ hotel.quantityRooms }}</td>
+        </ng-container>
+
+        <!-- Personal Column -->
+        <ng-container matColumnDef="personal">
+          <th mat-header-cell *matHeaderCellDef> Горничная</th>
+          <td mat-cell
+              *matCellDef="let hotel"> {{hotel.personal.length > 1 ? hotel.personal[0] + ' ( еще ' + (hotel.personal.length - 1) + ')' : hotel.personal}}</td>
+        </ng-container>
+
+        <!-- Edit Column -->
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Действие</th>
+          <td mat-cell *matCellDef="let hotel">
+            <img style="width: 35px"
+                 (click)=" openCreateHotelPage(hotel)"
+                 src="../assets/icons/edit.png" alt="edit">
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Статус</th>
+          <td mat-cell *matCellDef="let hotel">
+            <mat-slide-toggle color="warn" [checked]="hotel.status" (click)="changeStatus(hotel)"></mat-slide-toggle>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div *ngIf="hotels.length == 0" class="empty-block">
+        <p>Добавьте первую гостиницу...</p>
+      </div>
+
+      <hr>
+      <div class="table-bottom">
+        <button class="btn" extended="" mat-fab
+                (click)="openCreateHotelPage()"
+        >
+          Добавить
+        </button>
+        <mat-paginator [pageSizeOptions]="[10, 20]"
+                       showFirstLastButtons
+                       aria-label="">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+  <!--Table-->
+</div>
+
+<div class="box-cards" *ngIf="!isAdmin">
+  <div class="block-header">
+      <h2 class="header">Гостиницы</h2>
+
+      <div class="finder" *ngIf="!isAdmin && !isEmpty">
+        <input matInput type="text" [(ngModel)]="search" placeholder="Поиск гостиницы...">
+      </div>
+  </div>
+
+  <div class="empty-list" *ngIf="isEmpty">
+    <p>Список гостиниц пуст...</p>
+    <img style="width: 100px"
+         src="../assets/images/empty-box.png" alt="edit">
+  </div>
+
+  <div class="cards">
+    <div class="card-item" *ngFor="let hotel of hotels | filterStatusActive | find: search" (click)="openCreateHotelPage(hotel)">
+      <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">
+        <p>{{ hotel.title }}</p>
+      </div>
+      <div class="img-block">
+        <img [ngSrc]="hotel.imgSrc" alt="image" fill="">
+      </div>
+      <div [class]="hotel.percentReadyRooms == 100 ? 'title-block-green' : 'title-block-red'">
+
+        <span style="font-size: 15px">Готовность номеров: {{hotel.percentReadyRooms}}%</span>
+        <hr>
+        <span>Грязные: {{hotel.notReadyRooms}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer" *ngIf="!isAdmin && !isEmpty">
+
+</div>

@@ -1,0 +1,110 @@
+<div [class]="isDelete ? 'blur': ''">
+  <div class="container-block">
+    <div class="left-block">
+      <h2>Гостиница</h2>
+      <div class="img-del">
+        <img
+          src="../assets/icons/delete-hotel.png"
+          (click)="isDelete = !isDelete"
+        >
+      </div>
+
+      <p>"{{hotel.title}}"</p>
+      <form [formGroup]="form">
+        <div class="container-form">
+
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="title" type="text" formControlName="title" (keyup)="checkHotel()">
+              <label class="active" for="title">Название</label>
+            </div>
+            <span *ngIf="form.get('title').hasError('required') && form.get('title').touched"
+            >*Введите название гостиницы
+                    </span>
+          </div>
+
+          <mat-form-field>
+            <mat-label>Горничная </mat-label>
+            <mat-select formControlName="users" multiple>
+              <mat-select-trigger>
+                {{ personalList.length ? this.form.get('users').value[0] : '' }}
+                <span class="example-additional-selection" *ngIf="this.form.get('users').value.length > 1">
+                   (еще {{ (this.form.get('users').value.length) - 1 }})
+                   </span>
+              </mat-select-trigger>
+              <mat-option *ngFor="let personal of personalList"
+                          [value]="personal"
+              > {{personal}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <hr>
+
+        <div class="img-block">
+          <label>Выберите изображение</label>
+          <div class="img-group">
+            <span *ngIf="image">Изображение загружено!</span>
+            <input type="file" class="dn"
+                   #inputImg
+                   (change)="uploadImg($event)">
+            <img (click)=" triggerClick()"
+                 src="../assets/icons/add-photo.png" alt="edit">
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="btn-group">
+          <button
+            class="btn-cancel" extended="" mat-fab
+            (click)="openHotelsPage()"
+            [disabled]="form.disabled || isDelete"
+          >
+            Отмена
+          </button>
+          <button
+            type="submit"
+            class="btn-save" extended="" mat-fab
+            (click)="onSubmit()"
+            [disabled]="form.disabled || isHotel || isDelete"
+          >
+            Сохранить
+          </button>
+
+        </div>
+      </form>
+      <!--Template for Delete-->
+    </div>
+    <div *ngIf="!isDelete">
+      <div [class]="quantityRooms > 60 ? 'right-block-scroll': 'right-block'">
+        <app-rooms-page [hotelId]="hotel._id"></app-rooms-page>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Template for Delete-->
+
+<div class="container-del" *ngIf="isDelete">
+  <h2>Удалить гостиницу?</h2>
+  <h3>"{{ hotel.title }}"</h3>
+  <div class="input-block">
+    <div class="btn-group-del">
+      <button
+        class="btn-cancel" extended="" mat-fab
+        (click)="isDelete = !isDelete"
+      >
+        Нет
+      </button>
+      <button
+        type="submit"
+        class="btn-save" extended="" mat-fab
+        (click)="deleteHotel()"
+      >
+        Да
+      </button>
+    </div>
+  </div>
+</div>

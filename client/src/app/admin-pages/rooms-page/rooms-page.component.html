@@ -1,0 +1,177 @@
+<div class="list-rooms">
+<!--  <h4>Список номеров</h4>-->
+  <div class="floor-container" *ngFor="let floor of floors">
+    <h3>{{ floor.numberFloor }} этаж</h3>
+    <div class="rooms">
+      <div class="room" *ngFor="let room of floor.rooms">
+        <div [class]="isParams? 'delete-room' : 'room-ready'">
+          <div>
+            <div class="x-delete" *ngIf="isParams">
+              <img
+                *ngIf="!isDelete && !isAddRoom"
+                (click)="openTemplateDelete(room)"
+                src="../assets/icons/remove.png" alt="remove"
+              >
+            </div>
+            <div [class]="room.comments ? 'inProcess' : ''">
+              <button
+                [class]="room.status === 'notReady' ? 'room-dirty': 'room-ready'" extended="" mat-fab
+                (click)="selectRoom(room)"
+                [disabled]="isParams"
+              >
+                {{ room.numberRoom }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isParams" class="btn-add-div">
+    <button class="btn-add" extended="" mat-fab
+            (click)="selectRoom()"
+            [disabled] = "isAddRoom || isDelete"
+    >
+      Добавить номер
+    </button>
+  </div>
+
+</div>
+
+<!--Add Template-->
+<div *ngIf="isAddRoom">
+  <form [formGroup]="addForm">
+    <div class="add-room-container">
+      <h4>Новый номер</h4>
+      <div class="input-block">
+        <div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="numberRoom" type="number" formControlName="numberRoom" >
+              <label class="active" for="numberRoom">Номер гостиницы*</label>
+            </div>
+          </div>
+          <span *ngIf="addForm.get('numberRoom').hasError('required') && addForm.get('numberRoom').touched"
+          >*Введите новый номер
+                    </span>
+          <span *ngIf="addForm.get('numberRoom').hasError('min') || addForm.get('numberRoom').hasError('max')"
+
+          >*Укажите от 1 - 4000
+                    </span>
+        </div>
+
+        <div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="floor" type="number" formControlName="floor" >
+              <label class="active" for="floor">Этаж*</label>
+            </div>
+          </div>
+          <span *ngIf="addForm.get('floor').hasError('required') && addForm.get('floor').touched"
+          >*Укажите этаж номера
+                    </span>
+          <span *ngIf="addForm.get('floor').hasError('min') || addForm.get('floor').hasError('max')"
+          >*Укажите от 1 - 5
+                    </span>
+        </div>
+        <div class="btn-group">
+          <button
+            class="btn-cancel" extended="" mat-fab
+            (click)="isAddRoom = !isAddRoom"
+          >
+            Отмена
+          </button>
+          <button
+            type="submit"
+            class="btn-save" extended="" mat-fab
+            (click)="onSubmit()"
+            [disabled]="addForm.disabled || addForm.invalid"
+          >
+            Сохранить
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!--Add Template-->
+
+<!--Edit Template-->
+<div *ngIf="!isEdit">
+  <form [formGroup]="form">
+    <div class="room-container">
+      <h4>Изменение статуса</h4>
+      <p>"{{room.numberRoom}}"</p>
+      <mat-form-field>
+        <mat-label>Выберите статус</mat-label>
+        <mat-select formControlName="status">
+          <mat-option [value]="status" *ngFor="let status of statuses">{{ status }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <div class="task-block">
+        <label for="textarea">Задание:</label>
+        <textarea id="textarea"
+                  maxlength="200"
+                  placeholder="Что требуется сделать?"
+                  formControlName="task"
+        ></textarea>
+        <div class="comments" *ngIf="room.comments">
+          <label for="textarea2">Комментарий персонала:</label>
+          <textarea id="textarea2"
+                    maxlength="200"
+                    [disabled]="room.comments"
+          >{{room.comments}}</textarea>
+        </div>
+
+      </div>
+
+      <div class="btn-group">
+        <button
+          class="btn-cancel" extended="" mat-fab
+          (click)="isEdit = !isEdit"
+        >
+          Отмена
+        </button>
+        <button
+          type="submit"
+          class="btn-save" extended="" mat-fab
+          (click)="onSubmit()"
+          [disabled]="form.disabled"
+        >
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<!--Edit Template-->
+
+<!--Delete Template-->
+<div class="container-del" *ngIf="isDelete">
+  <h2>Удалить номер?</h2>
+  <h3>"{{room.numberRoom}}"</h3>
+  <div class="input-block">
+
+    <div class="btn-group-del">
+      <button
+        class="btn-cancel" extended="" mat-fab
+        (click)="isDelete = false"
+      >
+        Нет
+      </button>
+      <button
+        type="submit"
+        class="btn-save" extended="" mat-fab
+        (click)="deleteRoom()"
+      >
+        Да
+      </button>
+    </div>
+  </div>
+</div>
+<!--Delete Template-->
+
+
+

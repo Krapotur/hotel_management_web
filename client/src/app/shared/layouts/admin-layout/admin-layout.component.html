@@ -1,0 +1,46 @@
+<div class="container-main">
+  <div class="sidebar-left" role="banner">
+    <div class="new_container">
+
+      <div class="logo-container">
+        <img src="../assets/images/logo.png" alt="logo">
+        <h1 class="title">
+          Hotel Management
+        </h1>
+      </div>
+
+      <hr>
+
+      <div class="user">
+        <p>{{user.user}}</p>
+        <p class="post">"{{post.toLowerCase()}}"</p>
+      </div>
+
+      <hr class="hr-bottom">
+
+      <div class="nav-wrap">
+        <nav class="main-nav" role="navigation">
+          <ul class="list-hover-slide">
+            <li><a routerLink="/admin-panel/hotels">Гостиницы</a></li>
+            <li><a routerLink="/admin-panel/houses">Дома</a></li>
+            <li><a routerLink="/admin-panel/users">Сотрудники</a></li>
+            <li (click)="logout()"><a>Выйти</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="toggle-admin-checked">
+    <p>Администратор</p>
+    <mat-slide-toggle color="warn" [checked]="true" (click)="selectMode()"></mat-slide-toggle>
+  </div>
+
+  <div class="container-right">
+    <div class="loader" *ngIf="isErrorHttpStatus">
+      <p>Идет соединение с сервером... Попробуйте обновить страницу</p>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <router-outlet *ngIf="!isErrorHttpStatus"></router-outlet>
+  </div>
+</div>

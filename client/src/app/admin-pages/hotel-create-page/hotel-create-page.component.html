@@ -1,0 +1,135 @@
+
+<div class="main">
+  <div class="container-block">
+    <h2>Новая гостиница</h2>
+    <form [formGroup]="form">
+      <div class="container-form">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="title" type="text" formControlName="title">
+            <label class="active" for="title">Название</label>
+          </div>
+          <span *ngIf="form.get('title').hasError('required') && form.get('title').touched"
+          >*Введите название гостиницы
+        </span>
+          <span *ngIf="form.get('title').hasError('minlength') && form.get('title').touched"
+          >*Не менее 3х символов
+        </span>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="floors" type="text" formControlName="floors" #inputFloors min="1" max="4"
+                   (keyup)="checkQuantityFloors(Number(inputFloors.value))"
+            >
+            <label class="active" for="floors">Кол-во этажей(с номерами)</label>
+          </div>
+          <span *ngIf="form.get('floors').hasError('required') && form.get('floors').touched"
+          >*Кол-во этажей с наличием номеров
+                    </span>
+          <span *ngIf="form.get('floors').hasError('min') || form.get('floors').hasError('max')"
+          >*Укажите количество этажей(с наличием номеров) в диапазоне от 1 - 4
+                    </span>
+        </div>
+
+
+        <div class="input-floors" *ngFor="let item of floors">
+          <span>{{ item }}) </span>
+
+          <div [class]="form.get('floor' + item).hasError('required')
+                          && form.get('floor' + item).touched
+                          ? 'error-input': ''">
+            <input type="number"
+                   min="1" max="4"
+                   (keyup)="setValueInInputFloors()"
+                   (blur)="checkRooms('startRoom'+ item, 'endRoom' + item, 'floor' + item)"
+                   formControlName="floor{{item}}">
+          </div>
+          <span>этаж, c </span>
+          <div class="input-rooms">
+            <div [class]="form.get('startRoom' + item).hasError('required')
+                          && form.get('startRoom' + item).touched
+                          ? 'error-input': ''">
+              <input type="number" min="1" max="500"
+                     formControlName="startRoom{{item}}"
+              >
+            </div>
+
+          </div>
+          <span> по </span>
+          <div class="input-rooms">
+
+            <div [class]="form.get('endRoom' + item).hasError('required') &&
+            form.get('endRoom' + item).touched
+             ? 'error-input': ''">
+              <input type="number" min="1" max="500"
+                     (blur)="checkRooms('startRoom'+ item, 'endRoom' + item, 'floor' + item)"
+                     formControlName="endRoom{{item}}"
+              >
+            </div>
+
+          </div>
+        </div>
+        <span *ngIf="isErrorRequired" class="error-span">Заполните обязательные поля с номерами*</span>
+
+        <mat-form-field>
+          <mat-label>Горничная <span *ngIf="!users.length">(список пуст)</span></mat-label>
+          <mat-select formControlName="users" multiple>
+            <mat-select-trigger>
+              {{ form.get('users').value[0] | filterUsers: users }}
+              <span class="example-additional-selection" *ngIf="form.get('users').value.length > 1">
+                   (еще {{ form.get('users').value.length - 1 }})
+                   </span>
+            </mat-select-trigger>
+              <mat-option *ngFor="let user of users"
+                          [value]=" user._id"
+              >{{ user.lastName + ' ' + user.firstName }}
+              </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <hr>
+
+      <div class="img-block">
+        <label>Выберите изображение для: <p style="color: #F57C23"
+                                                            class="span-title" *ngIf="title"> "{{ title }}
+          "</p></label>
+        <div class="img-group">
+          <span *ngIf="image">Изображение загружено!</span>
+          <input type="file" class="dn"
+                 #inputImg
+                 (change)="uploadImg($event)">
+          <img (click)=" triggerClick()"
+               src="../assets/icons/add-photo.png" alt="edit">
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="btn-group">
+        <button
+          class="btn-cancel" extended="" mat-fab
+          (click)="openHotelsPage()"
+          [disabled]="form.disabled"
+        >
+          Отмена
+        </button>
+        <button
+          type="submit"
+          class="btn-save" extended="" mat-fab
+          (click)="onSubmit()"
+          [disabled]="form.disabled"
+        >
+          Сохранить
+        </button>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
