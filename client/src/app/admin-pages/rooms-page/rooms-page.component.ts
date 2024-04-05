@@ -153,8 +153,10 @@ export class RoomsPageComponent implements OnInit, OnDestroy {
       }
 
       room._id = this.room._id
+      room.numberRoom = this.room.numberRoom
       room.status = status
       room.tasks = this.form.get('task').value
+      room.hotel = this.room.hotel
 
       this.rSub = this.roomsService.update(room).subscribe({
         next: message => MaterialService.toast(message.message),

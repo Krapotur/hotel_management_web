@@ -9,6 +9,7 @@ const SCOPES = [MESSAGE_SCOPE]
 const https = require('https')
 const {data} = require("express-session/session/cookie");
 
+
 function getAccessToken() {
     return new Promise(function (resolve, reject) {
         var key = require("../config/service-account.json")
@@ -122,7 +123,8 @@ module.exports.delete = async function (req, res) {
 
 
 module.exports.update = async function (req, res) {
-    console.log(req.body)
+    const hotel =  await Hotel.findOne({_id: req.body.hotel})
+
     const updated = {
         status: req.body.status,
         tasks: req.body.tasks,
@@ -134,9 +136,7 @@ module.exports.update = async function (req, res) {
         updated.tasks = ''
     }
 
-
     try {
-
         await Room.findByIdAndUpdate(
             {_id: req.params.id},
             {$set: updated},
@@ -145,22 +145,25 @@ module.exports.update = async function (req, res) {
 
 
         res.status(200).json({message: 'Изменения внесены'})
-        await sendAlert()
+
+        if(req.body.status !== 'isReady'){
+            await sendAlert(hotel.title, req.body.numberRoom)
+        }
 
     } catch (e) {
         errorHandler(res, e)
     }
 }
 
-async function sendAlert() {
+async function sendAlert(hotel, numberRoom) {
     const token = await getAccessToken()
 
     const data = JSON.stringify({
         message: {
-            topic: "news",
+            topic:"hotels",
             notification: {
-                title: "Гостиница",
-                body: 'Номер 7'
+                title: `Гостиница ${hotel}`,
+                body: `Номер ${numberRoom}`
             },
             data: {
                 story_id: "story_12345"
@@ -173,7 +176,7 @@ async function sendAlert() {
         path: '/v1/projects/hotel-management-8cd58/messages:send',
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + token,
+            'Authorization': `Bearer ${token}`,
             'Content-type':
                 'application/json; charset=UTF-8',
         }
