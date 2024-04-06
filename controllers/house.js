@@ -140,6 +140,7 @@ async function sendAlert(house, tasks) {
             notification: {
                 title: `Дом ${house}`,
                 body: `Задание:  ${tasks}`,
+                image: `https://etnomirglobal.com/upload/iblock/e0c/1.jpg`
             },
             data:{
                 id: `Nothing`
