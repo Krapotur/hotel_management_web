@@ -1,6 +1,44 @@
 const House = require('../models/House')
 const errorHandler = require('../utils/errorHandler')
 
+const key = require("../config/service-account.json");
+const Room = require("../models/Room");
+
+const {google} = require('googleapis')
+const MESSAGE_SCOPE = "https://www.googleapis.com/auth/firebase.messaging"
+const SCOPES = [MESSAGE_SCOPE]
+
+const https = require('https')
+const {data} = require("express-session/session/cookie");
+
+function getAccessToken() {
+    return new Promise(function (resolve, reject) {
+        var key = require("../config/service-account.json")
+        var jwtClient = new google.auth.JWT(
+            key.client_email,
+            null,
+            key.private_key,
+            SCOPES,
+            null
+        )
+        jwtClient.authorize(function (err, tokens) {
+            if (err) {
+                reject(err)
+                return
+            }
+            resolve(tokens.access_token)
+        })
+    })
+}
+
+module.exports.getAll = async function (req, res) {
+    try {
+        await Room.find().then(rooms => res.status(200).json(rooms))
+    } catch (e) {
+        errorHandler(res, e)
+    }
+}
+
 module.exports.getAll = async function (req, res) {
     try {
         House.find().then(
@@ -79,6 +117,12 @@ module.exports.update = async function (req, res) {
             {$set: updated},
             {new: true}
         )
+
+
+        if (req.body.statusReady !== 'isReady') {
+            await sendAlert(req.body.title, req.body.tasks)
+        }
+
         res.status(200).json({
             message: 'Изменения внесены'
         })
@@ -86,3 +130,43 @@ module.exports.update = async function (req, res) {
         errorHandler(res, e)
     }
 }
+
+async function sendAlert(house, tasks) {
+    const token = await getAccessToken()
+
+    const data = JSON.stringify({
+        message: {
+            topic: "hotels",
+            notification: {
+                title: `Дом ${house}`,
+                body: `Задание:  ${tasks}`,
+            },
+            data:{
+                id: `Nothing`
+            }
+        }
+    })
+
+    const options = {
+        hostname: 'fcm.googleapis.com',
+        path: '/v1/projects/hotel-management-8cd58/messages:send',
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-type':
+                'application/json; charset=UTF-8',
+        }
+    }
+    const req = https.request(options, (res) => {
+        console.log(`statusCode: ${res.statusCode}`)
+        res.on('data', (d) => {
+            process.stdout.write(d)
+        })
+    })
+    req.on('error', (error) => {
+        console.error(error)
+    })
+    req.write(data)
+    req.end()
+}
+

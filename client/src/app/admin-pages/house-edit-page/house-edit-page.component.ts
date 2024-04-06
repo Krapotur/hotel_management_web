@@ -132,6 +132,7 @@ export class HouseEditPageComponent implements OnInit,DoCheck, OnDestroy {
         next: message => MaterialService.toast(message.message),
         error: error => MaterialService.toast(error.error.message)
       })
+
       setTimeout(()=>{
         this.router.navigate(['admin-panel/houses']).then()
       }, 1000)

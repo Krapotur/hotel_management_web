@@ -146,7 +146,7 @@ module.exports.update = async function (req, res) {
         res.status(200).json({message: 'Изменения внесены'})
 
         if (req.body.status !== 'isReady') {
-            await sendAlert(hotel.title, hotel.imgSrc, req.body.numberRoom)
+            await sendAlert(hotel, req.body.numberRoom)
         }
 
     } catch (e) {
@@ -154,19 +154,20 @@ module.exports.update = async function (req, res) {
     }
 }
 
-async function sendAlert(hotel, image, numberRoom) {
+async function sendAlert(hotel, numberRoom) {
     const token = await getAccessToken()
 
-
-    console.log(`http://localhost:5000/${image}`)
     const data = JSON.stringify({
         message: {
             topic: "hotels",
             notification: {
-                title: `Гостиница ${hotel}`,
+                title: `Гостиница ${hotel.title}`,
                 body: `Номер ${numberRoom}`,
-                image: `https://ethnomir.ru/upload/iblock/314/2.jpg`
+                image: `https://etnomirglobal.com/upload/iblock/e0c/1.jpg`
             },
+            data:{
+                id: `${hotel._id}`
+            }
         }
     })
 

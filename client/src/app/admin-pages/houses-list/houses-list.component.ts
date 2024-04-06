@@ -178,6 +178,7 @@ export class HousesListComponent implements OnInit, OnDestroy {
 
     let house = {
       _id: this.house._id,
+      title: this.house.title,
       statusReady: status,
       tasks: status === 'isReady' ? '' : this.form.get('task').value
     }
