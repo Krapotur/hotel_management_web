@@ -118,14 +118,14 @@ module.exports.update = async function (req, res) {
             {new: true}
         )
 
-
-        if (req.body.statusReady !== 'isReady') {
+        if (req.body.statusReady !== 'isReady' && req.body.tasks) {
             await sendAlert(req.body.title, req.body.tasks)
         }
 
         res.status(200).json({
             message: 'Изменения внесены'
         })
+
     } catch (e) {
         errorHandler(res, e)
     }
@@ -142,7 +142,7 @@ async function sendAlert(house, tasks) {
                 body: `Задание:  ${tasks}`,
                 image: `https://etnomirglobal.com/upload/iblock/e0c/1.jpg`
             },
-            data:{
+            data: {
                 id: `Nothing`
             }
         }

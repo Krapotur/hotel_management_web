@@ -127,9 +127,10 @@ module.exports.update = async function (req, res) {
 
     const updated = {
         status: req.body.status,
-        tasks: req.body.tasks,
-        comments: req.body.comments
     }
+    if (req.body.tasks) updated.tasks = req.body.tasks
+    if (req.body.comments) updated.comments = req.body.comments
+
 
     if (req.body.status === 'isReady') {
         updated.comments = ''
@@ -143,12 +144,11 @@ module.exports.update = async function (req, res) {
             {new: true}
         )
 
-        res.status(200).json({message: 'Изменения внесены'})
-
-        if (req.body.status !== 'isReady') {
+        if (req.body.status !== 'isReady' && req.body.tasks) {
             await sendAlert(hotel, req.body.numberRoom)
         }
 
+        res.status(200).json({message: 'Изменения внесены'})
     } catch (e) {
         errorHandler(res, e)
     }
@@ -165,7 +165,7 @@ async function sendAlert(hotel, numberRoom) {
                 body: `Номер ${numberRoom}`,
                 image: `https://etnomirglobal.com/upload/iblock/e0c/1.jpg`
             },
-            data:{
+            data: {
                 id: `${hotel._id}`
             }
         }

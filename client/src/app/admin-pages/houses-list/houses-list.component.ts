@@ -189,10 +189,12 @@ export class HousesListComponent implements OnInit, OnDestroy {
     })
 
     this.isEdit = !this.isEdit
-    this.router.navigateByUrl('/').then(() => {
-      this.router.navigate([`management/houses`]).then()
-    })
 
+    setTimeout(()=>{
+      this.router.navigateByUrl('/').then(() => {
+        this.router.navigate([`management/houses`]).then()
+      })
+    },600)
   }
 
   changeStatus(house: House) {
