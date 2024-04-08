@@ -123,18 +123,23 @@ module.exports.delete = async function (req, res) {
 
 
 module.exports.update = async function (req, res) {
+    console.log(req.body)
     const hotel = await Hotel.findOne({_id: req.body.hotel})
 
-    const updated = {
-        status: req.body.status,
-    }
-    if (req.body.tasks) updated.tasks = req.body.tasks
-    if (req.body.comments) updated.comments = req.body.comments
+    const updated = {}
 
+    if (req.body.status) updated.status = req.body.status
+    if (req.body.tasks) updated.tasks = req.body.tasks
 
     if (req.body.status === 'isReady') {
         updated.comments = ''
         updated.tasks = ''
+    }
+
+    if(req.body.comments){
+        if(req.body.comments.length > 4){
+            updated.comments = req.body.comments
+        }
     }
 
     try {
