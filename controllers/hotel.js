@@ -5,7 +5,14 @@ module.exports.getAll = async function (req, res) {
     try {
         Hotel.find().then(
             hotels => {
-                res.status(200).json(hotels)
+                let hotelsList = []
+                if (req.query.search) {
+                        hotelsList = hotels.filter(
+                            hotel => hotel.title.toLowerCase().includes(req.query.search))
+                        res.status(200).json(hotelsList)
+                } else {
+                    res.status(200).json(hotels)
+                }
             }
         )
     } catch (e) {

@@ -33,17 +33,16 @@ function getAccessToken() {
 
 module.exports.getAll = async function (req, res) {
     try {
-        await Room.find().then(rooms => res.status(200).json(rooms))
-    } catch (e) {
-        errorHandler(res, e)
-    }
-}
-
-module.exports.getAll = async function (req, res) {
-    try {
         House.find().then(
             houses => {
-                res.status(200).json(houses)
+                let housesList = []
+                if (req.query.search) {
+                    housesList = houses.filter(
+                        house => house.title.toLowerCase().includes(req.query.search))
+                    res.status(200).json(housesList)
+                } else {
+                    res.status(200).json(houses)
+                }
             }
         )
     } catch (e) {
@@ -109,8 +108,8 @@ module.exports.update = async function (req, res) {
         updated.tasks = ''
     }
 
-    if(req.body.comments){
-        if(req.body.comments.length > 4){
+    if (req.body.comments) {
+        if (req.body.comments.length > 4) {
             updated.comments = req.body.comments
         }
     }
