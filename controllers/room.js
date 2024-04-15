@@ -166,7 +166,7 @@ async function sendAlert(hotel, numberRoom) {
         message: {
             topic: "hotels",
             notification: {
-                title: `Гостиница ${hotel.title}`,
+                title: `${hotel.title}`,
                 body: `Номер ${numberRoom}`,
                 image: `https://etnomirglobal.com/upload/iblock/e0c/1.jpg`
             },

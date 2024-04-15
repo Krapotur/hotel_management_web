@@ -8,7 +8,7 @@ module.exports.getAll = async function (req, res) {
                 let hotelsList = []
                 if (req.query.search) {
                         hotelsList = hotels.filter(
-                            hotel => hotel.title.toLowerCase().includes(req.query.search))
+                            hotel => hotel.title.toLowerCase().includes(req.query.search.trim()))
                         res.status(200).json(hotelsList)
                 } else {
                     res.status(200).json(hotels)

@@ -35,7 +35,7 @@ module.exports.login = async function (req, res) {
                 message: 'Учетная запись отключена, обратитесь к администратору'
             })
         } else {
-            res.status(404).json({
+            res.status(406).json({
                 message: 'Такого пользователя не существует'
             })
         }
