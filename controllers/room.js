@@ -168,7 +168,7 @@ async function sendAlert(hotel, numberRoom) {
             notification: {
                 title: `${hotel.title}`,
                 body: `Номер ${numberRoom}`,
-                image: `https://etnomirglobal.com/upload/iblock/e0c/1.jpg`
+                image: `https://colibri-cleaning.ru/wp-content/uploads/2024/01/full_dgzsjoob.jpg`
             },
             data: {
                 id: `${hotel._id}`
